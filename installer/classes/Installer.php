@@ -1,13 +1,21 @@
 <?php
+/**
+ * ============================================
+ * کلاس اصلی نصب‌کننده
+ * ============================================
+ */
+
 class Installer {
     private $basePath;
     private $errors = [];
-    private $warnings = [];
     
     public function __construct($basePath) {
         $this->basePath = rtrim($basePath, '/');
     }
     
+    // ──────────────────────────────────────
+    // دریافت اطلاعات مرحله
+    // ──────────────────────────────────────
     public function getStep($step) {
         $steps = [
             1 => ['file' => 'requirements', 'title' => 'بررسی پیش‌نیازها'],
@@ -20,13 +28,15 @@ class Installer {
         return $steps[$step] ?? $steps[1];
     }
     
+    // ──────────────────────────────────────
     // بررسی پیش‌نیازها
+    // ──────────────────────────────────────
     public function checkRequirements() {
         $requirements = [];
         
         // PHP Version
         $requirements['php_version'] = [
-            'title' => 'نسخه PHP >= 8.1',
+            'title' => 'PHP >= 8.1',
             'status' => version_compare(PHP_VERSION, '8.1.0', '>='),
             'current' => PHP_VERSION
         ];
@@ -47,23 +57,18 @@ class Installer {
             $path = $this->basePath . '/' . $dir;
             if (!is_dir($path)) @mkdir($path, 0775, true);
             $requirements["dir_{$dir}"] = [
-                'title' => "پوشه {$dir} (قابل نوشتن)",
+                'title' => "پوشه {$dir}",
                 'status' => is_writable($path),
-                'current' => is_writable($path) ? 'Writable' : 'Not Writable'
+                'current' => is_writable($path) ? 'Writable ✓' : 'Not Writable ✗'
             ];
         }
-        
-        // cURL
-        $requirements['curl'] = [
-            'title' => 'cURL فعال',
-            'status' => function_exists('curl_init'),
-            'current' => function_exists('curl_init') ? 'فعال' : 'غیرفعال'
-        ];
         
         return $requirements;
     }
     
+    // ──────────────────────────────────────
     // تست اتصال دیتابیس
+    // ──────────────────────────────────────
     public function testDatabaseConnection($host, $name, $user, $pass) {
         try {
             $pdo = new PDO(
@@ -72,7 +77,7 @@ class Installer {
                 [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
             );
             
-            // ساخت دیتابیس اگه وجود نداشت
+            // ساخت دیتابیس
             $pdo->exec("CREATE DATABASE IF NOT EXISTS `{$name}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
             
             return ['success' => true, 'pdo' => $pdo];
@@ -81,7 +86,9 @@ class Installer {
         }
     }
     
+    // ──────────────────────────────────────
     // ایمپورت اسکریپت دیتابیس
+    // ──────────────────────────────────────
     public function importDatabase($pdo, $dbName) {
         $schemaFile = $this->basePath . '/database/schema.sql';
         if (!file_exists($schemaFile)) {
@@ -98,7 +105,9 @@ class Installer {
         }
     }
     
+    // ──────────────────────────────────────
     // ساخت ادمین
+    // ──────────────────────────────────────
     public function createAdmin($pdo, $dbName, $username, $password) {
         try {
             $pdo->exec("USE `{$dbName}`");
@@ -111,7 +120,9 @@ class Installer {
         }
     }
     
+    // ──────────────────────────────────────
     // نوشتن فایل کانفیگ
+    // ──────────────────────────────────────
     public function writeConfig($data) {
         $template = file_get_contents($this->basePath . '/config/config.example.php');
         
@@ -125,7 +136,7 @@ class Installer {
             '{{SITE_URL}}' => rtrim($data['site_url'], '/'),
             '{{SITE_NAME}}' => $data['site_name'],
             '{{WEBHOOK_SECRET}}' => bin2hex(random_bytes(32)),
-            '{{AI_ENABLED}}' => $data['ai_enabled'] ?? 'false',
+            '{{AI_ENABLED}}' => isset($data['ai_enabled']) ? 'true' : 'false',
             '{{AI_API_KEY}}' => $data['ai_api_key'] ?? '',
         ];
         
@@ -133,13 +144,15 @@ class Installer {
         
         $configPath = $this->basePath . '/config/config.php';
         if (file_put_contents($configPath, $content) === false) {
-            return ['success' => false, 'error' => 'خطا در نوشتن فایل config.php'];
+            return ['success' => false, 'error' => 'خطا در نوشتن config.php'];
         }
         
         return ['success' => true];
     }
     
-    // تنظیم وب‌هوک
+    // ──────────────────────────────────────
+    // تنظیم وب‌هوک تلگرام
+    // ──────────────────────────────────────
     public function setWebhook($botToken, $webhookUrl, $secret) {
         $url = "https://api.telegram.org/bot{$botToken}/setWebhook";
         $params = [
@@ -159,22 +172,20 @@ class Installer {
         ]);
         
         $response = curl_exec($ch);
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
         
         $data = json_decode($response, true);
         
-        if ($httpCode === 200 && isset($data['ok']) && $data['ok']) {
+        if (isset($data['ok']) && $data['ok']) {
             return ['success' => true];
         }
         
-        return [
-            'success' => false,
-            'error' => $data['description'] ?? 'خطای نامشخص'
-        ];
+        return ['success' => false, 'error' => $data['description'] ?? 'خطای نامشخص'];
     }
     
+    // ──────────────────────────────────────
     // تست توکن ربات
+    // ──────────────────────────────────────
     public function testBotToken($token) {
         $ch = curl_init("https://api.telegram.org/bot{$token}/getMe");
         curl_setopt_array($ch, [
@@ -188,16 +199,15 @@ class Installer {
         $data = json_decode($response, true);
         
         if (isset($data['ok']) && $data['ok']) {
-            return [
-                'success' => true,
-                'bot' => $data['result']
-            ];
+            return ['success' => true, 'bot' => $data['result']];
         }
         
         return ['success' => false, 'error' => 'توکن نامعتبر است'];
     }
     
+    // ──────────────────────────────────────
     // قفل کردن نصب
+    // ──────────────────────────────────────
     public function lockInstallation() {
         $lockFile = $this->basePath . '/install.lock';
         $content = json_encode([
@@ -209,7 +219,9 @@ class Installer {
         return file_put_contents($lockFile, $content) !== false;
     }
     
-    // حذف فایل نصب
+    // ──────────────────────────────────────
+    // حذف فایل‌های نصب
+    // ──────────────────────────────────────
     public function removeInstaller() {
         $files = [
             $this->basePath . '/install.php',
