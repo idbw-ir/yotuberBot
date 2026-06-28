@@ -14,6 +14,74 @@
 
 ---
 
+## 📦 ساختار پروژه
+/var/www/youtuber-bot/
+├── 📄 README.md                    # راهنمای اصلی
+├── 📄 INSTALL.md                   # راهنمای نصب
+├── 📄 API.md                       # مستندات API
+├── 📄 CHANGELOG.md                 # تاریخچه تغییرات
+├── 📄 SECURITY.md                  # نکات امنیتی
+├── 📄 LICENSE                      # لایسنس
+├── 📁 app/
+│   ├── Core/
+│   │   ├── Database.php
+│   │   ├── Router.php
+│   │   ├── Session.php
+│   │   └── Logger.php
+│   ├── Telegram/
+│   │   ├── Bot.php
+│   │   ├── Webhook.php
+│   │   └── Keyboard.php
+│   ├── Admin/
+│   │   ├── Auth.php
+│   │   ├── Dashboard.php
+│   │   ├── Users.php
+│   │   ├── Messages.php
+│   │   ├── Donations.php
+│   │   ├── Keywords.php
+│   │   ├── Broadcast.php
+│   │   └── Settings.php
+│   ├── AI/
+│   │   └── OpenAI.php
+│   └── Helpers/
+│       ├── Security.php
+│       └── Validator.php
+├── 📁 public/
+│   ├── index.php
+│   ├── webhook.php
+│   └── admin/
+│       ├── index.php
+│       ├── login.php
+│       └── ...
+├── 📁 config/
+│   ├── config.php
+│   ├── database.php
+│   └── routes.php
+├── 📁 storage/
+│   ├── logs/
+│   ├── cache/
+│   └── uploads/
+├── 📁 database/
+│   ├── migrations/
+│   │   └── 001_initial_schema.sql
+│   └── seeds/
+│       └── admin_seeder.sql
+├── 📁 resources/
+│   ├── views/
+│   │   ├── layouts/
+│   │   │   └── admin.php
+│   │   └── admin/
+│   │       ├── dashboard.php
+│   │       └── ...
+│   └── assets/
+│       ├── css/
+│       └── js/
+└── 📁 tests/
+    └── ...
+
+    
+---
+
 ## ✨ ویژگی‌ها
 
 ### 🤖 ربات تلگرام
@@ -89,3 +157,4 @@ chown -R www-data:www-data storage/
 
 # 7. تنظیم وب‌هوک تلگرام
 curl "https://api.telegram.org/bot<TOKEN>/setWebhook?url=https://yourdomain.com/webhook.php"
+
