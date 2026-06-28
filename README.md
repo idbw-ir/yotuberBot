@@ -1,6 +1,3 @@
-# 📄 فایل README.md (نسخه بازنویسی شده)
-
-```markdown
 <div align="center">
 
 # 🎬 ربات تلگرام یوتیوبر
