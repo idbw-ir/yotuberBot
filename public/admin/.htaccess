@@ -1,0 +1,355 @@
+# ============================================
+# Admin Panel Security & Configuration
+# ============================================
+# نسخه: 2.0.0
+# 
+# این فایل تنظیمات امنیتی و مسیریابی
+# پنل مدیریت رو کنترل می‌کنه
+
+# ──────────────────────────────────────
+# 1. فعال‌سازی Rewrite Engine
+# ──────────────────────────────────────
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /admin/
+    
+    # جلوگیری از دسترسی به فایل‌های خاص
+    RewriteRule ^(.*)\.log$ - [F,L]
+    RewriteRule ^(.*)\.sql$ - [F,L]
+    RewriteRule ^(.*)\.bak$ - [F,L]
+    RewriteRule ^(.*)\.backup$ - [F,L]
+    
+    # مسیریابی URL های زیبا
+    # /admin/users/123 → /admin/users.php?id=123
+    RewriteRule ^users/([0-9]+)/?$ users.php?id=$1 [QSA,L]
+    RewriteRule ^users/page/([0-9]+)/?$ users.php?page=$1 [QSA,L]
+    
+    # /admin/messages/user/123 → /admin/chat.php?id=123
+    RewriteRule ^messages/user/([0-9]+)/?$ chat.php?id=$1 [QSA,L]
+    
+    # /admin/donations/status/success → /admin/donations.php?status=success
+    RewriteRule ^donations/status/([a-z]+)/?$ donations.php?status=$1 [QSA,L]
+    
+    # /admin/keywords/page/2 → /admin/keywords.php?page=2
+    RewriteRule ^keywords/page/([0-9]+)/?$ keywords.php?page=$1 [QSA,L]
+</IfModule>
+
+# ──────────────────────────────────────
+# 2. جلوگیری از Directory Listing
+# ──────────────────────────────────────
+
+Options -Indexes
+Options -ExecCGI
+
+# ──────────────────────────────────────
+# 3. محافظت از فایل‌های حساس
+# ──────────────────────────────────────
+
+# جلوگیری از دسترسی به فایل‌های خاص
+<FilesMatch "^(config|database|\.env|\.git|composer\.(json|lock))$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# جلوگیری از دسترسی به فایل‌های Backup
+<FilesMatch "\.(bak|backup|sql|log|old|orig|save|tmp)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# ──────────────────────────────────────
+# 4. Security Headers
+# ──────────────────────────────────────
+
+<IfModule mod_headers.c>
+    # جلوگیری از Clickjacking
+    Header always set X-Frame-Options "DENY"
+    
+    # محافظت XSS
+    Header always set X-XSS-Protection "1; mode=block"
+    
+    # جلوگیری از MIME Sniffing
+    Header always set X-Content-Type-Options "nosniff"
+    
+    # Referrer Policy
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    
+    # Permissions Policy
+    Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+    
+    # HTTPS فقط (اگر HTTPS فعاله)
+    <IfModule mod_ssl.c>
+        Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+    </IfModule>
+    
+    # مخفی کردن نسخه Apache
+    Header always unset X-Powered-By
+    Header always unset Server
+    
+    # Cache Control برای صفحات Admin
+    <FilesMatch "\.(html|htm|php)$">
+        Header always set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+        Header always set Pragma "no-cache"
+        Header always set Expires "Thu, 01 Jan 1970 00:00:00 GMT"
+    </FilesMatch>
+</IfModule>
+
+# ──────────────────────────────────────
+# 5. تنظیمات PHP
+# ──────────────────────────────────────
+
+<IfModule mod_php.c>
+    # غیرفعال کردن نمایش خطا
+    php_flag display_errors Off
+    php_flag display_startup_errors Off
+    
+    # فعال کردن لاگ خطا
+    php_flag log_errors On
+    php_value error_log ../storage/logs/php_errors.log
+    
+    # تنظیمات امنیتی
+    php_flag expose_php Off
+    php_flag allow_url_fopen On
+    php_flag allow_url_include Off
+    
+    # محدودیت‌ها
+    php_value upload_max_filesize 20M
+    php_value post_max_size 25M
+    php_value max_execution_time 300
+    php_value max_input_time 300
+    php_value memory_limit 256M
+    php_value max_input_vars 5000
+    
+    # Session Settings
+    php_value session.cookie_httponly 1
+    php_value session.cookie_secure 1
+    php_value session.use_strict_mode 1
+    php_value session.cookie_samesite "Lax"
+    php_value session.gc_maxlifetime 3600
+</IfModule>
+
+# ──────────────────────────────────────
+# 6. فشرده‌سازی Gzip
+# ──────────────────────────────────────
+
+<IfModule mod_deflate.c>
+    # فعال‌سازی فشرده‌سازی
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE image/svg+xml
+    
+    # استثناها
+    SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png|pdf|zip|rar)$ no-gzip dont-vary
+</IfModule>
+
+# ──────────────────────────────────────
+# 7. Cache Control
+# ──────────────────────────────────────
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    
+    # فایل‌های استاتیک
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/jpg "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType image/svg+xml "access plus 1 month"
+    ExpiresByType image/x-icon "access plus 1 year"
+    
+    ExpiresByType text/css "access plus 1 week"
+    ExpiresByType application/javascript "access plus 1 week"
+    ExpiresByType application/x-javascript "access plus 1 week"
+    
+    ExpiresByType font/woff "access plus 1 month"
+    ExpiresByType font/woff2 "access plus 1 month"
+    ExpiresByType application/font-woff "access plus 1 month"
+    ExpiresByType application/font-woff2 "access plus 1 month"
+    
+    # صفحات HTML و PHP (بدون کش)
+    ExpiresByType text/html "access plus 0 seconds"
+    ExpiresByType application/xhtml+xml "access plus 0 seconds"
+</IfModule>
+
+# ──────────────────────────────────────
+# 8. محافظت در برابر حملات رایج
+# ──────────────────────────────────────
+
+# جلوگیری از SQL Injection در URL
+<IfModule mod_rewrite.c>
+    RewriteCond %{QUERY_STRING} (\<|%3C).*script.*(\>|%3E) [NC,OR]
+    RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
+    RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2})
+    RewriteRule ^(.*)$ - [F,L]
+</IfModule>
+
+# جلوگیری از Directory Traversal
+<IfModule mod_rewrite.c>
+    RewriteCond %{REQUEST_URI} \.\./ [OR]
+    RewriteCond %{REQUEST_URI} \.\.%2f [OR]
+    RewriteCond %{REQUEST_URI} /etc/passwd [OR]
+    RewriteCond %{REQUEST_URI} /proc/self/environ
+    RewriteRule ^(.*)$ - [F,L]
+</IfModule>
+
+# جلوگیری از User-Agent های مشکوک
+<IfModule mod_rewrite.c>
+    RewriteCond %{HTTP_USER_AGENT} ^$ [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^(java|curl|wget|python|nikto|sqlmap|libwww|lwp-trivial) [NC,OR]
+    RewriteCond %{HTTP_USER_AGENT} ^(havij|nmap|masscan|dirbuster) [NC]
+    RewriteRule ^(.*)$ - [F,L]
+</IfModule>
+
+# ──────────────────────────────────────
+# 9. محدود کردن دسترسی بر اساس IP (اختیاری)
+# ──────────────────────────────────────
+
+# برای فعال‌سازی، کامنت‌ها رو حذف کنید و IP خودتون رو اضافه کنید
+# <IfModule mod_authz_core.c>
+#     <RequireAll>
+#         Require ip 192.168.1.1
+#         Require ip 10.0.0.1
+#         Require ip 172.16.0.0/16
+#     </RequireAll>
+# </IfModule>
+
+# ──────────────────────────────────────
+# 10. Rate Limiting (با mod_evasive)
+# ──────────────────────────────────────
+
+# اگر mod_evasive نصب باشه
+<IfModule mod_evasive20.c>
+    DOSHashTableSize 3097
+    DOSPageCount 20
+    DOSSiteCount 300
+    DOSPageInterval 1.0
+    DOSSiteInterval 1.0
+    DOSBlockingPeriod 600
+    DOSEmailNotify admin@yourdomain.com
+    DOSSystemCommand "sudo /usr/bin/logger 'mod_evasive blocked IP: %s'"
+</IfModule>
+
+# ──────────────────────────────────────
+# 11. محافظت از فایل‌های خاص
+# ──────────────────────────────────────
+
+# جلوگیری از اجرای PHP در پوشه uploads
+<IfModule mod_rewrite.c>
+    RewriteRule ^uploads/.*\.php$ - [F,L]
+</IfModule>
+
+# جلوگیری از دسترسی به فایل‌های مخفی
+<FilesMatch "^\.">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# ──────────────────────────────────────
+# 12. تنظیمات CORS (اختیاری)
+# ──────────────────────────────────────
+
+# اگر نیاز به CORS دارید
+# <IfModule mod_headers.c>
+#     Header set Access-Control-Allow-Origin "https://yourdomain.com"
+#     Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+#     Header set Access-Control-Allow-Headers "Content-Type, Authorization, X-CSRF-Token"
+#     Header set Access-Control-Allow-Credentials "true"
+# </IfModule>
+
+# ──────────────────────────────────────
+# 13. Error Documents
+# ──────────────────────────────────────
+
+ErrorDocument 403 /admin/errors/403.php
+ErrorDocument 404 /admin/errors/404.php
+ErrorDocument 500 /admin/errors/500.php
+
+# ──────────────────────────────────────
+# 14. MIME Types
+# ──────────────────────────────────────
+
+<IfModule mod_mime.c>
+    AddType application/javascript .js
+    AddType application/json .json
+    AddType application/xml .xml
+    AddType font/woff .woff
+    AddType font/woff2 .woff2
+    AddType image/svg+xml .svg
+    AddType image/x-icon .ico
+</IfModule>
+
+# ──────────────────────────────────────
+# 15. Performance Optimization
+# ──────────────────────────────────────
+
+# غیرفعال کردن ETag (برای Performance بهتر)
+<IfModule mod_headers.c>
+    Header unset ETag
+</IfModule>
+FileETag None
+
+# فعال‌سازی Keep-Alive
+<IfModule mod_headers.c>
+    Header set Connection keep-alive
+</IfModule>
+
+# ──────────────────────────────────────
+# 16. Logging
+# ──────────────────────────────────────
+
+# لاگ دسترسی و خطا
+# (این تنظیمات معمولاً در فایل اصلی Apache هستن)
+# CustomLog /var/log/apache2/admin_access.log combined
+# ErrorLog /var/log/apache2/admin_error.log
+
+# ──────────────────────────────────────
+# 17. جلوگیری از Hotlinking (اختیاری)
+# ──────────────────────────────────────
+
+# <IfModule mod_rewrite.c>
+#     RewriteEngine On
+#     RewriteCond %{HTTP_REFERER} !^$
+#     RewriteCond %{HTTP_REFERER} !^https?://(www\.)?yourdomain\.com [NC]
+#     RewriteRule \.(jpg|jpeg|png|gif|svg)$ - [F,L]
+# </IfModule>
+
+# ──────────────────────────────────────
+# 18. تنظیمات نهایی
+# ──────────────────────────────────────
+
+# جلوگیری از دسترسی به این فایل
+<Files ".htaccess">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</Files>
+
+# پایان فایل
