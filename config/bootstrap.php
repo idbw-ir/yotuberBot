@@ -204,7 +204,7 @@ $requiredDirs = [
 
 foreach ($requiredDirs as $dir) {
     if (!is_dir($dir)) {
-        @mkdir($dir, 0775, true);
+        mkdir($dir, 0775, true);
     }
 }
 

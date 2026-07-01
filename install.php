@@ -7,22 +7,22 @@
  */
 
 // ──────────────────────────────────────
-// 1. جلوگیری از نصب مجدد
+// 1. جلوگیری از نصب مجدد (امن)
 // ──────────────────────────────────────
-if (file_exists(__DIR__ . '/config/config.php') && !isset($_GET['force'])) {
-    // بررسی قفل نصب
-    if (file_exists(__DIR__ . '/install.lock')) {
-        http_response_code(403);
-        die('<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="UTF-8">
-            <title>نصب شده</title><script src="https://cdn.tailwindcss.com"></script></head>
-            <body class="bg-gray-900 min-h-screen flex items-center justify-center">
-            <div class="bg-gray-800 rounded-2xl p-8 max-w-md text-center border border-gray-700">
-                <div class="text-5xl mb-4">🔒</div>
-                <h1 class="text-2xl font-bold text-white mb-3">پروژه قبلاً نصب شده است</h1>
-                <p class="text-gray-400 mb-4">برای نصب مجدد، فایل‌های <code class="bg-gray-700 px-2 py-1 rounded text-sm">config.php</code> و <code class="bg-gray-700 px-2 py-1 rounded text-sm">install.lock</code> را حذف کنید.</p>
-                <a href="/admin/" class="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">ورود به پنل مدیریت</a>
-            </div></body></html>');
-    }
+$isInstalled = file_exists(__DIR__ . '/config/config.php');
+$isLocked = file_exists(__DIR__ . '/install.lock');
+
+if ($isInstalled || $isLocked) {
+    http_response_code(403);
+    die('<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="UTF-8">
+        <title>نصب شده</title><script src="https://cdn.tailwindcss.com"></script></head>
+        <body class="bg-gray-900 min-h-screen flex items-center justify-center">
+        <div class="bg-gray-800 rounded-2xl p-8 max-w-md text-center border border-gray-700">
+            <div class="text-5xl mb-4">🔒</div>
+            <h1 class="text-2xl font-bold text-white mb-3">پروژه قبلاً نصب شده است</h1>
+            <p class="text-gray-400 mb-4">برای نصب مجدد، فایل‌های <code class="bg-gray-700 px-2 py-1 rounded text-sm">config.php</code> و <code class="bg-gray-700 px-2 py-1 rounded text-sm">install.lock</code> را حذف کنید.</p>
+            <a href="/admin/" class="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">ورود به پنل مدیریت</a>
+        </div></body></html>');
 }
 
 // ──────────────────────────────────────

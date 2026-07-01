@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * ============================================
  * کلاس اصلی ربات تلگرام (Bot)
@@ -22,6 +25,7 @@ class Bot {
     private $logger;
     private $lastResponse;
     private $lastError;
+    private $verifySsl;
     
     // ──────────────────────────────────────
     // Constructor
@@ -30,7 +34,8 @@ class Bot {
         $this->token = $token ?? Config::getInstance()->telegram('bot_token');
         $this->apiUrl = "https://api.telegram.org/bot{$this->token}";
         $this->logger = Logger::getInstance();
-        
+        $this->verifySsl = Config::getInstance()->telegram('verify_ssl', true);
+
         if (empty($this->token)) {
             throw new Exception('توکن ربات تلگرام تنظیم نشده است');
         }
@@ -48,8 +53,8 @@ class Bot {
             CURLOPT_POST => true,
             CURLOPT_POSTFIELDS => $params,
             CURLOPT_TIMEOUT => $timeout,
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_SSL_VERIFYPEER => $this->verifySsl,
+            CURLOPT_SSL_VERIFYHOST => $this->verifySsl ? 2 : 0,
             CURLOPT_HTTPHEADER => [
                 'Content-Type: multipart/form-data'
             ]
@@ -661,7 +666,7 @@ class Bot {
         curl_setopt_array($ch, [
             CURLOPT_FILE => $fp,
             CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_SSL_VERIFYPEER => false
+            CURLOPT_SSL_VERIFYPEER => $this->verifySsl
         ]);
         
         $success = curl_exec($ch);

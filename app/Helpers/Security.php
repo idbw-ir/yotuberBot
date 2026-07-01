@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * ============================================
  * کلاس توابع امنیتی (Security Helper)
@@ -22,28 +25,18 @@ class Security {
     
     /**
      * پاکسازی ورودی از XSS
+     * حذف کامل تگ‌های HTML و کدهای خطرناک
      */
-    public static function cleanXss($input) {
+    public static function cleanXss($input, $allowedTags = '') {
         if (is_array($input)) {
-            return array_map([self::class, 'cleanXss'], $input);
+            return array_map(function($item) use ($allowedTags) {
+                return self::cleanXss($item, $allowedTags);
+            }, $input);
         }
-        
-        // حذف تگ‌های خطرناک
-        $input = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $input);
-        $input = preg_replace('#<iframe(.*?)>(.*?)</iframe>#is', '', $input);
-        $input = preg_replace('#<object(.*?)>(.*?)</object>#is', '', $input);
-        $input = preg_replace('#<embed(.*?)>(.*?)</embed>#is', '', $input);
-        
-        // حذف event handlers
-        $input = preg_replace('#on\w+\s*=\s*["\'](.*?)["\']#is', '', $input);
-        
-        // حذف javascript: URLs
-        $input = preg_replace('#javascript\s*:#is', '', $input);
-        $input = preg_replace('#vbscript\s*:#is', '', $input);
-        
-        // حذف expression()
-        $input = preg_replace('#expression\s*\((.*?)\)#is', '', $input);
-        
+
+        $input = strip_tags((string)$input, $allowedTags);
+        $input = htmlspecialchars($input, ENT_QUOTES | ENT_HTML5, 'UTF-8', false);
+
         return $input;
     }
     

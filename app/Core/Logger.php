@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * ============================================
  * کلاس سیستم لاگ‌گیری (Logger)
@@ -38,7 +41,9 @@ class Logger {
         
         // ساخت پوشه لاگ در صورت عدم وجود
         if (!is_dir($this->logPath)) {
-            @mkdir($this->logPath, 0775, true);
+            if (!mkdir($this->logPath, 0775, true) && !is_dir($this->logPath)) {
+                throw new Exception("خطا در ایجاد پوشه لاگ: {$this->logPath}");
+            }
         }
     }
     
@@ -230,7 +235,7 @@ class Logger {
         
         // تغییر نام فایل فعلی
         $backupName = $filepath . '.' . date('His') . '.bak';
-        @rename($filepath, $backupName);
+        rename($filepath, $backupName);
         
         // حذف فایل‌های قدیمی
         $this->cleanupOldFiles($filepath);
@@ -254,7 +259,9 @@ class Logger {
             // حذف فایل‌های قدیمی
             $toDelete = array_slice($files, 0, count($files) - $this->maxFiles);
             foreach ($toDelete as $file) {
-                @unlink($file);
+                if (file_exists($file)) {
+                    unlink($file);
+                }
             }
         }
     }
@@ -321,13 +328,15 @@ class Logger {
             $filename = $this->getLogFilename($channel);
             $filepath = $this->logPath . '/' . $filename;
             if (file_exists($filepath)) {
-                @unlink($filepath);
+                unlink($filepath);
             }
         } else {
             // پاک کردن همه
             $files = glob($this->logPath . '/*.log');
             foreach ($files as $file) {
-                @unlink($file);
+                if (file_exists($file)) {
+                    unlink($file);
+                }
             }
         }
     }
@@ -376,7 +385,9 @@ class Logger {
     public function setLogPath($path) {
         $this->logPath = rtrim($path, '/');
         if (!is_dir($this->logPath)) {
-            @mkdir($this->logPath, 0775, true);
+            if (!mkdir($this->logPath, 0775, true) && !is_dir($this->logPath)) {
+                $this->logPath = dirname(__DIR__, 2) . '/storage/logs';
+            }
         }
     }
     

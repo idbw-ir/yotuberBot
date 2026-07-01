@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * ============================================
  * کلاس سیستم کش (Cache)
@@ -29,7 +32,9 @@ class Cache {
         
         // ساخت پوشه کش در صورت عدم وجود
         if (!is_dir($this->cachePath)) {
-            @mkdir($this->cachePath, 0775, true);
+            if (!mkdir($this->cachePath, 0775, true) && !is_dir($this->cachePath)) {
+                throw new Exception("خطا در ایجاد پوشه کش: {$this->cachePath}");
+            }
         }
     }
     
@@ -83,8 +88,21 @@ class Cache {
             if (!file_exists($filename)) {
                 return $default;
             }
+
+            $fp = fopen($filename, 'r');
+            if (!$fp) {
+                return $default;
+            }
             
-            $content = file_get_contents($filename);
+            if (!flock($fp, LOCK_SH)) {
+                fclose($fp);
+                return $default;
+            }
+            
+            $content = stream_get_contents($fp);
+            flock($fp, LOCK_UN);
+            fclose($fp);
+            
             $data = json_decode($content, true);
             
             if ($data === null) {
@@ -94,7 +112,9 @@ class Cache {
             // بررسی انقضا
             if (isset($data['expires_at']) && $data['expires_at'] < time()) {
                 // کش منقضی شده - حذف کن
-                @unlink($filename);
+                if (file_exists($filename)) {
+                    unlink($filename);
+                }
                 return $default;
             }
             
@@ -132,7 +152,20 @@ class Cache {
             return false;
         }
         
-        $content = file_get_contents($filename);
+        $fp = fopen($filename, 'r');
+        if (!$fp) {
+            return false;
+        }
+        
+        if (!flock($fp, LOCK_SH)) {
+            fclose($fp);
+            return false;
+        }
+        
+        $content = stream_get_contents($fp);
+        flock($fp, LOCK_UN);
+        fclose($fp);
+        
         $data = json_decode($content, true);
         
         if ($data === null) {
@@ -141,7 +174,9 @@ class Cache {
         
         // بررسی انقضا
         if (isset($data['expires_at']) && $data['expires_at'] < time()) {
-            @unlink($filename);
+            if (file_exists($filename)) {
+                unlink($filename);
+            }
             return false;
         }
         
@@ -155,7 +190,7 @@ class Cache {
         $filename = $this->getFilename($key);
         
         if (file_exists($filename)) {
-            return @unlink($filename);
+            return unlink($filename);
         }
         
         return true;
@@ -168,7 +203,9 @@ class Cache {
         $files = glob($this->cachePath . '/' . $this->prefix . '*.cache');
         
         foreach ($files as $file) {
-            @unlink($file);
+            if (file_exists($file)) {
+                unlink($file);
+            }
         }
         
         return true;
@@ -182,17 +219,19 @@ class Cache {
         $deleted = 0;
         
         foreach ($files as $file) {
-            $content = @file_get_contents($file);
-            $data = @json_decode($content, true);
+            if (!file_exists($file)) continue;
+
+            $content = file_get_contents($file);
+            $data = json_decode($content, true);
             
             if ($data === null) {
-                @unlink($file);
+                unlink($file);
                 $deleted++;
                 continue;
             }
             
             if (isset($data['expires_at']) && $data['expires_at'] < time()) {
-                @unlink($file);
+                unlink($file);
                 $deleted++;
             }
         }
@@ -255,10 +294,11 @@ class Cache {
         $expiredCount = 0;
         
         foreach ($files as $file) {
+            if (!file_exists($file)) continue;
             $totalSize += filesize($file);
             
-            $content = @file_get_contents($file);
-            $data = @json_decode($content, true);
+            $content = file_get_contents($file);
+            $data = json_decode($content, true);
             
             if ($data && isset($data['expires_at'])) {
                 if ($data['expires_at'] < time()) {
@@ -306,7 +346,9 @@ class Cache {
     public function setCachePath($path) {
         $this->cachePath = rtrim($path, '/');
         if (!is_dir($this->cachePath)) {
-            @mkdir($this->cachePath, 0775, true);
+            if (!mkdir($this->cachePath, 0775, true) && !is_dir($this->cachePath)) {
+                $this->cachePath = dirname(__DIR__, 2) . '/storage/cache';
+            }
         }
     }
     
@@ -330,7 +372,7 @@ class Cache {
     private function logError($message) {
         $logPath = dirname(__DIR__, 2) . '/storage/logs/cache.log';
         $timestamp = date('Y-m-d H:i:s');
-        @file_put_contents($logPath, "[{$timestamp}] {$message}\n", FILE_APPEND | LOCK_EX);
+        file_put_contents($logPath, "[{$timestamp}] {$message}\n", FILE_APPEND | LOCK_EX);
     }
     
     // ──────────────────────────────────────

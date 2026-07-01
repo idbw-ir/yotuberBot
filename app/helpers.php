@@ -628,7 +628,7 @@ if (!function_exists('delete_file')) {
      */
     function delete_file($path) {
         if (file_exists($path)) {
-            return @unlink($path);
+            return unlink($path);
         }
         return true;
     }
@@ -640,7 +640,7 @@ if (!function_exists('copy_file')) {
      */
     function copy_file($source, $destination) {
         ensure_directory(dirname($destination));
-        return @copy($source, $destination);
+        return copy($source, $destination);
     }
 }
 
@@ -650,7 +650,7 @@ if (!function_exists('move_file')) {
      */
     function move_file($source, $destination) {
         ensure_directory(dirname($destination));
-        return @rename($source, $destination);
+        return rename($source, $destination);
     }
 }
 

@@ -1,7 +1,10 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * ============================================
- * Custom Autoloader - بدون Composer
+ * Custom Autoloader - Fallback (در صورت نبود Composer)
  * ============================================
  */
 

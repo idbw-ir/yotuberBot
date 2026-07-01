@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * ============================================
  * کلاس مدیریت دیتابیس
@@ -266,7 +269,7 @@ class Database {
         $timestamp = date('Y-m-d H:i:s');
         $logMessage = "[{$timestamp}] {$message}\n";
         
-        @file_put_contents($logPath, $logMessage, FILE_APPEND | LOCK_EX);
+        file_put_contents($logPath, $logMessage, FILE_APPEND | LOCK_EX);
     }
     
     // ──────────────────────────────────────

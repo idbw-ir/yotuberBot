@@ -55,7 +55,7 @@ class Installer {
         $dirs = ['config', 'storage', 'storage/logs', 'storage/uploads', 'storage/cache'];
         foreach ($dirs as $dir) {
             $path = $this->basePath . '/' . $dir;
-            if (!is_dir($path)) @mkdir($path, 0775, true);
+            if (!is_dir($path)) mkdir($path, 0775, true);
             $requirements["dir_{$dir}"] = [
                 'title' => "پوشه {$dir}",
                 'status' => is_writable($path),
@@ -232,7 +232,7 @@ class Installer {
             if (is_dir($file)) {
                 $this->deleteDirectory($file);
             } elseif (file_exists($file)) {
-                @unlink($file);
+                unlink($file);
             }
         }
         
@@ -244,8 +244,8 @@ class Installer {
         $files = array_diff(scandir($dir), ['.', '..']);
         foreach ($files as $file) {
             $path = $dir . '/' . $file;
-            is_dir($path) ? $this->deleteDirectory($path) : @unlink($path);
+            is_dir($path) ? $this->deleteDirectory($path) : unlink($path);
         }
-        @rmdir($dir);
+        rmdir($dir);
     }
 }
