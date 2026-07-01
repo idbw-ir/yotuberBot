@@ -308,6 +308,7 @@ class Installer {
         $template = file_get_contents($this->basePath . '/config/config.example.php');
         
         $driver = $data['db_driver'] ?? 'mysql';
+        $proxyEnabled = !empty($data['proxy_enabled']) && ($data['proxy_enabled'] === '1' || $data['proxy_enabled'] === 'on');
         
         $replacements = [
             '{{DB_DRIVER}}' => $driver,
@@ -322,6 +323,13 @@ class Installer {
             '{{SITE_URL}}' => rtrim($data['site_url'], '/'),
             '{{SITE_NAME}}' => $data['site_name'],
             '{{WEBHOOK_SECRET}}' => bin2hex(random_bytes(32)),
+            '{{PROXY_ENABLED}}' => $proxyEnabled ? 'true' : 'false',
+            '{{PROXY_TYPE}}' => $data['proxy_type'] ?? 'http',
+            '{{PROXY_HOST}}' => $data['proxy_host'] ?? '',
+            '{{PROXY_PORT}}' => (int)($data['proxy_port'] ?? 0),
+            '{{PROXY_USER}}' => $data['proxy_username'] ?? '',
+            '{{PROXY_PASS}}' => $data['proxy_password'] ?? '',
+            '{{PROXY_DNS}}' => $data['proxy_dns'] ?? '',
             '{{AI_ENABLED}}' => isset($data['ai_enabled']) ? 'true' : 'false',
             '{{AI_API_KEY}}' => $data['ai_api_key'] ?? '',
         ];
@@ -357,6 +365,8 @@ class Installer {
             CURLOPT_TIMEOUT => 10
         ]);
         
+        $this->applyProxyToCurl($ch);
+        
         $response = curl_exec($ch);
         curl_close($ch);
         
@@ -379,6 +389,10 @@ class Installer {
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_TIMEOUT => 10
         ]);
+        
+        // اگر داده‌های پروکسی در متغیر کلاس ذخیره شده، اعمال کن
+        $this->applyProxyToCurl($ch);
+        
         $response = curl_exec($ch);
         curl_close($ch);
         
@@ -433,5 +447,52 @@ class Installer {
             is_dir($path) ? $this->deleteDirectory($path) : unlink($path);
         }
         rmdir($dir);
+    }
+    
+    // ──────────────────────────────────────
+    // اعمال پروکسی روی درخواست curl
+    // ──────────────────────────────────────
+    private function applyProxyToCurl($ch) {
+        $data = $_SESSION['installer_data'] ?? [];
+        
+        $enabled = !empty($data['proxy_enabled']) && ($data['proxy_enabled'] === '1' || $data['proxy_enabled'] === 'on');
+        if (!$enabled) {
+            return;
+        }
+        
+        $host = $data['proxy_host'] ?? '';
+        $port = (int)($data['proxy_port'] ?? 0);
+        
+        if (empty($host) || $port <= 0) {
+            return;
+        }
+        
+        $typeMap = [
+            'http' => CURLPROXY_HTTP,
+            'https' => CURLPROXY_HTTPS,
+            'socks4' => CURLPROXY_SOCKS4,
+            'socks5' => CURLPROXY_SOCKS5,
+        ];
+        
+        $type = $typeMap[$data['proxy_type'] ?? 'http'] ?? CURLPROXY_HTTP;
+        
+        curl_setopt($ch, CURLOPT_PROXY, $host);
+        curl_setopt($ch, CURLOPT_PROXYPORT, $port);
+        curl_setopt($ch, CURLOPT_PROXYTYPE, $type);
+        
+        $username = $data['proxy_username'] ?? '';
+        if (!empty($username)) {
+            $auth = $username;
+            $password = $data['proxy_password'] ?? '';
+            if (!empty($password)) {
+                $auth .= ":{$password}";
+            }
+            curl_setopt($ch, CURLOPT_PROXYUSERPWD, $auth);
+        }
+        
+        $dns = $data['proxy_dns'] ?? '';
+        if (!empty($dns)) {
+            curl_setopt($ch, CURLOPT_DNS_SERVERS, $dns);
+        }
     }
 }

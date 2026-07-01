@@ -602,6 +602,50 @@ class Settings {
                 'category' => 'performance',
                 'description' => 'تأخیر بین پیام‌های Broadcast (میلی‌ثانیه)'
             ],
+            
+            // پروکسی
+            'proxy_enabled' => [
+                'default' => false,
+                'type' => 'boolean',
+                'category' => 'proxy',
+                'description' => 'فعال‌سازی پروکسی تلگرام'
+            ],
+            'proxy_type' => [
+                'default' => 'http',
+                'type' => 'string',
+                'category' => 'proxy',
+                'description' => 'نوع پروکسی'
+            ],
+            'proxy_host' => [
+                'default' => '',
+                'type' => 'string',
+                'category' => 'proxy',
+                'description' => 'آدرس سرور پروکسی'
+            ],
+            'proxy_port' => [
+                'default' => 0,
+                'type' => 'integer',
+                'category' => 'proxy',
+                'description' => 'پورت سرور پروکسی'
+            ],
+            'proxy_username' => [
+                'default' => '',
+                'type' => 'string',
+                'category' => 'proxy',
+                'description' => 'نام کاربری پروکسی'
+            ],
+            'proxy_password' => [
+                'default' => '',
+                'type' => 'string',
+                'category' => 'proxy',
+                'description' => 'رمز عبور پروکسی'
+            ],
+            'proxy_dns' => [
+                'default' => '',
+                'type' => 'string',
+                'category' => 'proxy',
+                'description' => 'DNS دلخواه'
+            ],
         ];
     }
     

@@ -780,7 +780,16 @@ INSERT INTO `settings` (`key_name`, `value`, `type`, `category`, `description`, 
 ('notify_new_user', '1', 'boolean', 'notifications', 'اطلاع‌رسانی کاربر جدید', 60),
 ('notify_new_donation', '1', 'boolean', 'notifications', 'اطلاع‌رسانی دونیت جدید', 61),
 ('notify_failed_login', '1', 'boolean', 'notifications', 'اطلاع‌رسانی ورود ناموفق', 62),
-('notify_blocked_user', '1', 'boolean', 'notifications', 'اطلاع‌رسانی کاربر بلاک شده', 63);
+('notify_blocked_user', '1', 'boolean', 'notifications', 'اطلاع‌رسانی کاربر بلاک شده', 63),
+
+-- پروکسی (برای دور زدن تحریم‌ها)
+('proxy_enabled', '0', 'boolean', 'proxy', 'فعال‌سازی پروکسی تلگرام', 70),
+('proxy_type', 'http', 'string', 'proxy', 'نوع پروکسی (http/https/socks4/socks5)', 71),
+('proxy_host', '', 'string', 'proxy', 'آدرس سرور پروکسی', 72),
+('proxy_port', '0', 'integer', 'proxy', 'پورت سرور پروکسی', 73),
+('proxy_username', '', 'string', 'proxy', 'نام کاربری پروکسی', 74),
+('proxy_password', '', 'string', 'proxy', 'رمز عبور پروکسی', 75),
+('proxy_dns', '', 'string', 'proxy', 'DNS دلخواه (مثل 178.22.122.100)', 76);
 
 -- کلمات کلیدی پیش‌فرض
 INSERT INTO `keywords` (`keyword`, `answer`, `answer_type`, `priority`, `active`) VALUES

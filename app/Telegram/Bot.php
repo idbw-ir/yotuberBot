@@ -18,6 +18,7 @@ namespace App\Telegram;
 use Exception;
 use App\Core\Config;
 use App\Core\Logger;
+use App\Core\Proxy;
 
 class Bot {
     private $token;
@@ -59,6 +60,8 @@ class Bot {
                 'Content-Type: multipart/form-data'
             ]
         ]);
+        
+        Proxy::getInstance()->applyToCurl($ch);
         
         $response = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -668,6 +671,8 @@ class Bot {
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_SSL_VERIFYPEER => $this->verifySsl
         ]);
+        
+        Proxy::getInstance()->applyToCurl($ch);
         
         $success = curl_exec($ch);
         curl_close($ch);
