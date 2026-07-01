@@ -1,0 +1,11 @@
+/vendor/
+/storage/logs/
+/storage/cache/
+/storage/exports/
+/storage/backups/
+/storage/uploads/
+.env
+*.zip
+*.log
+.DS_Store
+Thumbs.db
