@@ -33,6 +33,12 @@ session_start();
 spl_autoload_register(function ($class) {
     $file = __DIR__ . '/installer/classes/' . $class . '.php';
     if (file_exists($file)) require_once $file;
+    
+    // App\Core classes (مثل DatabaseBunny)
+    if (strpos($class, 'App\\') === 0) {
+        $path = __DIR__ . '/app/' . str_replace('App\\', '', $class) . '.php';
+        if (file_exists($path)) require_once $path;
+    }
 });
 
 // ──────────────────────────────────────

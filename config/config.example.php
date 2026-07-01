@@ -1,0 +1,59 @@
+<?php
+// ============================================
+// تنظیمات اصلی ربات یوتیوبر
+// ============================================
+
+return [
+
+    // ──────────────────────────────────────
+    // نوع دیتابیس: 'mysql' یا 'bunny'
+    // mysql = MySQL/MariaDB (PDO)
+    // bunny = Bunny Database (Turso/libSQL via HTTP)
+    // ──────────────────────────────────────
+    'database' => [
+        'driver' => '{{DB_DRIVER}}',
+
+        // MySQL settings
+        'host' => '{{DB_HOST}}',
+        'name' => '{{DB_NAME}}',
+        'user' => '{{DB_USER}}',
+        'pass' => '{{DB_PASS}}',
+        'charset' => 'utf8mb4',
+
+        // Bunny Database (Turso/libSQL) settings
+        'bunny_url' => '{{BUNNY_URL}}',
+        'bunny_token' => '{{BUNNY_TOKEN}}',
+    ],
+
+    // ──────────────────────────────────────
+    // تنظیمات ربات تلگرام
+    // ──────────────────────────────────────
+    'telegram' => [
+        'bot_token' => '{{BOT_TOKEN}}',
+        'admin_id' => '{{ADMIN_ID}}',
+        'webhook_secret' => '{{WEBHOOK_SECRET}}',
+        'verify_ssl' => true,
+    ],
+
+    // ──────────────────────────────────────
+    // تنظیمات عمومی سایت
+    // ──────────────────────────────────────
+    'app' => [
+        'url' => '{{SITE_URL}}',
+        'name' => '{{SITE_NAME}}',
+        'timezone' => 'Asia/Tehran',
+        'debug' => false,
+    ],
+
+    // ──────────────────────────────────────
+    // هوش مصنوعی
+    // ──────────────────────────────────────
+    'ai' => [
+        'enabled' => {{AI_ENABLED}},
+        'api_key' => '{{AI_API_KEY}}',
+        'provider' => 'openai',
+        'model' => 'gpt-4o-mini',
+        'max_tokens' => 500,
+        'temperature' => 0.7,
+    ],
+];

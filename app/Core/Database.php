@@ -6,8 +6,9 @@ declare(strict_types=1);
  * ============================================
  * کلاس مدیریت دیتابیس
  * ============================================
- * اتصال به MySQL با PDO
- * پشتیبانی از Prepared Statements
+ * پشتیبانی از دو نوع دیتابیس:
+ *   - mysql  : MySQL/MariaDB با PDO
+ *   - bunny  : Bunny Database (Turso/libSQL) با HTTP API
  * Singleton Pattern
  */
 
@@ -20,6 +21,8 @@ use Exception;
 class Database {
     private static $instance = null;
     private $pdo;
+    private $bunny;
+    private $driver;
     private $config;
     
     // ──────────────────────────────────────
@@ -52,6 +55,16 @@ class Database {
     // اتصال به دیتابیس
     // ──────────────────────────────────────
     private function connect() {
+        $this->driver = $this->config['driver'] ?? 'mysql';
+        
+        if ($this->driver === 'bunny') {
+            $this->connectBunny();
+        } else {
+            $this->connectMysql();
+        }
+    }
+    
+    private function connectMysql() {
         try {
             $dsn = sprintf(
                 "mysql:host=%s;dbname=%s;charset=%s",
@@ -69,16 +82,26 @@ class Database {
             
             $this->pdo = new PDO(
                 $dsn,
-                $this->config['user'],
-                $this->config['pass'],
+                $this->config['user'] ?? '',
+                $this->config['pass'] ?? '',
                 $options
             );
             
         } catch (PDOException $e) {
-            // لاگ خطا
             $this->logError('Database Connection Error: ' . $e->getMessage());
             throw new Exception('خطا در اتصال به دیتابیس. لطفاً تنظیمات را بررسی کنید.');
         }
+    }
+    
+    private function connectBunny() {
+        $url = $this->config['bunny_url'] ?? '';
+        $token = $this->config['bunny_token'] ?? '';
+        
+        if (empty($url) || empty($token)) {
+            throw new Exception('تنظیمات Bunny Database (bunny_url و bunny_token) در config.php وجود ندارد.');
+        }
+        
+        $this->bunny = new DatabaseBunny($url, $token);
     }
     
     // ──────────────────────────────────────
@@ -92,16 +115,36 @@ class Database {
     }
     
     // ──────────────────────────────────────
-    // دریافت PDO
+    // دریافت PDO (فقط MySQL)
     // ──────────────────────────────────────
     public function getPdo() {
+        if ($this->driver === 'bunny') {
+            throw new Exception('PDO در حالت Bunny Database در دسترس نیست.');
+        }
         return $this->pdo;
+    }
+    
+    // ──────────────────────────────────────
+    // دریافت درایور فعلی
+    // ──────────────────────────────────────
+    public function getDriver() {
+        return $this->driver;
+    }
+    
+    // ──────────────────────────────────────
+    // دریافت DatabaseBunny (فقط Bunny)
+    // ──────────────────────────────────────
+    public function getBunny() {
+        return $this->bunny;
     }
     
     // ──────────────────────────────────────
     // اجرای کوئری
     // ──────────────────────────────────────
     public function query($sql, $params = []) {
+        if ($this->driver === 'bunny') {
+            return $this->bunny->query($sql, $params);
+        }
         try {
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute($params);
@@ -116,6 +159,9 @@ class Database {
     // دریافت یک ردیف
     // ──────────────────────────────────────
     public function fetch($sql, $params = []) {
+        if ($this->driver === 'bunny') {
+            return $this->bunny->fetch($sql, $params);
+        }
         $stmt = $this->query($sql, $params);
         return $stmt ? $stmt->fetch() : false;
     }
@@ -124,6 +170,9 @@ class Database {
     // دریافت همه ردیف‌ها
     // ──────────────────────────────────────
     public function fetchAll($sql, $params = []) {
+        if ($this->driver === 'bunny') {
+            return $this->bunny->fetchAll($sql, $params);
+        }
         $stmt = $this->query($sql, $params);
         return $stmt ? $stmt->fetchAll() : [];
     }
@@ -132,6 +181,9 @@ class Database {
     // دریافت یک مقدار
     // ──────────────────────────────────────
     public function fetchColumn($sql, $params = []) {
+        if ($this->driver === 'bunny') {
+            return $this->bunny->fetchColumn($sql, $params);
+        }
         $stmt = $this->query($sql, $params);
         return $stmt ? $stmt->fetchColumn() : false;
     }
@@ -140,6 +192,9 @@ class Database {
     // درج داده
     // ──────────────────────────────────────
     public function insert($table, $data) {
+        if ($this->driver === 'bunny') {
+            return $this->bunny->insert($table, $data);
+        }
         $columns = implode(', ', array_keys($data));
         $placeholders = ':' . implode(', :', array_keys($data));
         $sql = "INSERT INTO {$table} ({$columns}) VALUES ({$placeholders})";
@@ -157,6 +212,9 @@ class Database {
     // بروزرسانی داده
     // ──────────────────────────────────────
     public function update($table, $data, $where, $whereParams = []) {
+        if ($this->driver === 'bunny') {
+            return $this->bunny->update($table, $data, $where, $whereParams);
+        }
         $set = [];
         foreach (array_keys($data) as $key) {
             $set[] = "{$key} = :set_{$key}";
@@ -164,7 +222,6 @@ class Database {
         $setStr = implode(', ', $set);
         $sql = "UPDATE {$table} SET {$setStr} WHERE {$where}";
         
-        // تغییر کلیدها برای جلوگیری از تداخل
         $params = [];
         foreach ($data as $key => $value) {
             $params["set_{$key}"] = $value;
@@ -179,6 +236,9 @@ class Database {
     // حذف داده
     // ──────────────────────────────────────
     public function delete($table, $where, $params = []) {
+        if ($this->driver === 'bunny') {
+            return $this->bunny->delete($table, $where, $params);
+        }
         $sql = "DELETE FROM {$table} WHERE {$where}";
         $stmt = $this->query($sql, $params);
         return $stmt ? $stmt->rowCount() : false;
@@ -188,6 +248,9 @@ class Database {
     // شمارش ردیف‌ها
     // ──────────────────────────────────────
     public function count($table, $where = '1', $params = []) {
+        if ($this->driver === 'bunny') {
+            return $this->bunny->count($table, $where, $params);
+        }
         $sql = "SELECT COUNT(*) as count FROM {$table} WHERE {$where}";
         $result = $this->fetch($sql, $params);
         return $result ? (int)$result['count'] : 0;
@@ -204,6 +267,9 @@ class Database {
     // شروع Transaction
     // ──────────────────────────────────────
     public function beginTransaction() {
+        if ($this->driver === 'bunny') {
+            return true;
+        }
         return $this->pdo->beginTransaction();
     }
     
@@ -211,6 +277,9 @@ class Database {
     // Commit Transaction
     // ──────────────────────────────────────
     public function commit() {
+        if ($this->driver === 'bunny') {
+            return true;
+        }
         return $this->pdo->commit();
     }
     
@@ -218,6 +287,9 @@ class Database {
     // Rollback Transaction
     // ──────────────────────────────────────
     public function rollback() {
+        if ($this->driver === 'bunny') {
+            return true;
+        }
         return $this->pdo->rollBack();
     }
     
@@ -242,6 +314,9 @@ class Database {
     // بررسی وجود جدول
     // ──────────────────────────────────────
     public function tableExists($table) {
+        if ($this->driver === 'bunny') {
+            return $this->bunny->tableExists($table);
+        }
         $sql = "SHOW TABLES LIKE ?";
         $result = $this->fetch($sql, [$table]);
         return $result !== false;
@@ -251,6 +326,9 @@ class Database {
     // دریافت ساختار جدول
     // ──────────────────────────────────────
     public function describeTable($table) {
+        if ($this->driver === 'bunny') {
+            return [];
+        }
         $sql = "DESCRIBE {$table}";
         return $this->fetchAll($sql);
     }

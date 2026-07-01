@@ -77,11 +77,26 @@ class Installer {
                 [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
             );
             
-            // ساخت دیتابیس
             $pdo->exec("CREATE DATABASE IF NOT EXISTS `{$name}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
             
-            return ['success' => true, 'pdo' => $pdo];
+            return ['success' => true, 'pdo' => $pdo, 'driver' => 'mysql'];
         } catch (PDOException $e) {
+            return ['success' => false, 'error' => $e->getMessage()];
+        }
+    }
+    
+    // ──────────────────────────────────────
+    // تست اتصال Bunny Database
+    // ──────────────────────────────────────
+    public function testBunnyConnection($url, $token) {
+        try {
+            require_once $this->basePath . '/app/Core/DatabaseBunny.php';
+            
+            $bunny = new App\Core\DatabaseBunny($url, $token);
+            $bunny->execute("SELECT 1");
+            
+            return ['success' => true, 'bunny' => $bunny, 'driver' => 'bunny'];
+        } catch (Exception $e) {
             return ['success' => false, 'error' => $e->getMessage()];
         }
     }
@@ -89,7 +104,14 @@ class Installer {
     // ──────────────────────────────────────
     // ایمپورت اسکریپت دیتابیس
     // ──────────────────────────────────────
-    public function importDatabase($pdo, $dbName) {
+    public function importDatabase($pdoOrBunny, $dbName, $driver = 'mysql') {
+        if ($driver === 'bunny') {
+            return $this->importSqliteDatabase($pdoOrBunny);
+        }
+        return $this->importMysqlDatabase($pdoOrBunny, $dbName);
+    }
+    
+    private function importMysqlDatabase($pdo, $dbName) {
         $schemaFiles = [
             'full' => $this->basePath . '/database/schema.sql',
             'lite' => $this->basePath . '/database/schema.lite.sql',
@@ -100,7 +122,7 @@ class Installer {
             $schemaFile = $schemaFiles['lite'];
         }
         if (!file_exists($schemaFile)) {
-            return ['success' => false, 'error' => 'فایل schema.sql یا schema.lite.sql یافت نشد'];
+            return ['success' => false, 'error' => 'فایل schema.sql یافت نشد'];
         }
         
         $mode = ($schemaFile === $schemaFiles['full']) ? 'full' : 'lite';
@@ -109,28 +131,20 @@ class Installer {
             $pdo->exec("USE `{$dbName}`");
             
             $sql = file_get_contents($schemaFile);
-            
-            // حذف کامنت‌ها
             $sql = preg_replace('/--.*$/m', '', $sql);
-            
-            // تفکیک هوشمند دستورات (با درنظرگرفتن BEGIN...END)
             $statements = $this->splitSqlStatements($sql);
             
             foreach ($statements as $statement) {
                 $statement = trim($statement);
                 if (empty($statement)) continue;
-                
                 $pdo->exec($statement);
             }
             
             $result = ['success' => true, 'mode' => $mode];
-            
-            // اگر full موفق بود، پیغام عادی
             if ($mode === 'full') {
                 return $result;
             }
             
-            // اگر لایت بود، اخطار بده
             return array_merge($result, [
                 'warning' => 'برخی featureها (Trigger, Event, Procedure) به دلیل محدودیت سرور نصب نشدند'
             ]);
@@ -138,7 +152,6 @@ class Installer {
         } catch (PDOException $e) {
             $errorMsg = $e->getMessage();
             
-            // اگر full با خطای دسترسی خورد، fallback به لایت
             if ($mode === 'full' && $this->isPrivilegeError($errorMsg)) {
                 if (file_exists($schemaFiles['lite'])) {
                     $pdo->exec("USE `{$dbName}`");
@@ -162,6 +175,31 @@ class Installer {
             }
             
             return ['success' => false, 'error' => $errorMsg];
+        }
+    }
+    
+    private function importSqliteDatabase($bunny) {
+        $schemaFile = $this->basePath . '/database/schema.sqlite.sql';
+        if (!file_exists($schemaFile)) {
+            return ['success' => false, 'error' => 'فایل schema.sqlite.sql یافت نشد'];
+        }
+        
+        try {
+            $sql = file_get_contents($schemaFile);
+            $sql = preg_replace('/--.*$/m', '', $sql);
+            
+            // برای SQLite با ; ساده split کن (بدون BEGIN...END)
+            $statements = explode(';', $sql);
+            
+            foreach ($statements as $statement) {
+                $statement = trim($statement);
+                if (empty($statement)) continue;
+                $bunny->execute($statement);
+            }
+            
+            return ['success' => true, 'mode' => 'sqlite'];
+        } catch (Exception $e) {
+            return ['success' => false, 'error' => $e->getMessage()];
         }
     }
     
@@ -239,14 +277,23 @@ class Installer {
     // ──────────────────────────────────────
     // ساخت ادمین
     // ──────────────────────────────────────
-    public function createAdmin($pdo, $dbName, $username, $password) {
+    public function createAdmin($pdoOrBunny, $dbName, $username, $password, $driver = 'mysql') {
         try {
-            $pdo->exec("USE `{$dbName}`");
             $hash = password_hash($password, PASSWORD_BCRYPT);
-            $stmt = $pdo->prepare("INSERT INTO admins (username, password_hash, created_at) VALUES (?, ?, NOW())");
-            $stmt->execute([$username, $hash]);
+            
+            if ($driver === 'bunny') {
+                $pdoOrBunny->execute(
+                    "INSERT INTO admins (username, password_hash, created_at) VALUES (?, ?, datetime('now'))",
+                    [$username, $hash]
+                );
+            } else {
+                $pdoOrBunny->exec("USE `{$dbName}`");
+                $stmt = $pdoOrBunny->prepare("INSERT INTO admins (username, password_hash, created_at) VALUES (?, ?, NOW())");
+                $stmt->execute([$username, $hash]);
+            }
+            
             return ['success' => true];
-        } catch (PDOException $e) {
+        } catch (Exception $e) {
             return ['success' => false, 'error' => $e->getMessage()];
         }
     }
@@ -257,11 +304,16 @@ class Installer {
     public function writeConfig($data) {
         $template = file_get_contents($this->basePath . '/config/config.example.php');
         
+        $driver = $data['db_driver'] ?? 'mysql';
+        
         $replacements = [
-            '{{DB_HOST}}' => $data['db_host'],
-            '{{DB_NAME}}' => $data['db_name'],
-            '{{DB_USER}}' => $data['db_user'],
-            '{{DB_PASS}}' => $data['db_pass'],
+            '{{DB_DRIVER}}' => $driver,
+            '{{DB_HOST}}' => $data['db_host'] ?? 'localhost',
+            '{{DB_NAME}}' => $data['db_name'] ?? 'youtuber_bot',
+            '{{DB_USER}}' => $data['db_user'] ?? 'root',
+            '{{DB_PASS}}' => $data['db_pass'] ?? '',
+            '{{BUNNY_URL}}' => $data['bunny_url'] ?? '',
+            '{{BUNNY_TOKEN}}' => $data['bunny_token'] ?? '',
             '{{BOT_TOKEN}}' => $data['bot_token'],
             '{{ADMIN_ID}}' => $data['admin_id'],
             '{{SITE_URL}}' => rtrim($data['site_url'], '/'),

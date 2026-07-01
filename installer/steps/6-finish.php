@@ -15,15 +15,24 @@ if (file_exists(__DIR__ . '/../../config/config.php') && file_exists(__DIR__ . '
     exit;
 }
 
+$driver = $data['db_driver'] ?? $data['db_type'] ?? 'mysql';
+
 // ══════════════════════════════════════
 // 1. تست اتصال دیتابیس
 // ══════════════════════════════════════
-$dbResult = $installer->testDatabaseConnection(
-    $data['db_host'] ?? 'localhost',
-    $data['db_name'] ?? 'youtuber_bot',
-    $data['db_user'] ?? 'root',
-    $data['db_pass'] ?? ''
-);
+if ($driver === 'bunny') {
+    $dbResult = $installer->testBunnyConnection(
+        $data['bunny_url'] ?? '',
+        $data['bunny_token'] ?? ''
+    );
+} else {
+    $dbResult = $installer->testDatabaseConnection(
+        $data['db_host'] ?? 'localhost',
+        $data['db_name'] ?? 'youtuber_bot',
+        $data['db_user'] ?? 'root',
+        $data['db_pass'] ?? ''
+    );
+}
 
 if (!$dbResult['success']) {
     $errors[] = 'خطا در اتصال به دیتابیس: ' . $dbResult['error'];
@@ -34,9 +43,11 @@ if (!$dbResult['success']) {
 // 2. ایمپورت اسکریپت دیتابیس
 // ══════════════════════════════════════
 if ($success) {
+    $conn = $dbResult['pdo'] ?? $dbResult['bunny'];
     $importResult = $installer->importDatabase(
-        $dbResult['pdo'],
-        $data['db_name'] ?? 'youtuber_bot'
+        $conn,
+        $data['db_name'] ?? 'youtuber_bot',
+        $driver
     );
     
     if (!$importResult['success']) {
@@ -49,11 +60,13 @@ if ($success) {
 // 3. ساخت حساب ادمین
 // ══════════════════════════════════════
 if ($success) {
+    $conn = $dbResult['pdo'] ?? $dbResult['bunny'];
     $adminResult = $installer->createAdmin(
-        $dbResult['pdo'],
+        $conn,
         $data['db_name'] ?? 'youtuber_bot',
         $data['admin_username'] ?? 'admin',
-        $data['admin_password'] ?? ''
+        $data['admin_password'] ?? '',
+        $driver
     );
     
     if (!$adminResult['success']) {
