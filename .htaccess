@@ -1,6 +1,9 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
+    # هدایت ریشه (/) به public/index.php
+    RewriteRule ^$ public/index.php [L]
+
     # هدایت تمام درخواست‌ها به public/index.php
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d

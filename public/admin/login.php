@@ -51,6 +51,7 @@ spl_autoload_register(function ($class) {
 // 3. بررسی لاگین بودن
 // ──────────────────────────────────────
 
+$auth = null;
 try {
     $auth = \App\Admin\Auth::getInstance();
     
@@ -61,7 +62,8 @@ try {
     }
     
 } catch (Exception $e) {
-    // نادیده بگیر
+    // اگر دیتابیس در دسترس نیست، خطا را ذخیره کن
+    $error = 'سیستم به دیتابیس متصل نیست. لطفاً تنظیمات دیتابیس را بررسی کنید.';
 }
 
 // ──────────────────────────────────────
@@ -84,38 +86,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (empty($username) || empty($password)) {
             $error = 'نام کاربری و رمز عبور الزامی است';
         } else {
-            try {
-                $result = $auth->attempt($username, $password, $remember);
-                
-                if ($result['success']) {
-                    // هدایت به داشبورد یا URL مورد نظر
-                    $redirectUrl = $_SESSION['intended_url'] ?? '/admin/';
-                    unset($_SESSION['intended_url']);
-                    
-                    header("Location: {$redirectUrl}");
-                    exit;
-                } else {
-                    $error = $result['error'];
-                    
-                    // اگر Rate Limit فعال شده
-                    if (isset($result['retry_after'])) {
-                        $error .= " (لطفاً بعد از {$result['retry_after']} ثانیه دوباره تلاش کنید)";
-                    }
-                }
-                
-            } catch (Exception $e) {
-                $error = 'خطا در پردازش درخواست. لطفاً دوباره تلاش کنید.';
-                
-                // لاگ خطا
+            if (!$auth) {
+                $error = 'سیستم به دیتابیس متصل نیست. لطفاً تنظیمات دیتابیس را بررسی کنید.';
+            } else {
                 try {
-                    $logger = \App\Core\Logger::getInstance();
-                    $logger->error('Login error', [
-                        'error' => $e->getMessage(),
-                        'username' => $username,
-                        'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
-                    ]);
-                } catch (Exception $logError) {
-                    // نادیده بگیر
+                    $result = $auth->attempt($username, $password, $remember);
+
+                    if ($result['success']) {
+                        $redirectUrl = $_SESSION['intended_url'] ?? '/admin/';
+                        unset($_SESSION['intended_url']);
+                        header("Location: {$redirectUrl}");
+                        exit;
+                    } else {
+                        $error = $result['error'];
+                        if (isset($result['retry_after'])) {
+                            $error .= " (لطفاً بعد از {$result['retry_after']} ثانیه دوباره تلاش کنید)";
+                        }
+                    }
+                } catch (Exception $e) {
+                    $error = 'خطا در پردازش درخواست. لطفاً دوباره تلاش کنید.';
+                    try {
+                        $logger = \App\Core\Logger::getInstance();
+                        $logger->error('Login error', [
+                            'error' => $e->getMessage(),
+                            'username' => $username,
+                            'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
+                        ]);
+                    } catch (Exception $logError) {}
                 }
             }
         }
