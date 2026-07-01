@@ -544,13 +544,10 @@ CREATE TABLE `failed_jobs` (
 -- Trigger: بروزرسانی آمار کاربر بعد از دونیت موفق
 DROP TRIGGER IF EXISTS `trg_donations_after_update`;
 
-DELIMITER $$
-
 CREATE TRIGGER `trg_donations_after_update`
 AFTER UPDATE ON `donations`
 FOR EACH ROW
 BEGIN
-    -- اگر وضعیت به success تغییر کرد
     IF OLD.status != 'success' AND NEW.status = 'success' THEN
         UPDATE `users` 
         SET 
@@ -559,7 +556,6 @@ BEGIN
         WHERE `id` = NEW.user_id;
     END IF;
     
-    -- اگر از success به وضعیت دیگه تغییر کرد
     IF OLD.status = 'success' AND NEW.status != 'success' THEN
         UPDATE `users` 
         SET 
@@ -567,14 +563,10 @@ BEGIN
             `donation_count` = GREATEST(0, `donation_count` - 1)
         WHERE `id` = NEW.user_id;
     END IF;
-END$$
-
-DELIMITER ;
+END
 
 -- Trigger: ثبت لاگ تغییرات تنظیمات
 DROP TRIGGER IF EXISTS `trg_settings_before_update`;
-
-DELIMITER $$
 
 CREATE TRIGGER `trg_settings_before_update`
 BEFORE UPDATE ON `settings`
@@ -584,14 +576,10 @@ BEGIN
         INSERT INTO `settings_log` (`key_name`, `old_value`, `new_value`, `changed_at`)
         VALUES (OLD.`key_name`, OLD.value, NEW.value, NOW());
     END IF;
-END$$
-
-DELIMITER ;
+END
 
 -- Trigger: افزایش match_count بعد از ثبت تطابق
 DROP TRIGGER IF EXISTS `trg_keyword_matches_after_insert`;
-
-DELIMITER $$
 
 CREATE TRIGGER `trg_keyword_matches_after_insert`
 AFTER INSERT ON `keyword_matches`
@@ -602,9 +590,7 @@ BEGIN
         `match_count` = `match_count` + 1,
         `last_matched_at` = NEW.matched_at
     WHERE `id` = NEW.keyword_id;
-END$$
-
-DELIMITER ;
+END
 
 -- ═══════════════════════════════════════════
 -- 19. Views
@@ -682,41 +668,29 @@ ORDER BY u.total_donations DESC;
 -- Procedure: پاکسازی لاگ‌های قدیمی
 DROP PROCEDURE IF EXISTS `sp_cleanup_old_logs`;
 
-DELIMITER $$
-
 CREATE PROCEDURE `sp_cleanup_old_logs`(IN days_to_keep INT)
 BEGIN
-    -- پاکسازی لاگ تنظیمات قدیمی
     DELETE FROM `settings_log` 
     WHERE `changed_at` < DATE_SUB(NOW(), INTERVAL days_to_keep DAY);
     
-    -- پاکسازی لاگ فعالیت قدیمی
     DELETE FROM `activity_logs` 
     WHERE `created_at` < DATE_SUB(NOW(), INTERVAL days_to_keep DAY);
     
-    -- پاکسازی لاگ ورود قدیمی
     DELETE FROM `login_logs` 
     WHERE `created_at` < DATE_SUB(NOW(), INTERVAL days_to_keep DAY);
     
-    -- پاکسازی تطابق‌های قدیمی
     DELETE FROM `keyword_matches` 
     WHERE `matched_at` < DATE_SUB(NOW(), INTERVAL days_to_keep DAY);
     
-    -- پاکسازی job های قدیمی
     DELETE FROM `failed_jobs` 
     WHERE `failed_at` < DATE_SUB(NOW(), INTERVAL days_to_keep DAY);
-END$$
-
-DELIMITER ;
+END
 
 -- Procedure: بروزرسانی آمار کاربران
 DROP PROCEDURE IF EXISTS `sp_update_user_stats`;
 
-DELIMITER $$
-
 CREATE PROCEDURE `sp_update_user_stats`()
 BEGIN
-    -- بروزرسانی تعداد پیام‌ها
     UPDATE `users` u
     SET `message_count` = (
         SELECT COUNT(*) 
@@ -724,7 +698,6 @@ BEGIN
         WHERE m.user_id = u.id AND m.direction = 'in'
     );
     
-    -- بروزرسانی تعداد و مبلغ دونیت‌ها
     UPDATE `users` u
     SET 
         `donation_count` = (
@@ -737,14 +710,10 @@ BEGIN
             FROM `donations` d 
             WHERE d.user_id = u.id AND d.status = 'success'
         );
-END$$
-
-DELIMITER ;
+END
 
 -- Procedure: بررسی و ارتقای خودکار VIP
 DROP PROCEDURE IF EXISTS `sp_check_auto_vip`;
-
-DELIMITER $$
 
 CREATE PROCEDURE `sp_check_auto_vip`(IN vip_threshold DECIMAL(15,2))
 BEGIN
@@ -753,9 +722,7 @@ BEGIN
     WHERE u.is_vip = 0
     AND u.blocked = 0
     AND u.total_donations >= vip_threshold;
-END$$
-
-DELIMITER ;
+END
 
 -- ═══════════════════════════════════════════
 -- 21. داده‌های پیش‌فرض
@@ -835,8 +802,6 @@ SET GLOBAL event_scheduler = ON;
 -- Event: پاکسازی روزانه لاگ‌های قدیمی (هر روز ساعت 3 صبح)
 DROP EVENT IF EXISTS `evt_daily_cleanup`;
 
-DELIMITER $$
-
 CREATE EVENT `evt_daily_cleanup`
 ON SCHEDULE EVERY 1 DAY
 STARTS CONCAT(CURDATE() + INTERVAL 1 DAY, ' 03:00:00')
@@ -844,15 +809,11 @@ ON COMPLETION PRESERVE
 ENABLE
 DO
 BEGIN
-    CALL `sp_cleanup_old_logs`(90); -- 90 روز
-END$$
-
-DELIMITER ;
+    CALL `sp_cleanup_old_logs`(90);
+END
 
 -- Event: بروزرسانی آمار کاربران (هر ساعت)
 DROP EVENT IF EXISTS `evt_hourly_stats_update`;
-
-DELIMITER $$
 
 CREATE EVENT `evt_hourly_stats_update`
 ON SCHEDULE EVERY 1 HOUR
@@ -861,14 +822,10 @@ ENABLE
 DO
 BEGIN
     CALL `sp_update_user_stats`();
-END$$
-
-DELIMITER ;
+END
 
 -- Event: بررسی VIP خودکار (هر 6 ساعت)
 DROP EVENT IF EXISTS `evt_check_auto_vip`;
-
-DELIMITER $$
 
 CREATE EVENT `evt_check_auto_vip`
 ON SCHEDULE EVERY 6 HOUR
@@ -876,15 +833,12 @@ ON COMPLETION PRESERVE
 ENABLE
 DO
 BEGIN
-    -- دریافت آستانه VIP از تنظیمات
     SET @threshold = (SELECT CAST(value AS DECIMAL(15,2)) FROM settings WHERE key_name = 'vip_threshold' LIMIT 1);
     
     IF @threshold IS NOT NULL THEN
         CALL `sp_check_auto_vip`(@threshold);
     END IF;
-END$$
-
-DELIMITER ;
+END
 
 -- ═══════════════════════════════════════════
 -- 23. پایان

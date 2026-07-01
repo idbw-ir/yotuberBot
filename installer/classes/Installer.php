@@ -97,8 +97,22 @@ class Installer {
         
         try {
             $pdo->exec("USE `{$dbName}`");
+            
             $sql = file_get_contents($schemaFile);
-            $pdo->exec($sql);
+            
+            // حذف کامنت‌ها
+            $sql = preg_replace('/--.*$/m', '', $sql);
+            
+            // تفکیک دستورات بر اساس ;
+            $statements = explode(';', $sql);
+            
+            foreach ($statements as $statement) {
+                $statement = trim($statement);
+                if (empty($statement)) continue;
+                
+                $pdo->exec($statement);
+            }
+            
             return ['success' => true];
         } catch (PDOException $e) {
             return ['success' => false, 'error' => $e->getMessage()];
