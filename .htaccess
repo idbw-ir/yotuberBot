@@ -1,0 +1,17 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # هدایت تمام درخواست‌ها به public/index.php
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ public/index.php [QSA,L]
+</IfModule>
+
+# امنیت - جلوگیری از دسترسی به فایل‌های حساس
+<FilesMatch "\.(env|log|sql|md|lock|example)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# جلوگیری از دسترسی به پوشه‌های حساس
+RewriteRule ^(config|app|database|installer|resources|vendor|storage)(/|$) - [F,L]

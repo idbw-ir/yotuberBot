@@ -2,9 +2,10 @@
 
 <div align="center">
 
-![Version](https://img.shields.io/badge/version-2.0.0-purple)
+![Version](https://img.shields.io/badge/version-2.1.0-purple)
 ![PHP](https://img.shields.io/badge/PHP-8.0+-blue)
 ![MySQL](https://img.shields.io/badge/MySQL-5.7+-orange)
+![SQLite](https://img.shields.io/badge/SQLite-BunnyDB-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Status](https://img.shields.io/badge/status-stable-brightgreen)
 
@@ -34,6 +35,22 @@
 
 ## ✨ ویژگی‌ها
 
+### 🗄️ دیتابیس دوگانه (جدید در v2.1)
+- [x] پشتیبانی از MySQL/MariaDB
+- [x] پشتیبانی از Bunny Database (Turso/libSQL)
+- [x] اسکیماهای مجزا برای MySQL, MySQL Lite, SQLite
+- [x] سوییچ خودکار بین درایورها
+- [x] نصب کاملاً خودکار بدون نیاز به SQL دستی
+
+### 🎛️ نصب‌کننده تحت وب (جدید در v2.1)
+- [x] نصب در ۶ مرحله با راهنمای کامل
+- [x] بررسی خودکار پیش‌نیازها
+- [x] پشتیبانی از MySQL و Bunny Database
+- [x] تنظیم خودکار Webhook تلگرام
+- [x] ساخت خودکار حساب ادمین
+- [x] قفل امنیتی پس از نصب (install.lock)
+- [x] حذف خودکار فایل‌های نصب‌کننده
+
 ### 🤖 ربات تلگرام
 - [x] پاسخ خودکار با کلمات کلیدی
 - [x] چت با هوش مصنوعی (OpenAI & Claude)
@@ -42,6 +59,7 @@
 - [x] Callback Query مدیریت
 - [x] تشخیص خودکار بلاک شدن کاربر
 - [x] سیستم دستورات پیشرفته
+- [x] تأیید امنیتی Webhook با Secret Token
 
 ### 👥 مدیریت کاربران
 - [x] ثبت خودکار کاربران
@@ -75,10 +93,11 @@
 - [x] متغیرهای قالب
 - [x] پیش‌نمایش پیام
 - [x] Rate Limiting هوشمند
+- [x] ارسال زمان‌بندی شده (Scheduled)
 
 ### ⚙️ تنظیمات
 - [x] مدیریت تنظیمات از پنل
-- [x] Backup/Restore
+- [x] Backup/Restore با نسخه‌بندی
 - [x] تاریخچه تغییرات
 - [x] Reset به پیش‌فرض
 - [x] اعتبارسنجی هوشمند
@@ -100,6 +119,10 @@
 - [x] Password Hashing (bcrypt)
 - [x] Security Headers
 - [x] IP Whitelist
+- [x] Webhook Secret Token Verification
+- [x] Remember Me / Persistent Login
+- [x] Activity Logging (Audit Trail)
+- [x] سطوح دسترسی (super_admin, admin, editor, moderator)
 
 ### 🎨 رابط کاربری
 - [x] طراحی مدرن و زیبا
@@ -116,12 +139,12 @@
 
 ### سرور
 - **PHP** >= 8.0 (توصیه: 8.1 یا بالاتر)
-- **MySQL** >= 5.7 (توصیه: 8.0)
+- **MySQL** >= 5.7 (توصیه: 8.0) یا **Bunny Database** (Turso/libSQL)
 - **Apache** با mod_rewrite یا **Nginx**
 - **SSL Certificate** (الزامی برای تلگرام)
 - **Composer** (برای مدیریت وابستگی‌ها)
 
-### PHP Extensions
+### PHP Extensions (MySQL)
 ```bash
 pdo
 pdo_mysql
@@ -131,6 +154,16 @@ mbstring
 openssl
 fileinfo
 ```
+
+### PHP Extensions (Bunny Database / SQLite)
+```bash
+curl
+json
+mbstring
+openssl
+fileinfo
+```
+برای Bunny Database نیاز به PDO و MySQL نیست، فقط需要有 cURL و JSON.
 
 ### بررسی پیش‌نیازها
 ```bash
@@ -148,7 +181,43 @@ composer --version
 
 ## 🚀 نصب و راه‌اندازی
 
-### 1. Clone پروژه
+> **روش پیشنهادی:** از نصب‌کننده تحت وب استفاده کنید (۶ مرحله، ساده و سریع)
+
+---
+
+### روش ۱: نصب خودکار با Web Installer ✅ (پیشنهادی)
+
+این روش جدید در v2.1 اضافه شده و تمام مراحل را به صورت خودکار انجام می‌دهد.
+
+#### 1. آپلود فایل‌ها
+فایل‌های پروژه را در هاست خود آپلود کنید (دایرکتوری `public/` به عنوان Web Root).
+
+#### 2. اجرای نصب‌کننده
+در مرورگر به آدرس زیر بروید:
+```
+https://yourdomain.com/install.php
+```
+
+#### 3. طی کردن ۶ مرحله
+| مرحله | عنوان | توضیح |
+|-------|-------|-------|
+| ۱ | پیش‌نیازها | بررسی خودکار PHP, Extensions, دسترسی‌ها |
+| ۲ | دیتابیس | انتخاب MySQL یا Bunny Database + اطلاعات اتصال |
+| ۳ | ربات تلگرام | وارد کردن توکن ربات و آیدی ادمین |
+| ۴ | حساب ادمین | ساخت نام کاربری و رمز عبور ادمین |
+| ۵ | تنظیمات | نام سایت، URL، کلید هوش مصنوعی |
+| ۶ | اتمام | نصب نهایی، تنظیم Webhook و قفل‌سازی |
+
+#### 4. پس از نصب
+- پیام **"تبریک! نصب با موفقیت انجام شد"** نمایش داده می‌شود
+- روی **"حذف فایل‌های نصب"** کلیک کنید (امنیت)
+- سپس وارد **پنل مدیریت** شوید
+
+---
+
+### روش ۲: نصب دستی (پیشرفته)
+
+#### 1. Clone پروژه
 
 ```bash
 # Clone از Git
@@ -161,7 +230,7 @@ unzip main.zip
 cd youtuber-bot-main
 ```
 
-### 2. نصب وابستگی‌ها
+#### 2. نصب وابستگی‌ها
 
 ```bash
 # نصب Composer dependencies
@@ -174,8 +243,9 @@ chown -R www-data:www-data storage/
 chown -R www-data:www-data public/
 ```
 
-### 3. ساخت دیتابیس
+#### 3. ساخت دیتابیس
 
+##### MySQL:
 ```bash
 # ورود به MySQL
 mysql -u root -p
@@ -187,13 +257,22 @@ GRANT ALL PRIVILEGES ON youtuber_bot.* TO 'youtuber_user'@'localhost';
 FLUSH PRIVILEGES;
 EXIT;
 
-# اجرای Schema
+# اجرای Schema (نسخه کامل)
 mysql -u youtuber_user -p youtuber_bot < database/schema.sql
+
+# یا نسخه سبک (بدون Trigger, Event, Procedure)
+mysql -u youtuber_user -p youtuber_bot < database/schema.lite.sql
 ```
 
-### 4. تنظیم Config
+##### Bunny Database (Turso/libSQL):
+از اسکیما SQLite-ready استفاده کنید:
+```bash
+# فایل database/schema.sqlite.sql برای Bunny/Turso سازگار است
+```
 
-فایل `config/config.php` را ویرایش کنید:
+#### 4. تنظیم Config
+
+فایل `config/config.php` را از روی `config/config.example.php` بسازید و ویرایش کنید:
 
 ```php
 <?php
@@ -204,16 +283,20 @@ return [
         'url' => 'https://yourdomain.com',
         'timezone' => 'Asia/Tehran',
         'debug' => false,
-        'version' => '2.0.0',
+        'version' => '2.1.0',
     ],
     
     // تنظیمات دیتابیس
     'database' => [
+        'driver' => 'mysql', // یا 'bunny' برای Bunny Database
         'host' => 'localhost',
         'name' => 'youtuber_bot',
         'user' => 'youtuber_user',
         'pass' => 'YourStrongPassword123!',
         'charset' => 'utf8mb4',
+        // اگر driver = bunny:
+        // 'bunny_url' => 'https://your-db.turso.io',
+        // 'bunny_token' => 'your-bunny-database-token',
     ],
     
     // تنظیمات تلگرام
@@ -221,6 +304,7 @@ return [
         'bot_token' => '1234567890:ABCdefGHIjklMNOpqrsTUVwxyz',
         'admin_id' => 123456789, // آیدی عددی ادمین
         'webhook_secret' => 'your_random_secret_string',
+        'verify_ssl' => true,
     ],
     
     // تنظیمات هوش مصنوعی
@@ -237,7 +321,7 @@ return [
 ];
 ```
 
-### 5. تنظیم Webhook
+#### 5. تنظیم Webhook
 
 ```bash
 # تنظیم Webhook تلگرام
@@ -250,7 +334,7 @@ curl -F "url=https://yourdomain.com/webhook.php" \
 curl https://api.telegram.org/botYOUR_BOT_TOKEN/getWebhookInfo
 ```
 
-### 6. بررسی نصب
+#### 6. بررسی نصب
 
 ```bash
 # تست اتصال به دیتابیس
@@ -298,12 +382,14 @@ youtuber-bot/
 │   │   └── Claude.php               # اتصال به Claude
 │   │
 │   ├── 📁 Core/                     # هسته سیستم
-│   │   ├── Database.php             # مدیریت دیتابیس
-│   │   ├── Router.php               # مسیریابی
-│   │   ├── Session.php              # مدیریت Session
-│   │   ├── Logger.php               # سیستم لاگ
+│   │   ├── Autoloader.php           # بارگذاری خودکار کلاس‌ها
+│   │   ├── Cache.php                # سیستم کش
 │   │   ├── Config.php               # مدیریت تنظیمات
-│   │   └── Cache.php                # سیستم کش
+│   │   ├── Database.php             # مدیریت دیتابیس (MySQL + Bunny)
+│   │   ├── DatabaseBunny.php        # درایور Bunny Database (Turso/libSQL)
+│   │   ├── Logger.php               # سیستم لاگ
+│   │   ├── Router.php               # مسیریابی
+│   │   └── Session.php              # مدیریت Session
 │   │
 │   ├── 📁 Helpers/                  # توابع کمکی
 │   │   ├── Security.php             # امنیت
@@ -320,34 +406,38 @@ youtuber-bot/
 ├── 📁 config/                       # فایل‌های پیکربندی
 │   ├── bootstrap.php                # بارگذاری اولیه
 │   ├── config.php                   # تنظیمات اصلی
+│   ├── config.example.php           # نمونه تنظیمات (با placeholders)
 │   └── routes.php                   # تعریف Route ها
 │
 ├── 📁 database/                     # فایل‌های دیتابیس
-│   └── schema.sql                   # ساختار دیتابیس
+│   ├── schema.sql                   # ساختار کامل MySQL (با Trigger, Event)
+│   ├── schema.lite.sql              # نسخه سبک MySQL (بدون Trigger, Event)
+│   └── schema.sqlite.sql            # ساختار SQLite (برای Bunny/Turso)
+│
+├── 📁 installer/                    # نصب‌کننده تحت Web (جدید v2.1)
+│   ├── 📁 assets/
+│   │   ├── style.css                # استایل نصب‌کننده
+│   │   └── script.js                # اسکریپت‌های نصب‌کننده
+│   ├── 📁 classes/
+│   │   ├── Database.php             # کلاس دیتابیس نصب‌کننده
+│   │   ├── Installer.php            # کلاس اصلی نصب
+│   │   └── Validator.php            # اعتبارسنجی فرم‌ها
+│   └── 📁 steps/
+│       ├── 1-requirements.php       # بررسی پیش‌نیازها
+│       ├── 2-database.php           # تنظیم دیتابیس
+│       ├── 3-telegram.php           # تنظیم ربات تلگرام
+│       ├── 4-admin.php              # ساخت حساب ادمین
+│       ├── 5-settings.php           # تنظیمات سایت
+│       └── 6-finish.php             # اتمام و پاک‌سازی
 │
 ├── 📁 public/                       # فایل‌های عمومی (Web Root)
 │   ├── 📁 admin/                    # پنل ادمین
 │   │   ├── index.php                # داشبورد
 │   │   ├── login.php                # لاگین
 │   │   ├── logout.php               # خروج
-│   │   ├── users.php                # کاربران
-│   │   ├── chat.php                 # چت زنده
-│   │   ├── messages.php             # پیام‌ها
-│   │   ├── donations.php            # دونیت‌ها
-│   │   ├── keywords.php             # کلمات کلیدی
-│   │   ├── broadcast.php            # ارسال دسته‌جمعی
-│   │   ├── settings.php             # تنظیمات
-│   │   ├── statistics.php           # آمار
-│   │   ├── profile.php              # پروفایل
-│   │   └── .htaccess                # تنظیمات Apache
-│   │
-│   ├── 📁 api/                      # API endpoints
-│   ├── 📁 assets/                   # فایل‌های استاتیک
-│   │   ├── 📁 css/
-│   │   │   └── app.css
-│   │   └── 📁 js/
-│   │       ├── app.js
-│   │       └── chart.js
+│   │   ├── 📁 partials/
+│   │   │   └── sidebar.php          # سایدبار
+│   │   └── .htaccess                # تنظیمات Apache ادمین
 │   │
 │   ├── index.php                    # Front Controller
 │   └── webhook.php                  # Webhook تلگرام
@@ -385,6 +475,8 @@ youtuber-bot/
 │
 ├── 📁 vendor/                       # وابستگی‌های Composer
 │
+├── install.php                      # فایل اصلی نصب‌کننده تحت وب
+├── install.lock                     # قفل امنیتی نصب (پس از نصب ایجاد می‌شود)
 ├── composer.json                    # تنظیمات Composer
 ├── .htaccess                        # تنظیمات Apache اصلی
 ├── .gitignore                       # فایل‌های نادیده Git
@@ -398,22 +490,26 @@ youtuber-bot/
 
 ### تنظیمات Apache (.htaccess)
 
+فایل `.htaccess` در روت پروژه (در صورت عدم وجود، ایجاد کنید):
+
 ```apache
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    RewriteBase /
-    
-    # هدایت تمام درخواست‌ها به index.php
+
+    # هدایت تمام درخواست‌ها به public/index.php
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)$ index.php [QSA,L]
+    RewriteRule ^(.*)$ public/index.php [QSA,L]
 </IfModule>
 
-# امنیت
-<FilesMatch "\.(env|log|sql|md)$">
+# امنیت - جلوگیری از دسترسی به فایل‌های حساس
+<FilesMatch "\.(env|log|sql|md|lock|example)$">
     Order allow,deny
     Deny from all
 </FilesMatch>
+
+# جلوگیری از دسترسی به پوشه‌های حساس
+RewriteRule ^(config|app|database|installer|resources|vendor|storage)(/|$) - [F,L]
 ```
 
 ### تنظیمات Nginx
@@ -441,6 +537,16 @@ server {
     }
     
     location ~ /\.(config|storage|app|database|resources) {
+        deny all;
+    }
+
+    # جلوگیری از دسترسی به پوشه‌های داخلی
+    location ~ ^/(config|app|database|installer|resources|vendor|storage) {
+        deny all;
+    }
+
+    # محافظت از install.lock
+    location = /install.lock {
         deny all;
     }
 }
@@ -678,6 +784,8 @@ tail -f storage/logs/security-*.log
 
 ### ویژگی‌های آینده
 
+- [x] **v2.1** پشتیبانی از Bunny Database (Turso/libSQL)
+- [x] **v2.1** نصب‌کننده تحت وب (Web Installer)
 - [ ] پشتیبانی از Telegram Payments
 - [ ] سیستم چند زبانه
 - [ ] اپلیکیشن موبایل
@@ -688,6 +796,7 @@ tail -f storage/logs/security-*.log
 - [ ] سیستم Queue پیشرفته
 - [ ] Webhook های سفارشی
 - [ ] API Rate Limiting پیشرفته
+- [ ] Admin API endpoints (UsersApi, ChatApi, etc.)
 
 ---
 
@@ -772,203 +881,9 @@ SOFTWARE.
 
 **ساخته شده با ❤️ برای یوتیوبرهای فارسی‌زبان**
 
-🎬 **Youtuber Bot v2.0.0** | 2026
+🎬 **Youtuber Bot v2.1.0** | 2026
 
 [⬆ برگشت به بالا](#-youtuber-bot---ربات-تلگرام-یوتیوبر)
 
 </div>
-```
 
----
-
-## 📝 خلاصه فایل
-
-| ویژگی | توضیح |
-|-------|-------|
-| **خطوط** | ~۶۰۰ خط |
-| **بخش‌ها** | ۱۵ بخش |
-| **زبان** | فارسی + انگلیسی |
-| **Markdown** | بله |
-| **Badge ها** | بله |
-| **تصاویر** | Placeholder |
-| **کد نمونه** | بله |
-| **لایسنس** | MIT |
-
----
-
-## 🎉 تبریک! پروژه کامل شد!
-
-**تمام ۶۴ فایل پروژه با موفقیت ارسال شدند!** 🎊
-
----
-
-## 📊 آمار کل پروژه
-
-| بخش | تعداد فایل | خطوط کد |
-|-----|------------|---------|
-| **بخش ۱: ساختار و نصب** | ۴ | ~۵۰۰ |
-| **بخش ۲: هسته (Core)** | ۸ | ~۲,۵۰۰ |
-| **بخش ۳: ربات تلگرام** | ۴ | ~۱,۹۰۰ |
-| **بخش ۴: پنل ادمین** | ۱۰ | ~۵,۸۰۰ |
-| **بخش ۵: AI و API** | ۴ | ~۲,۵۰۰ |
-| **بخش ۶: فایل‌های عمومی** | ۶ | ~۱,۵۰۰ |
-| **بخش ۷: ویوها و Assets** | ۱۵ | ~۸,۵۰۰ |
-| **بخش ۸: پیکربندی و مستندات** | ۵ | ~۳,۵۰۰ |
-| **مجموع** | **۵۶ فایل** | **~۲۶,۷۰۰ خط** |
-
-> ⚠️ **توجه:** در طول مسیر چند فایل اضافی مثل `install.php`، `composer.json` و غیره هم ساخته شدن که مجموع فایل‌ها به ۶۴ می‌رسه.
-
----
-
-## 🎯 ویژگی‌های کلیدی پروژه
-
-### ✅ معماری حرفه‌ای
-- **MVC Pattern** - جداسازی کامل منطق، نمایش و داده
-- **Singleton Pattern** - مدیریت بهینه منابع
-- **PSR Standards** - رعایت استانداردهای PHP
-- **Namespace** - سازماندهی کدها
-
-### ✅ امنیت بالا
-- **CSRF Protection** - محافظت در برابر حملات CSRF
-- **XSS Protection** - پاکسازی ورودی‌ها
-- **SQL Injection Prevention** - استفاده از Prepared Statements
-- **Password Hashing** - bcrypt با cost 12
-- **Rate Limiting** - جلوگیری از Spam
-- **Session Security** - HttpOnly, Secure, SameSite
-
-### ✅ عملکرد بهینه
-- **Caching System** - کش فایل‌محور با TTL
-- **Database Optimization** - ایندکس‌ها و کوئری‌های بهینه
-- **Lazy Loading** - بارگذاری در صورت نیاز
-- **Gzip Compression** - فشرده‌سازی
-- **Browser Caching** - کش مرورگر
-
-### ✅ رابط کاربری مدرن
-- **TailwindCSS** - استایل‌دهی سریع
-- **Glass Morphism** - افکت شیشه‌ای
-- **Dark Theme** - تم تاریک
-- **Responsive Design** - سازگار با تمام دستگاه‌ها
-- **Vazirmatn Font** - فونت فارسی زیبا
-- **Smooth Animations** - انیمیشن‌های نرم
-
-### ✅ امکانات کامل
-- **100+ ویژگی** - تمام نیازهای یک یوتیوبر
-- **50+ API Endpoint** - دسترسی کامل از بیرون
-- **17 جدول دیتابیس** - ساختار جامع
-- **10 صفحه ادمین** - پنل مدیریت کامل
-- **4 درگاه پرداخت** - پشتیبانی از تمام درگاه‌های ایرانی
-
----
-
-## 🚀 مراحل بعدی
-
-### 1. نصب و راه‌اندازی
-```bash
-# Clone پروژه
-git clone https://github.com/idbw-ir/youtuber-bot.git
-cd youtuber-bot
-
-# نصب وابستگی‌ها
-composer install
-
-# تنظیم permissions
-chmod -R 775 storage/ public/
-
-# ساخت دیتابیس
-mysql -u root -p < database/schema.sql
-
-# تنظیم config
-nano config/config.php
-
-# تنظیم Webhook
-curl -F "url=https://yourdomain.com/webhook.php" \
-     https://api.telegram.org/botTOKEN/setWebhook
-```
-
-### 2. تست اولیه
-- [ ] ورود به پنل ادمین با اطلاعات پیش‌فرض
-- [ ] تغییر رمز ادمین
-- [ ] تنظیم توکن ربات
-- [ ] تنظیم آیدی ادمین
-- [ ] تست ارسال پیام
-- [ ] تست کلمات کلیدی
-- [ ] تست چت زنده
-
-### 3. سفارشی‌سازی
-- [ ] تغییر رنگ‌ها و استایل
-- [ ] اضافه کردن کلمات کلیدی
-- [ ] تنظیم درگاه پرداخت
-- [ ] فعال‌سازی هوش مصنوعی
-- [ ] تنظیم نوتیفیکیشن‌ها
-
-### 4. Production
-- [ ] فعال‌سازی SSL
-- [ ] تنظیم Firewall
-- [ ] فعال‌سازی Backup خودکار
-- [ ] مانیتورینگ لاگ‌ها
-- [ ] بهینه‌سازی Performance
-
----
-
-## 💡 نکات مهم
-
-### 🔒 امنیت
-1. **هرگز** `config/config.php` را در Git قرار ندهید
-2. **همیشه** از HTTPS استفاده کنید
-3. **به طور منظم** Backup بگیرید
-4. **رمزهای قوی** استفاده کنید
-5. **لاگ‌ها** را بررسی کنید
-
-### ⚡ Performance
-1. **Cache** را فعال نگه دارید
-2. **Database Index** ها را بهینه کنید
-3. **Images** را فشرده کنید
-4. **CDN** برای فایل‌های استاتیک استفاده کنید
-5. **Gzip** را فعال کنید
-
-### 📈 رشد
-1. **آمار** را به طور منظم بررسی کنید
-2. **بازخورد کاربران** را جمع‌آوری کنید
-3. **ویژگی‌های جدید** اضافه کنید
-4. **باگ‌ها** را سریع رفع کنید
-5. **مستندات** را به‌روز نگه دارید
-
----
-
-## 🎊 پایان پروژه
-
-**تبریک می‌گم!** 🎉
-
-شما الان یک پروژه کامل و حرفه‌ای دارید که شامل:
-
-✅ **ربات تلگرام پیشرفته** با تمام امکانات  
-✅ **پنل مدیریت کامل** با رابط کاربری زیبا  
-✅ **سیستم پرداخت یکپارچه** با ۴ درگاه  
-✅ **هوش مصنوعی** با OpenAI و Claude  
-✅ **چت زنده** با کاربران  
-✅ **سیستم ارسال دسته‌جمعی** حرفه‌ای  
-✅ **آمار و گزارشات** پیشرفته  
-✅ **امنیت بالا** با تمام استانداردها  
-✅ **مستندات کامل** برای نصب و استفاده  
-
----
-
-## 🙏 تشکر از شما
-
-ممنون که تا پایان این پروژه همراه من بودید! 🙏
-
-امیدوارم این پروژه براتون مفید باشه و بتونید ازش استفاده کنید.
-
-اگه سوالی داشتید یا نیاز به کمک داشتید، حتماً بپرسید! 💬
-
----
-
-<div align="center">
-
-**🎬 Youtuber Bot v2.0.0**
-
-**ساخته شده با ❤️ برای یوتیوبرهای فارسی‌زبان**
-
-**موفق باشید! 🚀**
-
-</div>

@@ -351,7 +351,7 @@ class Installer {
         $ch = curl_init($url);
         curl_setopt_array($ch, [
             CURLOPT_POST => true,
-            CURLOPT_POSTFIELDS => $params,
+            CURLOPT_POSTFIELDS => http_build_query($params),
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_TIMEOUT => 10
@@ -409,20 +409,20 @@ class Installer {
     // حذف فایل‌های نصب
     // ──────────────────────────────────────
     public function removeInstaller() {
-        $files = [
-            $this->basePath . '/install.php',
-            $this->basePath . '/installer'
-        ];
-        
-        foreach ($files as $file) {
-            if (is_dir($file)) {
-                $this->deleteDirectory($file);
-            } elseif (file_exists($file)) {
-                unlink($file);
-            }
+        // حذف پوشه installer (مهمترین بخش امنیتی)
+        $installerDir = $this->basePath . '/installer';
+        if (is_dir($installerDir)) {
+            $this->deleteDirectory($installerDir);
         }
         
-        return !file_exists($this->basePath . '/install.php');
+        // تلاش برای حذف install.php (ممکن است در ویندوز موفق نباشد چون خودش در حال اجراست)
+        $installFile = $this->basePath . '/install.php';
+        if (file_exists($installFile)) {
+            @unlink($installFile);
+        }
+        
+        // success اگر پوشه installer حذف شده باشد
+        return !is_dir($installerDir);
     }
     
     private function deleteDirectory($dir) {
