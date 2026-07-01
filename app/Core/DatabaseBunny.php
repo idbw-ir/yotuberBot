@@ -20,7 +20,7 @@ class DatabaseBunny {
         if (!empty($params)) {
             $body['stmt']['args'] = [];
             foreach ($params as $p) {
-                $body['stmt']['args'][] = ['value' => $p];
+                $body['stmt']['args'][] = $this->toTursoArg($p);
             }
         }
 
@@ -57,6 +57,22 @@ class DatabaseBunny {
         return json_decode($response, true) ?? [];
     }
 
+    private function toTursoArg(mixed $value): array {
+        if (is_null($value)) {
+            return ['type' => 'null', 'value' => null];
+        }
+        if (is_int($value)) {
+            return ['type' => 'integer', 'value' => $value];
+        }
+        if (is_float($value)) {
+            return ['type' => 'float', 'value' => $value];
+        }
+        if (is_bool($value)) {
+            return ['type' => 'integer', 'value' => $value ? 1 : 0];
+        }
+        return ['type' => 'text', 'value' => (string)$value];
+    }
+
     public function query(string $sql, array $params = []): array {
         $result = $this->execute($sql, $params);
         $rows = $result['results']['rows'] ?? [];
@@ -91,7 +107,7 @@ class DatabaseBunny {
 
     public function insert(string $table, array $data): ?int {
         $cols = implode(', ', array_keys($data));
-        $phs = ':' . implode(', :', array_keys($data));
+        $phs = implode(', ', array_fill(0, count($data), '?'));
         $sql = "INSERT INTO {$table} ({$cols}) VALUES ({$phs})";
         $result = $this->execute($sql, array_values($data));
 
