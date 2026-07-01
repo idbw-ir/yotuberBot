@@ -90,10 +90,20 @@ class Installer {
     // ایمپورت اسکریپت دیتابیس
     // ──────────────────────────────────────
     public function importDatabase($pdo, $dbName) {
-        $schemaFile = $this->basePath . '/database/schema.sql';
+        $schemaFiles = [
+            'full' => $this->basePath . '/database/schema.sql',
+            'lite' => $this->basePath . '/database/schema.lite.sql',
+        ];
+        
+        $schemaFile = $schemaFiles['full'];
         if (!file_exists($schemaFile)) {
-            return ['success' => false, 'error' => 'فایل schema.sql یافت نشد'];
+            $schemaFile = $schemaFiles['lite'];
         }
+        if (!file_exists($schemaFile)) {
+            return ['success' => false, 'error' => 'فایل schema.sql یا schema.lite.sql یافت نشد'];
+        }
+        
+        $mode = ($schemaFile === $schemaFiles['full']) ? 'full' : 'lite';
         
         try {
             $pdo->exec("USE `{$dbName}`");
@@ -113,10 +123,56 @@ class Installer {
                 $pdo->exec($statement);
             }
             
-            return ['success' => true];
+            $result = ['success' => true, 'mode' => $mode];
+            
+            // اگر full موفق بود، پیغام عادی
+            if ($mode === 'full') {
+                return $result;
+            }
+            
+            // اگر لایت بود، اخطار بده
+            return array_merge($result, [
+                'warning' => 'برخی featureها (Trigger, Event, Procedure) به دلیل محدودیت سرور نصب نشدند'
+            ]);
+            
         } catch (PDOException $e) {
-            return ['success' => false, 'error' => $e->getMessage()];
+            $errorMsg = $e->getMessage();
+            
+            // اگر full با خطای دسترسی خورد، fallback به لایت
+            if ($mode === 'full' && $this->isPrivilegeError($errorMsg)) {
+                if (file_exists($schemaFiles['lite'])) {
+                    $pdo->exec("USE `{$dbName}`");
+                    
+                    $sql = file_get_contents($schemaFiles['lite']);
+                    $sql = preg_replace('/--.*$/m', '', $sql);
+                    $statements = $this->splitSqlStatements($sql);
+                    
+                    foreach ($statements as $statement) {
+                        $statement = trim($statement);
+                        if (empty($statement)) continue;
+                        $pdo->exec($statement);
+                    }
+                    
+                    return [
+                        'success' => true,
+                        'mode' => 'lite',
+                        'warning' => 'برخی featureها (Trigger, Event, Procedure) به دلیل محدودیت سرور نصب نشدند'
+                    ];
+                }
+            }
+            
+            return ['success' => false, 'error' => $errorMsg];
         }
+    }
+    
+    private function isPrivilegeError($error) {
+        $patterns = ['TRIGGER command denied', 'EVENT command denied', 'PROCEDURE command denied', 'SUPER command denied', 'Access denied'];
+        foreach ($patterns as $pattern) {
+            if (stripos($error, $pattern) !== false) {
+                return true;
+            }
+        }
+        return false;
     }
     
     private function splitSqlStatements($sql) {
