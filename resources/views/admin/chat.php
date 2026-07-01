@@ -1,19 +1,19 @@
-﻿<?php
+<?php
 /**
  * ============================================
- * Live Chat - Ú†Øª Ø²Ù†Ø¯Ù‡ Ø¨Ø§ Ú©Ø§Ø±Ø¨Ø±Ø§Ù†
+ * Live Chat - چت زنده با کاربران
  * ============================================
- * Ù†Ø³Ø®Ù‡: 2.1.0
+ * نسخه: 2.0.0
  * 
- * Ø±Ø§Ø¨Ø· Ú©Ø§Ø±Ø¨Ø±ÛŒ Ú†Øª Ø²Ù†Ø¯Ù‡ Ø¨Ø§ Ú©Ø§Ø±Ø¨Ø±Ø§Ù†
- * Ø´Ø§Ù…Ù„ Ù„ÛŒØ³Øª Ú©Ø§Ø±Ø¨Ø±Ø§Ù†ØŒ Ù¾Ù†Ø¬Ø±Ù‡ Ú†Øª Ùˆ Ø§Ø±Ø³Ø§Ù„ Ù¾ÛŒØ§Ù…
+ * رابط کاربری چت زنده با کاربران
+ * شامل لیست کاربران، پنجره چت و ارسال پیام
  */
 
-// Ù…ØªØºÛŒØ±Ù‡Ø§ÛŒ Ù…ÙˆØ±Ø¯ Ù†ÛŒØ§Ø² Ø§Ø² Controller:
-// - $users (Ù„ÛŒØ³Øª Ú©Ø§Ø±Ø¨Ø±Ø§Ù† Ø¨Ø§ Ù¾ÛŒØ§Ù…â€ŒÙ‡Ø§ÛŒ Ø®ÙˆØ§Ù†Ø¯Ù‡ Ù†Ø´Ø¯Ù‡)
-// - $currentUser (Ú©Ø§Ø±Ø¨Ø± Ø§Ù†ØªØ®Ø§Ø¨ Ø´Ø¯Ù‡)
-// - $messages (Ù¾ÛŒØ§Ù…â€ŒÙ‡Ø§ÛŒ Ú©Ø§Ø±Ø¨Ø± ÙØ¹Ù„ÛŒ)
-// - $userInfo (Ø§Ø·Ù„Ø§Ø¹Ø§Øª Ú©Ø§Ù…Ù„ Ú©Ø§Ø±Ø¨Ø±)
+// متغیرهای مورد نیاز از Controller:
+// - $users (لیست کاربران با پیام‌های خوانده نشده)
+// - $currentUser (کاربر انتخاب شده)
+// - $messages (پیام‌های کاربر فعلی)
+// - $userInfo (اطلاعات کامل کاربر)
 
 $users = $users ?? [];
 $currentUser = $currentUser ?? null;
@@ -23,20 +23,20 @@ $userInfo = $userInfo ?? [];
 // CSRF Token
 $csrfToken = $_SESSION['_csrf_token'] ?? '';
 
-// Ø¢ÛŒØ¯ÛŒ Ú©Ø§Ø±Ø¨Ø± Ø§Ø² URL
+// آیدی کاربر از URL
 $selectedUserId = $_GET['id'] ?? null;
 ?>
 
 <div class="flex gap-4 h-[calc(100vh-180px)]">
     
-    <!-- â•â•â• Ù„ÛŒØ³Øª Ú©Ø§Ø±Ø¨Ø±Ø§Ù† (Sidebar) â•â•â• -->
+    <!-- ═══ لیست کاربران (Sidebar) ═══ -->
     <div class="w-80 glass rounded-2xl flex flex-col overflow-hidden flex-shrink-0">
         
         <!-- Header -->
         <div class="p-4 border-b border-white/10">
             <h3 class="text-white font-bold text-lg flex items-center gap-2">
-                <span>ðŸ’¬</span>
-                <span>Ú†Øªâ€ŒÙ‡Ø§</span>
+                <span>💬</span>
+                <span>چت‌ها</span>
                 <?php if (count($users) > 0): ?>
                 <span class="bg-red-500 text-white text-xs rounded-full px-2 py-0.5">
                     <?= count($users) ?>
@@ -54,7 +54,7 @@ $selectedUserId = $_GET['id'] ?? null;
                 <input 
                     type="text" 
                     id="userSearch"
-                    placeholder="Ø¬Ø³ØªØ¬ÙˆÛŒ Ú©Ø§Ø±Ø¨Ø±..."
+                    placeholder="جستجوی کاربر..."
                     class="w-full bg-white/10 border border-white/20 rounded-lg py-2 pr-9 pl-3 text-white text-sm placeholder-white/40 focus:border-purple-500 transition"
                 >
             </div>
@@ -64,8 +64,8 @@ $selectedUserId = $_GET['id'] ?? null;
         <div class="flex-1 overflow-y-auto" id="usersList">
             <?php if (empty($users)): ?>
             <div class="text-center py-12 px-4">
-                <div class="text-5xl mb-3">ðŸ“­</div>
-                <p class="text-white/50 text-sm">Ù¾ÛŒØ§Ù… Ø®ÙˆØ§Ù†Ø¯Ù‡ Ù†Ø´Ø¯Ù‡â€ŒØ§ÛŒ ÙˆØ¬ÙˆØ¯ Ù†Ø¯Ø§Ø±Ø¯</p>
+                <div class="text-5xl mb-3">📭</div>
+                <p class="text-white/50 text-sm">پیام خوانده نشده‌ای وجود ندارد</p>
             </div>
             <?php else: ?>
                 <?php foreach ($users as $user): ?>
@@ -89,9 +89,9 @@ $selectedUserId = $_GET['id'] ?? null;
                         <div class="flex-1 min-w-0">
                             <div class="flex items-center justify-between mb-1">
                                 <span class="text-white font-medium text-sm truncate flex items-center gap-1">
-                                    <?= htmlspecialchars($user['display_name'] ?? 'Ú©Ø§Ø±Ø¨Ø±') ?>
+                                    <?= htmlspecialchars($user['display_name'] ?? 'کاربر') ?>
                                     <?php if (!empty($user['is_vip'])): ?>
-                                    <span class="text-yellow-400 text-xs">ðŸ‘‘</span>
+                                    <span class="text-yellow-400 text-xs">👑</span>
                                     <?php endif; ?>
                                 </span>
                                 <span class="text-white/40 text-xs flex-shrink-0">
@@ -108,7 +108,7 @@ $selectedUserId = $_GET['id'] ?? null;
                             <?php if (!empty($user['unread_count'])): ?>
                             <div class="flex items-center justify-between">
                                 <span class="bg-red-500 text-white text-xs rounded-full px-2 py-0.5 font-bold">
-                                    <?= $user['unread_count'] ?> Ù¾ÛŒØ§Ù… Ø¬Ø¯ÛŒØ¯
+                                    <?= $user['unread_count'] ?> پیام جدید
                                 </span>
                             </div>
                             <?php endif; ?>
@@ -121,16 +121,16 @@ $selectedUserId = $_GET['id'] ?? null;
         
     </div>
     
-    <!-- â•â•â• Ù¾Ù†Ø¬Ø±Ù‡ Ú†Øª â•â•â• -->
+    <!-- ═══ پنجره چت ═══ -->
     <div class="flex-1 glass rounded-2xl flex flex-col overflow-hidden">
         
         <?php if (!$currentUser): ?>
         <!-- Empty State -->
         <div class="flex-1 flex items-center justify-center">
             <div class="text-center">
-                <div class="text-7xl mb-4">ðŸ’¬</div>
-                <h3 class="text-white text-xl font-bold mb-2">ÛŒÚ© Ú©Ø§Ø±Ø¨Ø± Ø±Ø§ Ø§Ù†ØªØ®Ø§Ø¨ Ú©Ù†ÛŒØ¯</h3>
-                <p class="text-white/50 text-sm">Ø§Ø² Ù„ÛŒØ³Øª Ø³Ù…Øª Ø±Ø§Ø³ØªØŒ Ú©Ø§Ø±Ø¨Ø± Ù…ÙˆØ±Ø¯ Ù†Ø¸Ø± Ø±Ø§ Ø§Ù†ØªØ®Ø§Ø¨ Ú©Ù†ÛŒØ¯</p>
+                <div class="text-7xl mb-4">💬</div>
+                <h3 class="text-white text-xl font-bold mb-2">یک کاربر را انتخاب کنید</h3>
+                <p class="text-white/50 text-sm">از لیست سمت راست، کاربر مورد نظر را انتخاب کنید</p>
             </div>
         </div>
         <?php else: ?>
@@ -151,7 +151,7 @@ $selectedUserId = $_GET['id'] ?? null;
                 <!-- Info -->
                 <div>
                     <div class="text-white font-bold flex items-center gap-2">
-                        <span><?= htmlspecialchars($userInfo['display_name'] ?? 'Ú©Ø§Ø±Ø¨Ø±') ?></span>
+                        <span><?= htmlspecialchars($userInfo['display_name'] ?? 'کاربر') ?></span>
                         <?php if (!empty($userInfo['is_vip'])): ?>
                         <span class="bg-yellow-500/20 text-yellow-300 text-xs px-2 py-0.5 rounded-full">VIP</span>
                         <?php endif; ?>
@@ -160,12 +160,12 @@ $selectedUserId = $_GET['id'] ?? null;
                         <?php if (!empty($userInfo['is_online'])): ?>
                         <span class="flex items-center gap-1 text-green-400">
                             <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                            <span>Ø¢Ù†Ù„Ø§ÛŒÙ†</span>
+                            <span>آنلاین</span>
                         </span>
                         <?php else: ?>
-                        <span>Ø¢Ø®Ø±ÛŒÙ† Ø¨Ø§Ø²Ø¯ÛŒØ¯: <?= htmlspecialchars($userInfo['last_seen_ago'] ?? 'Ù†Ø§Ù…Ø´Ø®Øµ') ?></span>
+                        <span>آخرین بازدید: <?= htmlspecialchars($userInfo['last_seen_ago'] ?? 'نامشخص') ?></span>
                         <?php endif; ?>
-                        <span>â€¢</span>
+                        <span>•</span>
                         <span>ID: <?= $currentUser['id'] ?></span>
                     </div>
                 </div>
@@ -176,21 +176,21 @@ $selectedUserId = $_GET['id'] ?? null;
                 <button 
                     onclick="viewUserProfile(<?= $currentUser['id'] ?>)"
                     class="bg-white/10 hover:bg-white/20 text-white p-2 rounded-lg transition"
-                    title="Ù¾Ø±ÙˆÙØ§ÛŒÙ„ Ú©Ø§Ø±Ø¨Ø±"
+                    title="پروفایل کاربر"
                 >
                     <i class="fas fa-user-circle"></i>
                 </button>
                 <button 
                     onclick="exportChat(<?= $currentUser['id'] ?>)"
                     class="bg-white/10 hover:bg-white/20 text-white p-2 rounded-lg transition"
-                    title="Ø®Ø±ÙˆØ¬ÛŒ Ú†Øª"
+                    title="خروجی چت"
                 >
                     <i class="fas fa-download"></i>
                 </button>
                 <button 
                     onclick="clearChat(<?= $currentUser['id'] ?>)"
                     class="bg-red-500/20 hover:bg-red-500/30 text-red-300 p-2 rounded-lg transition"
-                    title="Ù¾Ø§Ú© Ú©Ø±Ø¯Ù† Ú†Øª"
+                    title="پاک کردن چت"
                 >
                     <i class="fas fa-trash"></i>
                 </button>
@@ -201,9 +201,9 @@ $selectedUserId = $_GET['id'] ?? null;
         <div class="flex-1 overflow-y-auto p-4 space-y-4" id="messagesArea">
             <?php if (empty($messages)): ?>
             <div class="text-center py-12">
-                <div class="text-5xl mb-3">ðŸ“</div>
-                <p class="text-white/50 text-sm">Ù‡Ù†ÙˆØ² Ù¾ÛŒØ§Ù…ÛŒ Ø¯Ø± Ø§ÛŒÙ† Ú†Øª ÙˆØ¬ÙˆØ¯ Ù†Ø¯Ø§Ø±Ø¯</p>
-                <p class="text-white/30 text-xs mt-1">Ø§ÙˆÙ„ÛŒÙ† Ù¾ÛŒØ§Ù… Ø±Ø§ Ø§Ø±Ø³Ø§Ù„ Ú©Ù†ÛŒØ¯!</p>
+                <div class="text-5xl mb-3">📝</div>
+                <p class="text-white/50 text-sm">هنوز پیامی در این چت وجود ندارد</p>
+                <p class="text-white/30 text-xs mt-1">اولین پیام را ارسال کنید!</p>
             </div>
             <?php else: ?>
                 <?php foreach ($messages as $msg): ?>
@@ -216,8 +216,8 @@ $selectedUserId = $_GET['id'] ?? null;
                             <!-- Message Type Icon -->
                             <?php if ($msg['message_type'] !== 'text'): ?>
                             <div class="text-xs mb-1 opacity-70 flex items-center gap-1">
-                                <span><?= $msg['type_icon'] ?? 'ðŸ“Ž' ?></span>
-                                <span><?= htmlspecialchars($msg['message_type'] ?? 'ÙØ§ÛŒÙ„') ?></span>
+                                <span><?= $msg['type_icon'] ?? '📎' ?></span>
+                                <span><?= htmlspecialchars($msg['message_type'] ?? 'فایل') ?></span>
                             </div>
                             <?php endif; ?>
                             
@@ -232,8 +232,8 @@ $selectedUserId = $_GET['id'] ?? null;
                             <div class="flex items-center justify-end gap-2 mt-2 text-xs opacity-70">
                                 <span><?= htmlspecialchars($msg['time_ago'] ?? '') ?></span>
                                 <?php if ($msg['direction'] === 'out'): ?>
-                                <span title="<?= !empty($msg['is_read']) ? 'Ø®ÙˆØ§Ù†Ø¯Ù‡ Ø´Ø¯Ù‡' : 'Ø§Ø±Ø³Ø§Ù„ Ø´Ø¯Ù‡' ?>">
-                                    <?= !empty($msg['is_read']) ? 'âœ“âœ“' : 'âœ“' ?>
+                                <span title="<?= !empty($msg['is_read']) ? 'خوانده شده' : 'ارسال شده' ?>">
+                                    <?= !empty($msg['is_read']) ? '✓✓' : '✓' ?>
                                 </span>
                                 <?php endif; ?>
                             </div>
@@ -244,7 +244,7 @@ $selectedUserId = $_GET['id'] ?? null;
                         <?php if ($msg['direction'] === 'note'): ?>
                         <div class="text-xs text-yellow-400 mt-1 flex items-center gap-1">
                             <i class="fas fa-sticky-note"></i>
-                            <span>ÛŒØ§Ø¯Ø¯Ø§Ø´Øª</span>
+                            <span>یادداشت</span>
                         </div>
                         <?php endif; ?>
                         
@@ -258,28 +258,28 @@ $selectedUserId = $_GET['id'] ?? null;
         <div class="border-t border-white/10 p-3">
             <div class="flex gap-2 overflow-x-auto pb-2">
                 <button 
-                    onclick="insertQuickReply('Ø³Ù„Ø§Ù…! Ú†Ø·ÙˆØ± Ù…ÛŒâ€ŒØªÙˆÙ†Ù… Ú©Ù…Ú©ØªÙˆÙ† Ú©Ù†Ù…ØŸ')"
+                    onclick="insertQuickReply('سلام! چطور می‌تونم کمکتون کنم؟')"
                     class="bg-white/10 hover:bg-white/20 text-white text-xs px-3 py-1.5 rounded-lg whitespace-nowrap transition"
                 >
-                    ðŸ‘‹ Ø³Ù„Ø§Ù…
+                    👋 سلام
                 </button>
                 <button 
-                    onclick="insertQuickReply('Ù…Ù…Ù†ÙˆÙ† Ø§Ø² Ù¾ÛŒØ§Ù… Ø´Ù…Ø§. Ù‡Ù…Ú©Ø§Ø±Ø§Ù† Ù…Ø§ Ø¯Ø± Ø§Ø³Ø±Ø¹ ÙˆÙ‚Øª Ù¾Ø§Ø³Ø® Ù…ÛŒâ€ŒØ¯Ù†.')"
+                    onclick="insertQuickReply('ممنون از پیام شما. همکاران ما در اسرع وقت پاسخ می‌دن.')"
                     class="bg-white/10 hover:bg-white/20 text-white text-xs px-3 py-1.5 rounded-lg whitespace-nowrap transition"
                 >
-                    â³ Ø¯Ø± Ø­Ø§Ù„ Ø¨Ø±Ø±Ø³ÛŒ
+                    ⏳ در حال بررسی
                 </button>
                 <button 
-                    onclick="insertQuickReply('Ù…Ø´Ú©Ù„ Ø´Ù…Ø§ Ø­Ù„ Ø´Ø¯ØŸ Ø§Ú¯Ù‡ Ø³ÙˆØ§Ù„ Ø¯ÛŒÚ¯Ù‡â€ŒØ§ÛŒ Ø¯Ø§Ø±ÛŒØ¯ Ø¯Ø± Ø®Ø¯Ù…ØªÙ….')"
+                    onclick="insertQuickReply('مشکل شما حل شد؟ اگه سوال دیگه‌ای دارید در خدمتم.')"
                     class="bg-white/10 hover:bg-white/20 text-white text-xs px-3 py-1.5 rounded-lg whitespace-nowrap transition"
                 >
-                    âœ… Ø­Ù„ Ø´Ø¯ØŸ
+                    ✅ حل شد؟
                 </button>
                 <button 
-                    onclick="insertQuickReply('Ø¨Ø±Ø§ÛŒ Ø­Ù…Ø§ÛŒØª Ù…Ø§Ù„ÛŒ Ø§Ø² Ù„ÛŒÙ†Ú© Ø²ÛŒØ± Ø§Ø³ØªÙØ§Ø¯Ù‡ Ú©Ù†ÛŒØ¯:\nðŸ’° [Ù„ÛŒÙ†Ú© Ø­Ù…Ø§ÛŒØª]')"
+                    onclick="insertQuickReply('برای حمایت مالی از لینک زیر استفاده کنید:\n💰 [لینک حمایت]')"
                     class="bg-white/10 hover:bg-white/20 text-white text-xs px-3 py-1.5 rounded-lg whitespace-nowrap transition"
                 >
-                    ðŸ’° Ø­Ù…Ø§ÛŒØª
+                    💰 حمایت
                 </button>
             </div>
         </div>
@@ -296,7 +296,7 @@ $selectedUserId = $_GET['id'] ?? null;
                         id="messageInput"
                         name="message"
                         rows="1"
-                        placeholder="Ù¾ÛŒØ§Ù… Ø®ÙˆØ¯ Ø±Ø§ Ø¨Ù†ÙˆÛŒØ³ÛŒØ¯..."
+                        placeholder="پیام خود را بنویسید..."
                         class="w-full bg-white/10 border border-white/20 rounded-xl py-3 px-4 pr-12 text-white placeholder-white/40 focus:border-purple-500 transition resize-none"
                         style="min-height: 48px; max-height: 120px;"
                         onkeydown="handleKeyDown(event)"
@@ -308,7 +308,7 @@ $selectedUserId = $_GET['id'] ?? null;
                         type="button"
                         onclick="toggleEmojiPicker()"
                         class="absolute left-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/60 transition"
-                        title="Ø§ÛŒÙ…ÙˆØ¬ÛŒ"
+                        title="ایموجی"
                     >
                         <i class="far fa-smile text-xl"></i>
                     </button>
@@ -321,7 +321,7 @@ $selectedUserId = $_GET['id'] ?? null;
                     class="bg-gradient-to-r from-purple-500 to-blue-500 hover:opacity-90 text-white px-6 rounded-xl transition flex items-center gap-2 flex-shrink-0"
                 >
                     <i class="fas fa-paper-plane"></i>
-                    <span class="hidden sm:inline">Ø§Ø±Ø³Ø§Ù„</span>
+                    <span class="hidden sm:inline">ارسال</span>
                 </button>
             </form>
             
@@ -329,7 +329,7 @@ $selectedUserId = $_GET['id'] ?? null;
             <div id="emojiPicker" class="hidden mt-3 bg-white/10 rounded-xl p-3">
                 <div class="grid grid-cols-8 gap-2">
                     <?php
-                    $emojis = ['ðŸ˜€', 'ðŸ˜ƒ', 'ðŸ˜„', 'ðŸ˜', 'ðŸ˜†', 'ðŸ˜…', 'ðŸ¤£', 'ðŸ˜‚', 'ðŸ™‚', 'ðŸ™ƒ', 'ðŸ˜‰', 'ðŸ˜Š', 'ðŸ˜‡', 'ðŸ¥°', 'ðŸ˜', 'ðŸ¤©', 'ðŸ˜˜', 'ðŸ˜—', 'ðŸ˜š', 'ðŸ˜™', 'ðŸ¥²', 'ðŸ˜‹', 'ðŸ˜›', 'ðŸ˜œ', 'ðŸ¤ª', 'ðŸ˜', 'ðŸ¤‘', 'ðŸ¤—', 'ðŸ¤­', 'ðŸ¤«', 'ðŸ¤”', 'ðŸ¤', 'ðŸ¤¨', 'ðŸ˜', 'ðŸ˜‘', 'ðŸ˜¶', 'ðŸ˜', 'ðŸ˜’', 'ðŸ™„', 'ðŸ˜¬', 'ðŸ¤¥', 'ðŸ˜Œ', 'ðŸ˜”', 'ðŸ˜ª', 'ðŸ¤¤', 'ðŸ˜´', 'ðŸ˜·', 'ðŸ¤’', 'ðŸ¤•', 'ðŸ¤¢', 'ðŸ¤®', 'ðŸ¥µ', 'ðŸ¥¶', 'ðŸ¥´', 'ðŸ˜µ', 'ðŸ¤¯', 'ðŸ¤ ', 'ðŸ¥³', 'ðŸ¥¸', 'ðŸ˜Ž', 'ðŸ¤“', 'ðŸ§', 'ðŸ˜•', 'ðŸ˜Ÿ', 'ðŸ™', 'â˜¹ï¸', 'ðŸ˜®', 'ðŸ˜¯', 'ðŸ˜²', 'ðŸ˜³', 'ðŸ¥º', 'ðŸ˜¦', 'ðŸ˜§', 'ðŸ˜¨', 'ðŸ˜°', 'ðŸ˜¥', 'ðŸ˜¢', 'ðŸ˜­', 'ðŸ˜±', 'ðŸ˜–', 'ðŸ˜£', 'ðŸ˜ž', 'ðŸ˜“', 'ðŸ˜©', 'ðŸ˜«', 'ðŸ¥±', 'ðŸ˜¤', 'ðŸ˜¡', 'ðŸ˜ ', 'ðŸ¤¬', 'ðŸ‘', 'ðŸ‘Ž', 'ðŸ‘', 'ðŸ™Œ', 'ðŸ¤', 'â¤ï¸', 'ðŸ’”', 'ðŸ’¯', 'âœ¨', 'ðŸ”¥', 'â­', 'ðŸŽ‰', 'ðŸŽŠ'];
+                    $emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '🤣', '😂', '🙂', '🙃', '😉', '😊', '😇', '🥰', '😍', '🤩', '😘', '😗', '😚', '😙', '🥲', '😋', '😛', '😜', '🤪', '😝', '🤑', '🤗', '🤭', '🤫', '🤔', '🤐', '🤨', '😐', '😑', '😶', '😏', '😒', '🙄', '😬', '🤥', '😌', '😔', '😪', '🤤', '😴', '😷', '🤒', '🤕', '🤢', '🤮', '🥵', '🥶', '🥴', '😵', '🤯', '🤠', '🥳', '🥸', '😎', '🤓', '🧐', '😕', '😟', '🙁', '☹️', '😮', '😯', '😲', '😳', '🥺', '😦', '😧', '😨', '😰', '😥', '😢', '😭', '😱', '😖', '😣', '😞', '😓', '😩', '😫', '🥱', '😤', '😡', '😠', '🤬', '👍', '👎', '👏', '🙌', '🤝', '❤️', '💔', '💯', '✨', '🔥', '⭐', '🎉', '🎊'];
                     foreach ($emojis as $emoji):
                     ?>
                     <button 
@@ -350,9 +350,9 @@ $selectedUserId = $_GET['id'] ?? null;
     
 </div>
 
-<!-- â•â•â• JavaScript â•â•â• -->
+<!-- ═══ JavaScript ═══ -->
 <script>
-// â•â•â• Auto-scroll to bottom â•â•â•
+// ═══ Auto-scroll to bottom ═══
 function scrollToBottom() {
     const messagesArea = document.getElementById('messagesArea');
     if (messagesArea) {
@@ -360,13 +360,13 @@ function scrollToBottom() {
     }
 }
 
-// â•â•â• Auto-resize textarea â•â•â•
+// ═══ Auto-resize textarea ═══
 function autoResize(textarea) {
     textarea.style.height = 'auto';
     textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
 }
 
-// â•â•â• Handle Enter key â•â•â•
+// ═══ Handle Enter key ═══
 function handleKeyDown(event) {
     if (event.key === 'Enter' && !event.shiftKey) {
         event.preventDefault();
@@ -374,13 +374,13 @@ function handleKeyDown(event) {
     }
 }
 
-// â•â•â• Toggle Emoji Picker â•â•â•
+// ═══ Toggle Emoji Picker ═══
 function toggleEmojiPicker() {
     const picker = document.getElementById('emojiPicker');
     picker.classList.toggle('hidden');
 }
 
-// â•â•â• Insert Emoji â•â•â•
+// ═══ Insert Emoji ═══
 function insertEmoji(emoji) {
     const input = document.getElementById('messageInput');
     const start = input.selectionStart;
@@ -394,7 +394,7 @@ function insertEmoji(emoji) {
     toggleEmojiPicker();
 }
 
-// â•â•â• Insert Quick Reply â•â•â•
+// ═══ Insert Quick Reply ═══
 function insertQuickReply(text) {
     const input = document.getElementById('messageInput');
     input.value = text;
@@ -402,7 +402,7 @@ function insertQuickReply(text) {
     autoResize(input);
 }
 
-// â•â•â• Send Message â•â•â•
+// ═══ Send Message ═══
 document.getElementById('chatForm')?.addEventListener('submit', async function(e) {
     e.preventDefault();
     
@@ -410,7 +410,7 @@ document.getElementById('chatForm')?.addEventListener('submit', async function(e
     const message = formData.get('message').trim();
     
     if (!message) {
-        showToast('Ù„Ø·ÙØ§Ù‹ Ù¾ÛŒØ§Ù… Ø±Ø§ ÙˆØ§Ø±Ø¯ Ú©Ù†ÛŒØ¯', 'warning');
+        showToast('لطفاً پیام را وارد کنید', 'warning');
         return;
     }
     
@@ -434,30 +434,30 @@ document.getElementById('chatForm')?.addEventListener('submit', async function(e
         const data = await response.json();
         
         if (data.success) {
-            // Ø§Ø¶Ø§ÙÙ‡ Ú©Ø±Ø¯Ù† Ù¾ÛŒØ§Ù… Ø¨Ù‡ ØµÙØ­Ù‡
+            // اضافه کردن پیام به صفحه
             appendMessage(data.message);
             
-            // Ù¾Ø§Ú© Ú©Ø±Ø¯Ù† input
+            // پاک کردن input
             document.getElementById('messageInput').value = '';
             autoResize(document.getElementById('messageInput'));
             
-            showToast('Ù¾ÛŒØ§Ù… Ø§Ø±Ø³Ø§Ù„ Ø´Ø¯', 'success');
+            showToast('پیام ارسال شد', 'success');
         } else {
-            showToast(data.error || 'Ø®Ø·Ø§ Ø¯Ø± Ø§Ø±Ø³Ø§Ù„ Ù¾ÛŒØ§Ù…', 'error');
+            showToast(data.error || 'خطا در ارسال پیام', 'error');
         }
     } catch (error) {
-        showToast('Ø®Ø·Ø§ Ø¯Ø± Ø§Ø±ØªØ¨Ø§Ø· Ø¨Ø§ Ø³Ø±ÙˆØ±', 'error');
+        showToast('خطا در ارتباط با سرور', 'error');
     } finally {
         sendBtn.disabled = false;
-        sendBtn.innerHTML = '<i class="fas fa-paper-plane"></i><span class="hidden sm:inline">Ø§Ø±Ø³Ø§Ù„</span>';
+        sendBtn.innerHTML = '<i class="fas fa-paper-plane"></i><span class="hidden sm:inline">ارسال</span>';
     }
 });
 
-// â•â•â• Append Message â•â•â•
+// ═══ Append Message ═══
 function appendMessage(msg) {
     const messagesArea = document.getElementById('messagesArea');
     
-    // Ø­Ø°Ù empty state Ø§Ú¯Ø± ÙˆØ¬ÙˆØ¯ Ø¯Ø§Ø±Ù‡
+    // حذف empty state اگر وجود داره
     const emptyState = messagesArea.querySelector('.text-center.py-12');
     if (emptyState) {
         emptyState.remove();
@@ -471,8 +471,8 @@ function appendMessage(msg) {
                         ${msg.text.replace(/\n/g, '<br>')}
                     </div>
                     <div class="flex items-center justify-end gap-2 mt-2 text-xs opacity-70">
-                        <span>Ø§Ù„Ø§Ù†</span>
-                        <span>âœ“</span>
+                        <span>الان</span>
+                        <span>✓</span>
                     </div>
                 </div>
             </div>
@@ -483,7 +483,7 @@ function appendMessage(msg) {
     scrollToBottom();
 }
 
-// â•â•â• Search Users â•â•â•
+// ═══ Search Users ═══
 document.getElementById('userSearch')?.addEventListener('input', function(e) {
     const query = e.target.value.toLowerCase();
     const users = document.querySelectorAll('.user-item');
@@ -498,23 +498,23 @@ document.getElementById('userSearch')?.addEventListener('input', function(e) {
     });
 });
 
-// â•â•â• View User Profile â•â•â•
+// ═══ View User Profile ═══
 function viewUserProfile(userId) {
     window.open(`/admin/users.php?id=${userId}`, '_blank');
 }
 
-// â•â•â• Export Chat â•â•â•
+// ═══ Export Chat ═══
 function exportChat(userId) {
-    if (!confirm('Ø¢ÛŒØ§ Ù…ÛŒâ€ŒØ®ÙˆØ§Ù‡ÛŒØ¯ Ú†Øª Ø±Ø§ Ø¨Ù‡ ÙØ±Ù…Øª Ù…ØªÙ†ÛŒ Ø¯Ø§Ù†Ù„ÙˆØ¯ Ú©Ù†ÛŒØ¯ØŸ')) {
+    if (!confirm('آیا می‌خواهید چت را به فرمت متنی دانلود کنید؟')) {
         return;
     }
     window.location.href = `/admin/api/chat/export/${userId}`;
-    showToast('Ø¯Ø± Ø­Ø§Ù„ Ø¯Ø§Ù†Ù„ÙˆØ¯...', 'info');
+    showToast('در حال دانلود...', 'info');
 }
 
-// â•â•â• Clear Chat â•â•â•
+// ═══ Clear Chat ═══
 async function clearChat(userId) {
-    if (!confirm('Ø¢ÛŒØ§ Ù…Ø·Ù…Ø¦Ù† Ù‡Ø³ØªÛŒØ¯ Ú©Ù‡ Ù…ÛŒâ€ŒØ®ÙˆØ§Ù‡ÛŒØ¯ ØªÙ…Ø§Ù… Ù¾ÛŒØ§Ù…â€ŒÙ‡Ø§ÛŒ Ø§ÛŒÙ† Ú†Øª Ø±Ø§ Ø­Ø°Ù Ú©Ù†ÛŒØ¯ØŸ\n\nØ§ÛŒÙ† Ø¹Ù…Ù„ ØºÛŒØ±Ù‚Ø§Ø¨Ù„ Ø¨Ø§Ø²Ú¯Ø´Øª Ø§Ø³Øª!')) {
+    if (!confirm('آیا مطمئن هستید که می‌خواهید تمام پیام‌های این چت را حذف کنید؟\n\nاین عمل غیرقابل بازگشت است!')) {
         return;
     }
     
@@ -531,17 +531,17 @@ async function clearChat(userId) {
         const data = await response.json();
         
         if (data.success) {
-            showToast('Ú†Øª Ù¾Ø§Ú© Ø´Ø¯', 'success');
+            showToast('چت پاک شد', 'success');
             setTimeout(() => location.reload(), 1000);
         } else {
-            showToast(data.error || 'Ø®Ø·Ø§', 'error');
+            showToast(data.error || 'خطا', 'error');
         }
     } catch (error) {
-        showToast('Ø®Ø·Ø§ Ø¯Ø± Ø§Ø±ØªØ¨Ø§Ø· Ø¨Ø§ Ø³Ø±ÙˆØ±', 'error');
+        showToast('خطا در ارتباط با سرور', 'error');
     }
 }
 
-// â•â•â• Auto-refresh Messages (Ù‡Ø± 10 Ø«Ø§Ù†ÛŒÙ‡) â•â•â•
+// ═══ Auto-refresh Messages (هر 10 ثانیه) ═══
 <?php if ($currentUser): ?>
 let lastMessageId = <?= !empty($messages) ? end($messages)['id'] : 0 ?>;
 
@@ -561,11 +561,11 @@ async function checkNewMessages() {
     }
 }
 
-// Ø¨Ø±Ø±Ø³ÛŒ Ù‡Ø± 10 Ø«Ø§Ù†ÛŒÙ‡
+// بررسی هر 10 ثانیه
 setInterval(checkNewMessages, 10000);
 <?php endif; ?>
 
-// â•â•â• Initialize â•â•â•
+// ═══ Initialize ═══
 document.addEventListener('DOMContentLoaded', function() {
     scrollToBottom();
     

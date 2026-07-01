@@ -1,52 +1,52 @@
-﻿-- ============================================
+-- ============================================
 -- Youtuber Bot - Database Schema
 -- ============================================
--- Ù†Ø³Ø®Ù‡: 2.1.0
--- ØªØ§Ø±ÛŒØ®: 2026-07-01
+-- نسخه: 2.1.0
+-- تاریخ: 2026-07-01
 -- 
--- Ø§ÛŒÙ† ÙØ§ÛŒÙ„ Ø³Ø§Ø®ØªØ§Ø± Ú©Ø§Ù…Ù„ Ø¯ÛŒØªØ§Ø¨ÛŒØ³ Ø±Ùˆ ØªØ¹Ø±ÛŒÙ Ù…ÛŒâ€ŒÚ©Ù†Ù‡
--- Ø´Ø§Ù…Ù„:
--- - ØªÙ…Ø§Ù… Ø¬Ø¯Ø§ÙˆÙ„
--- - Ø§ÛŒÙ†Ø¯Ú©Ø³â€ŒÙ‡Ø§
+-- این فایل ساختار کامل دیتابیس رو تعریف می‌کنه
+-- شامل:
+-- - تمام جداول
+-- - ایندکس‌ها
 -- - Foreign Keys
 -- - Triggers
 -- - Views
 -- - Stored Procedures
--- - Ø¯Ø§Ø¯Ù‡â€ŒÙ‡Ø§ÛŒ Ù¾ÛŒØ´â€ŒÙØ±Ø¶
+-- - داده‌های پیش‌فرض
 --
--- Ù†Ø­ÙˆÙ‡ Ø§Ø¬Ø±Ø§:
+-- نحوه اجرا:
 -- mysql -u username -p database_name < schema.sql
 -- ============================================
 
--- ØªÙ†Ø¸ÛŒÙ…Ø§Øª Ø§ÙˆÙ„ÛŒÙ‡
+-- تنظیمات اولیه
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 SET SQL_MODE = 'STRICT_TRANS_TABLES,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
--- 1. Ø¬Ø¯ÙˆÙ„ Ú©Ø§Ø±Ø¨Ø±Ø§Ù† (Users)
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- ═══════════════════════════════════════════
+-- 1. جدول کاربران (Users)
+-- ═══════════════════════════════════════════
 
 DROP TABLE IF EXISTS `users`;
 
 CREATE TABLE `users` (
-  `id` BIGINT UNSIGNED NOT NULL COMMENT 'Ø¢ÛŒØ¯ÛŒ Ø¹Ø¯Ø¯ÛŒ ØªÙ„Ú¯Ø±Ø§Ù…',
-  `username` VARCHAR(100) DEFAULT NULL COMMENT 'ÛŒÙˆØ²Ø±Ù†ÛŒÙ… ØªÙ„Ú¯Ø±Ø§Ù…',
-  `first_name` VARCHAR(100) DEFAULT NULL COMMENT 'Ù†Ø§Ù…',
-  `last_name` VARCHAR(100) DEFAULT NULL COMMENT 'Ù†Ø§Ù… Ø®Ø§Ù†ÙˆØ§Ø¯Ú¯ÛŒ',
-  `phone` VARCHAR(20) DEFAULT NULL COMMENT 'Ø´Ù…Ø§Ø±Ù‡ ØªÙ…Ø§Ø³',
-  `bio` TEXT DEFAULT NULL COMMENT 'Ø¨ÛŒÙˆÚ¯Ø±Ø§ÙÛŒ',
-  `language_code` VARCHAR(10) DEFAULT 'fa' COMMENT 'Ú©Ø¯ Ø²Ø¨Ø§Ù†',
-  `is_vip` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'ÙˆØ¶Ø¹ÛŒØª VIP',
-  `vip_expires_at` DATETIME DEFAULT NULL COMMENT 'ØªØ§Ø±ÛŒØ® Ø§Ù†Ù‚Ø¶Ø§ÛŒ VIP',
-  `blocked` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'Ø¨Ù„Ø§Ú© Ø´Ø¯Ù‡',
-  `notes` TEXT DEFAULT NULL COMMENT 'ÛŒØ§Ø¯Ø¯Ø§Ø´Øª Ø§Ø¯Ù…ÛŒÙ†',
-  `total_donations` DECIMAL(15,2) DEFAULT 0.00 COMMENT 'Ù…Ø¬Ù…ÙˆØ¹ Ø¯ÙˆÙ†ÛŒØªâ€ŒÙ‡Ø§',
-  `donation_count` INT UNSIGNED DEFAULT 0 COMMENT 'ØªØ¹Ø¯Ø§Ø¯ Ø¯ÙˆÙ†ÛŒØªâ€ŒÙ‡Ø§',
-  `message_count` INT UNSIGNED DEFAULT 0 COMMENT 'ØªØ¹Ø¯Ø§Ø¯ Ù¾ÛŒØ§Ù…â€ŒÙ‡Ø§',
-  `last_seen` DATETIME DEFAULT NULL COMMENT 'Ø¢Ø®Ø±ÛŒÙ† Ø¨Ø§Ø²Ø¯ÛŒØ¯',
-  `last_seen_ip` VARCHAR(45) DEFAULT NULL COMMENT 'IP Ø¢Ø®Ø±ÛŒÙ† Ø¨Ø§Ø²Ø¯ÛŒØ¯',
-  `joined_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'ØªØ§Ø±ÛŒØ® Ø¹Ø¶ÙˆÛŒØª',
+  `id` BIGINT UNSIGNED NOT NULL COMMENT 'آیدی عددی تلگرام',
+  `username` VARCHAR(100) DEFAULT NULL COMMENT 'یوزرنیم تلگرام',
+  `first_name` VARCHAR(100) DEFAULT NULL COMMENT 'نام',
+  `last_name` VARCHAR(100) DEFAULT NULL COMMENT 'نام خانوادگی',
+  `phone` VARCHAR(20) DEFAULT NULL COMMENT 'شماره تماس',
+  `bio` TEXT DEFAULT NULL COMMENT 'بیوگرافی',
+  `language_code` VARCHAR(10) DEFAULT 'fa' COMMENT 'کد زبان',
+  `is_vip` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'وضعیت VIP',
+  `vip_expires_at` DATETIME DEFAULT NULL COMMENT 'تاریخ انقضای VIP',
+  `blocked` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'بلاک شده',
+  `notes` TEXT DEFAULT NULL COMMENT 'یادداشت ادمین',
+  `total_donations` DECIMAL(15,2) DEFAULT 0.00 COMMENT 'مجموع دونیت‌ها',
+  `donation_count` INT UNSIGNED DEFAULT 0 COMMENT 'تعداد دونیت‌ها',
+  `message_count` INT UNSIGNED DEFAULT 0 COMMENT 'تعداد پیام‌ها',
+  `last_seen` DATETIME DEFAULT NULL COMMENT 'آخرین بازدید',
+  `last_seen_ip` VARCHAR(45) DEFAULT NULL COMMENT 'IP آخرین بازدید',
+  `joined_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'تاریخ عضویت',
   `updated_at` DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   
   PRIMARY KEY (`id`),
@@ -58,35 +58,35 @@ CREATE TABLE `users` (
   KEY `idx_total_donations` (`total_donations`),
   FULLTEXT KEY `ft_search` (`first_name`, `last_name`, `username`)
   
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Ú©Ø§Ø±Ø¨Ø±Ø§Ù† Ø±Ø¨Ø§Øª ØªÙ„Ú¯Ø±Ø§Ù…';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='کاربران ربات تلگرام';
 
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
--- 2. Ø¬Ø¯ÙˆÙ„ Ø§Ø¯Ù…ÛŒÙ†â€ŒÙ‡Ø§ (Admins)
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- ═══════════════════════════════════════════
+-- 2. جدول ادمین‌ها (Admins)
+-- ═══════════════════════════════════════════
 
 DROP TABLE IF EXISTS `admins`;
 
 CREATE TABLE `admins` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `username` VARCHAR(50) NOT NULL COMMENT 'Ù†Ø§Ù… Ú©Ø§Ø±Ø¨Ø±ÛŒ',
-  `password_hash` VARCHAR(255) NOT NULL COMMENT 'Ø±Ù…Ø² Ø¹Ø¨ÙˆØ± Hash Ø´Ø¯Ù‡',
-  `name` VARCHAR(100) NOT NULL COMMENT 'Ù†Ø§Ù… Ú©Ø§Ù…Ù„',
-  `email` VARCHAR(100) DEFAULT NULL COMMENT 'Ø§ÛŒÙ…ÛŒÙ„',
-  `phone` VARCHAR(20) DEFAULT NULL COMMENT 'Ø´Ù…Ø§Ø±Ù‡ ØªÙ…Ø§Ø³',
-  `role` ENUM('super_admin','admin','editor','moderator') NOT NULL DEFAULT 'admin' COMMENT 'Ù†Ù‚Ø´',
-  `bio` TEXT DEFAULT NULL COMMENT 'Ø¨ÛŒÙˆÚ¯Ø±Ø§ÙÛŒ',
-  `timezone` VARCHAR(50) DEFAULT 'Asia/Tehran' COMMENT 'Ù…Ù†Ø·Ù‚Ù‡ Ø²Ù…Ø§Ù†ÛŒ',
-  `avatar` VARCHAR(255) DEFAULT NULL COMMENT 'Ø¢ÙˆØ§ØªØ§Ø±',
-  `active` TINYINT(1) NOT NULL DEFAULT 1 COMMENT 'ÙØ¹Ø§Ù„',
+  `username` VARCHAR(50) NOT NULL COMMENT 'نام کاربری',
+  `password_hash` VARCHAR(255) NOT NULL COMMENT 'رمز عبور Hash شده',
+  `name` VARCHAR(100) NOT NULL COMMENT 'نام کامل',
+  `email` VARCHAR(100) DEFAULT NULL COMMENT 'ایمیل',
+  `phone` VARCHAR(20) DEFAULT NULL COMMENT 'شماره تماس',
+  `role` ENUM('super_admin','admin','editor','moderator') NOT NULL DEFAULT 'admin' COMMENT 'نقش',
+  `bio` TEXT DEFAULT NULL COMMENT 'بیوگرافی',
+  `timezone` VARCHAR(50) DEFAULT 'Asia/Tehran' COMMENT 'منطقه زمانی',
+  `avatar` VARCHAR(255) DEFAULT NULL COMMENT 'آواتار',
+  `active` TINYINT(1) NOT NULL DEFAULT 1 COMMENT 'فعال',
   `email_verified_at` DATETIME DEFAULT NULL,
-  `remember_token` VARCHAR(64) DEFAULT NULL COMMENT 'ØªÙˆÚ©Ù† Remember Me',
-  `remember_expiry` DATETIME DEFAULT NULL COMMENT 'Ø§Ù†Ù‚Ø¶Ø§ÛŒ Remember Me',
-  `last_login` DATETIME DEFAULT NULL COMMENT 'Ø¢Ø®Ø±ÛŒÙ† ÙˆØ±ÙˆØ¯',
-  `last_ip` VARCHAR(45) DEFAULT NULL COMMENT 'IP Ø¢Ø®Ø±ÛŒÙ† ÙˆØ±ÙˆØ¯',
-  `last_user_agent` TEXT DEFAULT NULL COMMENT 'User Agent Ø¢Ø®Ø±ÛŒÙ† ÙˆØ±ÙˆØ¯',
-  `login_count` INT UNSIGNED DEFAULT 0 COMMENT 'ØªØ¹Ø¯Ø§Ø¯ ÙˆØ±ÙˆØ¯Ù‡Ø§',
-  `failed_login_attempts` INT UNSIGNED DEFAULT 0 COMMENT 'ØªØ¹Ø¯Ø§Ø¯ ØªÙ„Ø§Ø´â€ŒÙ‡Ø§ÛŒ Ù†Ø§Ù…ÙˆÙÙ‚',
-  `locked_until` DATETIME DEFAULT NULL COMMENT 'Ù‚ÙÙ„ ØªØ§',
+  `remember_token` VARCHAR(64) DEFAULT NULL COMMENT 'توکن Remember Me',
+  `remember_expiry` DATETIME DEFAULT NULL COMMENT 'انقضای Remember Me',
+  `last_login` DATETIME DEFAULT NULL COMMENT 'آخرین ورود',
+  `last_ip` VARCHAR(45) DEFAULT NULL COMMENT 'IP آخرین ورود',
+  `last_user_agent` TEXT DEFAULT NULL COMMENT 'User Agent آخرین ورود',
+  `login_count` INT UNSIGNED DEFAULT 0 COMMENT 'تعداد ورودها',
+  `failed_login_attempts` INT UNSIGNED DEFAULT 0 COMMENT 'تعداد تلاش‌های ناموفق',
+  `locked_until` DATETIME DEFAULT NULL COMMENT 'قفل تا',
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   
@@ -98,30 +98,30 @@ CREATE TABLE `admins` (
   KEY `idx_active` (`active`),
   KEY `idx_last_login` (`last_login`)
   
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Ø§Ø¯Ù…ÛŒÙ†â€ŒÙ‡Ø§ÛŒ Ø³ÛŒØ³ØªÙ…';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='ادمین‌های سیستم';
 
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
--- 3. Ø¬Ø¯ÙˆÙ„ Ù¾ÛŒØ§Ù…â€ŒÙ‡Ø§ (Messages)
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- ═══════════════════════════════════════════
+-- 3. جدول پیام‌ها (Messages)
+-- ═══════════════════════════════════════════
 
 DROP TABLE IF EXISTS `messages`;
 
 CREATE TABLE `messages` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `user_id` BIGINT UNSIGNED NOT NULL COMMENT 'Ø¢ÛŒØ¯ÛŒ Ú©Ø§Ø±Ø¨Ø±',
-  `admin_id` BIGINT UNSIGNED DEFAULT NULL COMMENT 'Ø¢ÛŒØ¯ÛŒ Ø§Ø¯Ù…ÛŒÙ† (Ø§Ú¯Ù‡ Ø§Ø¯Ù…ÛŒÙ† ÙØ±Ø³ØªØ§Ø¯Ù‡)',
-  `text` TEXT DEFAULT NULL COMMENT 'Ù…ØªÙ† Ù¾ÛŒØ§Ù…',
-  `direction` ENUM('in','out','note','ai') NOT NULL DEFAULT 'in' COMMENT 'Ø¬Ù‡Øª Ù¾ÛŒØ§Ù…',
-  `message_type` ENUM('text','photo','video','document','audio','voice','location','contact','sticker','ai','note') NOT NULL DEFAULT 'text' COMMENT 'Ù†ÙˆØ¹ Ù¾ÛŒØ§Ù…',
-  `file_id` VARCHAR(255) DEFAULT NULL COMMENT 'File ID ØªÙ„Ú¯Ø±Ø§Ù…',
-  `file_size` INT UNSIGNED DEFAULT NULL COMMENT 'Ø§Ù†Ø¯Ø§Ø²Ù‡ ÙØ§ÛŒÙ„',
-  `file_name` VARCHAR(255) DEFAULT NULL COMMENT 'Ù†Ø§Ù… ÙØ§ÛŒÙ„',
+  `user_id` BIGINT UNSIGNED NOT NULL COMMENT 'آیدی کاربر',
+  `admin_id` BIGINT UNSIGNED DEFAULT NULL COMMENT 'آیدی ادمین (اگه ادمین فرستاده)',
+  `text` TEXT DEFAULT NULL COMMENT 'متن پیام',
+  `direction` ENUM('in','out','note','ai') NOT NULL DEFAULT 'in' COMMENT 'جهت پیام',
+  `message_type` ENUM('text','photo','video','document','audio','voice','location','contact','sticker','ai','note') NOT NULL DEFAULT 'text' COMMENT 'نوع پیام',
+  `file_id` VARCHAR(255) DEFAULT NULL COMMENT 'File ID تلگرام',
+  `file_size` INT UNSIGNED DEFAULT NULL COMMENT 'اندازه فایل',
+  `file_name` VARCHAR(255) DEFAULT NULL COMMENT 'نام فایل',
   `mime_type` VARCHAR(100) DEFAULT NULL COMMENT 'MIME type',
-  `telegram_message_id` BIGINT UNSIGNED DEFAULT NULL COMMENT 'Message ID ØªÙ„Ú¯Ø±Ø§Ù…',
-  `is_read` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'Ø®ÙˆØ§Ù†Ø¯Ù‡ Ø´Ø¯Ù‡',
-  `read_at` DATETIME DEFAULT NULL COMMENT 'Ø²Ù…Ø§Ù† Ø®ÙˆØ§Ù†Ø¯Ù‡ Ø´Ø¯Ù†',
-  `reply_to_message_id` BIGINT UNSIGNED DEFAULT NULL COMMENT 'Ù¾Ø§Ø³Ø® Ø¨Ù‡ Ù¾ÛŒØ§Ù…',
-  `metadata` JSON DEFAULT NULL COMMENT 'Ø§Ø·Ù„Ø§Ø¹Ø§Øª Ø§Ø¶Ø§ÙÛŒ',
+  `telegram_message_id` BIGINT UNSIGNED DEFAULT NULL COMMENT 'Message ID تلگرام',
+  `is_read` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'خوانده شده',
+  `read_at` DATETIME DEFAULT NULL COMMENT 'زمان خوانده شدن',
+  `reply_to_message_id` BIGINT UNSIGNED DEFAULT NULL COMMENT 'پاسخ به پیام',
+  `metadata` JSON DEFAULT NULL COMMENT 'اطلاعات اضافی',
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   
   PRIMARY KEY (`id`),
@@ -138,34 +138,34 @@ CREATE TABLE `messages` (
   CONSTRAINT `fk_messages_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_messages_admin` FOREIGN KEY (`admin_id`) REFERENCES `admins` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
   
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Ù¾ÛŒØ§Ù…â€ŒÙ‡Ø§ÛŒ Ú©Ø§Ø±Ø¨Ø±Ø§Ù†';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='پیام‌های کاربران';
 
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
--- 4. Ø¬Ø¯ÙˆÙ„ Ø¯ÙˆÙ†ÛŒØªâ€ŒÙ‡Ø§ (Donations)
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- ═══════════════════════════════════════════
+-- 4. جدول دونیت‌ها (Donations)
+-- ═══════════════════════════════════════════
 
 DROP TABLE IF EXISTS `donations`;
 
 CREATE TABLE `donations` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `user_id` BIGINT UNSIGNED NOT NULL COMMENT 'Ø¢ÛŒØ¯ÛŒ Ú©Ø§Ø±Ø¨Ø±',
-  `amount` DECIMAL(15,2) NOT NULL COMMENT 'Ù…Ø¨Ù„Øº (ØªÙˆÙ…Ø§Ù†)',
-  `currency` VARCHAR(10) NOT NULL DEFAULT 'IRT' COMMENT 'ÙˆØ§Ø­Ø¯ Ù¾ÙˆÙ„',
-  `gateway` ENUM('zarinpal','idpay','nextpay','nowpayments','manual','crypto','other') NOT NULL DEFAULT 'manual' COMMENT 'Ø¯Ø±Ú¯Ø§Ù‡ Ù¾Ø±Ø¯Ø§Ø®Øª',
-  `status` ENUM('pending','success','failed','refunded','cancelled') NOT NULL DEFAULT 'pending' COMMENT 'ÙˆØ¶Ø¹ÛŒØª',
-  `ref_id` VARCHAR(100) DEFAULT NULL COMMENT 'Ø´Ù†Ø§Ø³Ù‡ Ù…Ø±Ø¬Ø¹',
-  `transaction_id` VARCHAR(100) DEFAULT NULL COMMENT 'Ø´Ù†Ø§Ø³Ù‡ ØªØ±Ø§Ú©Ù†Ø´',
-  `authority` VARCHAR(100) DEFAULT NULL COMMENT 'Authority Ø²Ø±ÛŒÙ†â€ŒÙ¾Ø§Ù„',
+  `user_id` BIGINT UNSIGNED NOT NULL COMMENT 'آیدی کاربر',
+  `amount` DECIMAL(15,2) NOT NULL COMMENT 'مبلغ (تومان)',
+  `currency` VARCHAR(10) NOT NULL DEFAULT 'IRT' COMMENT 'واحد پول',
+  `gateway` ENUM('zarinpal','idpay','nextpay','nowpayments','manual','crypto','other') NOT NULL DEFAULT 'manual' COMMENT 'درگاه پرداخت',
+  `status` ENUM('pending','success','failed','refunded','cancelled') NOT NULL DEFAULT 'pending' COMMENT 'وضعیت',
+  `ref_id` VARCHAR(100) DEFAULT NULL COMMENT 'شناسه مرجع',
+  `transaction_id` VARCHAR(100) DEFAULT NULL COMMENT 'شناسه تراکنش',
+  `authority` VARCHAR(100) DEFAULT NULL COMMENT 'Authority زرین‌پال',
   `track_id` VARCHAR(100) DEFAULT NULL COMMENT 'Track ID',
-  `card_number` VARCHAR(20) DEFAULT NULL COMMENT 'Ø´Ù…Ø§Ø±Ù‡ Ú©Ø§Ø±Øª',
-  `card_holder` VARCHAR(100) DEFAULT NULL COMMENT 'Ù†Ø§Ù… Ø¯Ø§Ø±Ù†Ø¯Ù‡ Ú©Ø§Ø±Øª',
-  `description` TEXT DEFAULT NULL COMMENT 'ØªÙˆØ¶ÛŒØ­Ø§Øª',
-  `reject_reason` TEXT DEFAULT NULL COMMENT 'Ø¯Ù„ÛŒÙ„ Ø±Ø¯',
-  `payment_url` VARCHAR(500) DEFAULT NULL COMMENT 'Ù„ÛŒÙ†Ú© Ù¾Ø±Ø¯Ø§Ø®Øª',
-  `verify_data` JSON DEFAULT NULL COMMENT 'Ø¯Ø§Ø¯Ù‡â€ŒÙ‡Ø§ÛŒ ØªØ£ÛŒÛŒØ¯',
-  `approved_at` DATETIME DEFAULT NULL COMMENT 'Ø²Ù…Ø§Ù† ØªØ£ÛŒÛŒØ¯',
-  `rejected_at` DATETIME DEFAULT NULL COMMENT 'Ø²Ù…Ø§Ù† Ø±Ø¯',
-  `paid_at` DATETIME DEFAULT NULL COMMENT 'Ø²Ù…Ø§Ù† Ù¾Ø±Ø¯Ø§Ø®Øª',
+  `card_number` VARCHAR(20) DEFAULT NULL COMMENT 'شماره کارت',
+  `card_holder` VARCHAR(100) DEFAULT NULL COMMENT 'نام دارنده کارت',
+  `description` TEXT DEFAULT NULL COMMENT 'توضیحات',
+  `reject_reason` TEXT DEFAULT NULL COMMENT 'دلیل رد',
+  `payment_url` VARCHAR(500) DEFAULT NULL COMMENT 'لینک پرداخت',
+  `verify_data` JSON DEFAULT NULL COMMENT 'داده‌های تأیید',
+  `approved_at` DATETIME DEFAULT NULL COMMENT 'زمان تأیید',
+  `rejected_at` DATETIME DEFAULT NULL COMMENT 'زمان رد',
+  `paid_at` DATETIME DEFAULT NULL COMMENT 'زمان پرداخت',
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   
@@ -181,28 +181,28 @@ CREATE TABLE `donations` (
   
   CONSTRAINT `fk_donations_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
   
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Ø¯ÙˆÙ†ÛŒØªâ€ŒÙ‡Ø§ Ùˆ Ù¾Ø±Ø¯Ø§Ø®Øªâ€ŒÙ‡Ø§';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='دونیت‌ها و پرداخت‌ها';
 
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
--- 5. Ø¬Ø¯ÙˆÙ„ Ú©Ù„Ù…Ø§Øª Ú©Ù„ÛŒØ¯ÛŒ (Keywords)
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- ═══════════════════════════════════════════
+-- 5. جدول کلمات کلیدی (Keywords)
+-- ═══════════════════════════════════════════
 
 DROP TABLE IF EXISTS `keywords`;
 
 CREATE TABLE `keywords` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `keyword` VARCHAR(200) NOT NULL COMMENT 'Ú©Ù„Ù…Ù‡ Ú©Ù„ÛŒØ¯ÛŒ',
-  `answer` TEXT NOT NULL COMMENT 'Ù¾Ø§Ø³Ø®',
-  `answer_type` ENUM('text','photo','video','document','audio','voice','sticker') NOT NULL DEFAULT 'text' COMMENT 'Ù†ÙˆØ¹ Ù¾Ø§Ø³Ø®',
-  `file_id` VARCHAR(255) DEFAULT NULL COMMENT 'File ID ØªÙ„Ú¯Ø±Ø§Ù…',
-  `priority` INT NOT NULL DEFAULT 0 COMMENT 'Ø§ÙˆÙ„ÙˆÛŒØª (Ø¨Ø§Ù„Ø§ØªØ± = Ù…Ù‡Ù…â€ŒØªØ±)',
-  `active` TINYINT(1) NOT NULL DEFAULT 1 COMMENT 'ÙØ¹Ø§Ù„',
-  `case_sensitive` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'Ø­Ø³Ø§Ø³ Ø¨Ù‡ Ø­Ø±ÙˆÙ',
-  `exact_match` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'ØªØ·Ø§Ø¨Ù‚ Ø¯Ù‚ÛŒÙ‚',
-  `regex_mode` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'Ø­Ø§Ù„Øª Regex',
-  `match_count` INT UNSIGNED DEFAULT 0 COMMENT 'ØªØ¹Ø¯Ø§Ø¯ ØªØ·Ø§Ø¨Ù‚â€ŒÙ‡Ø§',
-  `last_matched_at` DATETIME DEFAULT NULL COMMENT 'Ø¢Ø®Ø±ÛŒÙ† ØªØ·Ø§Ø¨Ù‚',
-  `created_by` BIGINT UNSIGNED DEFAULT NULL COMMENT 'Ø§ÛŒØ¬Ø§Ø¯ Ú©Ù†Ù†Ø¯Ù‡',
+  `keyword` VARCHAR(200) NOT NULL COMMENT 'کلمه کلیدی',
+  `answer` TEXT NOT NULL COMMENT 'پاسخ',
+  `answer_type` ENUM('text','photo','video','document','audio','voice','sticker') NOT NULL DEFAULT 'text' COMMENT 'نوع پاسخ',
+  `file_id` VARCHAR(255) DEFAULT NULL COMMENT 'File ID تلگرام',
+  `priority` INT NOT NULL DEFAULT 0 COMMENT 'اولویت (بالاتر = مهم‌تر)',
+  `active` TINYINT(1) NOT NULL DEFAULT 1 COMMENT 'فعال',
+  `case_sensitive` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'حساس به حروف',
+  `exact_match` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'تطابق دقیق',
+  `regex_mode` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'حالت Regex',
+  `match_count` INT UNSIGNED DEFAULT 0 COMMENT 'تعداد تطابق‌ها',
+  `last_matched_at` DATETIME DEFAULT NULL COMMENT 'آخرین تطابق',
+  `created_by` BIGINT UNSIGNED DEFAULT NULL COMMENT 'ایجاد کننده',
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   
@@ -216,20 +216,20 @@ CREATE TABLE `keywords` (
   
   CONSTRAINT `fk_keywords_creator` FOREIGN KEY (`created_by`) REFERENCES `admins` (`id`) ON DELETE SET NULL
   
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Ú©Ù„Ù…Ø§Øª Ú©Ù„ÛŒØ¯ÛŒ Ùˆ Ù¾Ø§Ø³Ø®â€ŒÙ‡Ø§ÛŒ Ø®ÙˆØ¯Ú©Ø§Ø±';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='کلمات کلیدی و پاسخ‌های خودکار';
 
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
--- 6. Ø¬Ø¯ÙˆÙ„ ØªØ·Ø§Ø¨Ù‚â€ŒÙ‡Ø§ÛŒ Ú©Ù„Ù…Ø§Øª Ú©Ù„ÛŒØ¯ÛŒ
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- ═══════════════════════════════════════════
+-- 6. جدول تطابق‌های کلمات کلیدی
+-- ═══════════════════════════════════════════
 
 DROP TABLE IF EXISTS `keyword_matches`;
 
 CREATE TABLE `keyword_matches` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `keyword_id` INT UNSIGNED NOT NULL COMMENT 'Ø¢ÛŒØ¯ÛŒ Ú©Ù„Ù…Ù‡ Ú©Ù„ÛŒØ¯ÛŒ',
-  `user_id` BIGINT UNSIGNED DEFAULT NULL COMMENT 'Ø¢ÛŒØ¯ÛŒ Ú©Ø§Ø±Ø¨Ø±',
-  `matched_text` TEXT DEFAULT NULL COMMENT 'Ù…ØªÙ† ØªØ·Ø§Ø¨Ù‚ ÛŒØ§ÙØªÙ‡',
-  `matched_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Ø²Ù…Ø§Ù† ØªØ·Ø§Ø¨Ù‚',
+  `keyword_id` INT UNSIGNED NOT NULL COMMENT 'آیدی کلمه کلیدی',
+  `user_id` BIGINT UNSIGNED DEFAULT NULL COMMENT 'آیدی کاربر',
+  `matched_text` TEXT DEFAULT NULL COMMENT 'متن تطابق یافته',
+  `matched_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'زمان تطابق',
   
   PRIMARY KEY (`id`),
   KEY `idx_keyword_id` (`keyword_id`),
@@ -240,24 +240,24 @@ CREATE TABLE `keyword_matches` (
   CONSTRAINT `fk_matches_keyword` FOREIGN KEY (`keyword_id`) REFERENCES `keywords` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_matches_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
   
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='ØªØ§Ø±ÛŒØ®Ú†Ù‡ ØªØ·Ø§Ø¨Ù‚ Ú©Ù„Ù…Ø§Øª Ú©Ù„ÛŒØ¯ÛŒ';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='تاریخچه تطابق کلمات کلیدی';
 
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
--- 7. Ø¬Ø¯ÙˆÙ„ ØªÙ†Ø¸ÛŒÙ…Ø§Øª (Settings)
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- ═══════════════════════════════════════════
+-- 7. جدول تنظیمات (Settings)
+-- ═══════════════════════════════════════════
 
 DROP TABLE IF EXISTS `settings`;
 
 CREATE TABLE `settings` (
-  `key_name` VARCHAR(100) NOT NULL COMMENT 'Ù†Ø§Ù… Ú©Ù„ÛŒØ¯',
-  `value` TEXT DEFAULT NULL COMMENT 'Ù…Ù‚Ø¯Ø§Ø±',
-  `type` ENUM('string','integer','float','boolean','email','url','telegram_token','telegram_id','json','array','color') NOT NULL DEFAULT 'string' COMMENT 'Ù†ÙˆØ¹ Ø¯Ø§Ø¯Ù‡',
-  `category` VARCHAR(50) NOT NULL DEFAULT 'general' COMMENT 'Ø¯Ø³ØªÙ‡',
-  `description` VARCHAR(255) DEFAULT NULL COMMENT 'ØªÙˆØ¶ÛŒØ­Ø§Øª',
-  `sort_order` INT NOT NULL DEFAULT 0 COMMENT 'ØªØ±ØªÛŒØ¨ Ù†Ù…Ø§ÛŒØ´',
-  `is_public` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'Ø¹Ù…ÙˆÙ…ÛŒ',
-  `is_sensitive` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'Ø­Ø³Ø§Ø³',
-  `validation_rules` JSON DEFAULT NULL COMMENT 'Ù‚ÙˆØ§Ù†ÛŒÙ† Ø§Ø¹ØªØ¨Ø§Ø±Ø³Ù†Ø¬ÛŒ',
+  `key_name` VARCHAR(100) NOT NULL COMMENT 'نام کلید',
+  `value` TEXT DEFAULT NULL COMMENT 'مقدار',
+  `type` ENUM('string','integer','float','boolean','email','url','telegram_token','telegram_id','json','array','color') NOT NULL DEFAULT 'string' COMMENT 'نوع داده',
+  `category` VARCHAR(50) NOT NULL DEFAULT 'general' COMMENT 'دسته',
+  `description` VARCHAR(255) DEFAULT NULL COMMENT 'توضیحات',
+  `sort_order` INT NOT NULL DEFAULT 0 COMMENT 'ترتیب نمایش',
+  `is_public` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'عمومی',
+  `is_sensitive` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'حساس',
+  `validation_rules` JSON DEFAULT NULL COMMENT 'قوانین اعتبارسنجی',
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   
@@ -265,11 +265,11 @@ CREATE TABLE `settings` (
   KEY `idx_category` (`category`),
   KEY `idx_sort_order` (`sort_order`)
   
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='ØªÙ†Ø¸ÛŒÙ…Ø§Øª Ø³ÛŒØ³ØªÙ…';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='تنظیمات سیستم';
 
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
--- 8. Ø¬Ø¯ÙˆÙ„ ØªØ§Ø±ÛŒØ®Ú†Ù‡ ØªØºÛŒÛŒØ±Ø§Øª ØªÙ†Ø¸ÛŒÙ…Ø§Øª
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- ═══════════════════════════════════════════
+-- 8. جدول تاریخچه تغییرات تنظیمات
+-- ═══════════════════════════════════════════
 
 DROP TABLE IF EXISTS `settings_log`;
 
@@ -278,7 +278,7 @@ CREATE TABLE `settings_log` (
   `key_name` VARCHAR(100) NOT NULL,
   `old_value` TEXT DEFAULT NULL,
   `new_value` TEXT DEFAULT NULL,
-  `changed_by` BIGINT UNSIGNED DEFAULT NULL COMMENT 'ØªØºÛŒÛŒØ± Ø¯Ù‡Ù†Ø¯Ù‡',
+  `changed_by` BIGINT UNSIGNED DEFAULT NULL COMMENT 'تغییر دهنده',
   `changed_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `ip_address` VARCHAR(45) DEFAULT NULL,
   `user_agent` TEXT DEFAULT NULL,
@@ -290,25 +290,25 @@ CREATE TABLE `settings_log` (
   
   CONSTRAINT `fk_settings_log_admin` FOREIGN KEY (`changed_by`) REFERENCES `admins` (`id`) ON DELETE SET NULL
   
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='ØªØ§Ø±ÛŒØ®Ú†Ù‡ ØªØºÛŒÛŒØ±Ø§Øª ØªÙ†Ø¸ÛŒÙ…Ø§Øª';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='تاریخچه تغییرات تنظیمات';
 
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
--- 9. Ø¬Ø¯ÙˆÙ„ Broadcast Ù‡Ø§
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- ═══════════════════════════════════════════
+-- 9. جدول Broadcast ها
+-- ═══════════════════════════════════════════
 
 DROP TABLE IF EXISTS `broadcasts`;
 
 CREATE TABLE `broadcasts` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `title` VARCHAR(255) NOT NULL COMMENT 'Ø¹Ù†ÙˆØ§Ù†',
-  `content` TEXT NOT NULL COMMENT 'Ù…Ø­ØªÙˆØ§ÛŒ Ù¾ÛŒØ§Ù…',
+  `title` VARCHAR(255) NOT NULL COMMENT 'عنوان',
+  `content` TEXT NOT NULL COMMENT 'محتوای پیام',
   `content_type` ENUM('text','photo','video','document','audio','voice','sticker') NOT NULL DEFAULT 'text',
   `file_id` VARCHAR(255) DEFAULT NULL,
-  `target` VARCHAR(50) NOT NULL COMMENT 'Ú¯Ø±ÙˆÙ‡ Ù‡Ø¯Ù',
-  `target_options` JSON DEFAULT NULL COMMENT 'Ú¯Ø²ÛŒÙ†Ù‡â€ŒÙ‡Ø§ÛŒ Ù‡Ø¯Ù',
-  `target_count` INT UNSIGNED DEFAULT 0 COMMENT 'ØªØ¹Ø¯Ø§Ø¯ Ù‡Ø¯Ù',
+  `target` VARCHAR(50) NOT NULL COMMENT 'گروه هدف',
+  `target_options` JSON DEFAULT NULL COMMENT 'گزینه‌های هدف',
+  `target_count` INT UNSIGNED DEFAULT 0 COMMENT 'تعداد هدف',
   `status` ENUM('pending','running','paused','completed','cancelled','scheduled') NOT NULL DEFAULT 'pending',
-  `delay` INT UNSIGNED DEFAULT 50 COMMENT 'ØªØ£Ø®ÛŒØ± Ø¨ÛŒÙ† Ù¾ÛŒØ§Ù… (ms)',
+  `delay` INT UNSIGNED DEFAULT 50 COMMENT 'تأخیر بین پیام (ms)',
   `sent_count` INT UNSIGNED DEFAULT 0,
   `failed_count` INT UNSIGNED DEFAULT 0,
   `blocked_count` INT UNSIGNED DEFAULT 0,
@@ -329,11 +329,11 @@ CREATE TABLE `broadcasts` (
   
   CONSTRAINT `fk_broadcasts_creator` FOREIGN KEY (`created_by`) REFERENCES `admins` (`id`) ON DELETE SET NULL
   
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Ø§Ø±Ø³Ø§Ù„â€ŒÙ‡Ø§ÛŒ Ø¯Ø³ØªÙ‡â€ŒØ¬Ù…Ø¹ÛŒ';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='ارسال‌های دسته‌جمعی';
 
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
--- 10. Ø¬Ø¯ÙˆÙ„ Ú¯ÛŒØ±Ù†Ø¯Ú¯Ø§Ù† Broadcast
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- ═══════════════════════════════════════════
+-- 10. جدول گیرندگان Broadcast
+-- ═══════════════════════════════════════════
 
 DROP TABLE IF EXISTS `broadcast_recipients`;
 
@@ -354,11 +354,11 @@ CREATE TABLE `broadcast_recipients` (
   CONSTRAINT `fk_recipients_broadcast` FOREIGN KEY (`broadcast_id`) REFERENCES `broadcasts` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_recipients_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
   
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Ú¯ÛŒØ±Ù†Ø¯Ú¯Ø§Ù† Broadcast';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='گیرندگان Broadcast';
 
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
--- 11. Ø¬Ø¯ÙˆÙ„ Session Ù‡Ø§ÛŒ Ú†Øª
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- ═══════════════════════════════════════════
+-- 11. جدول Session های چت
+-- ═══════════════════════════════════════════
 
 DROP TABLE IF EXISTS `chat_sessions`;
 
@@ -381,19 +381,19 @@ CREATE TABLE `chat_sessions` (
   CONSTRAINT `fk_chat_sessions_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_chat_sessions_admin` FOREIGN KEY (`admin_id`) REFERENCES `admins` (`id`) ON DELETE CASCADE
   
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Session Ù‡Ø§ÛŒ Ú†Øª Ø²Ù†Ø¯Ù‡';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Session های چت زنده';
 
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
--- 12. Ø¬Ø¯ÙˆÙ„ ØªÙˆÚ©Ù†â€ŒÙ‡Ø§ÛŒ API
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- ═══════════════════════════════════════════
+-- 12. جدول توکن‌های API
+-- ═══════════════════════════════════════════
 
 DROP TABLE IF EXISTS `api_tokens`;
 
 CREATE TABLE `api_tokens` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(100) NOT NULL COMMENT 'Ù†Ø§Ù… ØªÙˆÚ©Ù†',
-  `token_hash` VARCHAR(64) NOT NULL COMMENT 'SHA256 Hash ØªÙˆÚ©Ù†',
-  `permissions` JSON DEFAULT NULL COMMENT 'Ø¯Ø³ØªØ±Ø³ÛŒâ€ŒÙ‡Ø§',
+  `name` VARCHAR(100) NOT NULL COMMENT 'نام توکن',
+  `token_hash` VARCHAR(64) NOT NULL COMMENT 'SHA256 Hash توکن',
+  `permissions` JSON DEFAULT NULL COMMENT 'دسترسی‌ها',
   `active` TINYINT(1) NOT NULL DEFAULT 1,
   `expires_at` DATETIME DEFAULT NULL,
   `last_used_at` DATETIME DEFAULT NULL,
@@ -410,21 +410,21 @@ CREATE TABLE `api_tokens` (
   
   CONSTRAINT `fk_api_tokens_creator` FOREIGN KEY (`created_by`) REFERENCES `admins` (`id`) ON DELETE SET NULL
   
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='ØªÙˆÚ©Ù†â€ŒÙ‡Ø§ÛŒ API';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='توکن‌های API';
 
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
--- 13. Ø¬Ø¯ÙˆÙ„ Ù„Ø§Ú¯ ÙØ¹Ø§Ù„ÛŒØªâ€ŒÙ‡Ø§
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- ═══════════════════════════════════════════
+-- 13. جدول لاگ فعالیت‌ها
+-- ═══════════════════════════════════════════
 
 DROP TABLE IF EXISTS `activity_logs`;
 
 CREATE TABLE `activity_logs` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `admin_id` BIGINT UNSIGNED DEFAULT NULL,
-  `action` VARCHAR(100) NOT NULL COMMENT 'Ù†ÙˆØ¹ Ø¹Ù…Ù„ÛŒØ§Øª',
+  `action` VARCHAR(100) NOT NULL COMMENT 'نوع عملیات',
   `description` TEXT DEFAULT NULL,
-  `entity_type` VARCHAR(50) DEFAULT NULL COMMENT 'Ù†ÙˆØ¹ Ù…ÙˆØ¬ÙˆØ¯ÛŒØª',
-  `entity_id` BIGINT UNSIGNED DEFAULT NULL COMMENT 'Ø¢ÛŒØ¯ÛŒ Ù…ÙˆØ¬ÙˆØ¯ÛŒØª',
+  `entity_type` VARCHAR(50) DEFAULT NULL COMMENT 'نوع موجودیت',
+  `entity_id` BIGINT UNSIGNED DEFAULT NULL COMMENT 'آیدی موجودیت',
   `old_values` JSON DEFAULT NULL,
   `new_values` JSON DEFAULT NULL,
   `ip_address` VARCHAR(45) DEFAULT NULL,
@@ -440,11 +440,11 @@ CREATE TABLE `activity_logs` (
   
   CONSTRAINT `fk_activity_admin` FOREIGN KEY (`admin_id`) REFERENCES `admins` (`id`) ON DELETE SET NULL
   
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Ù„Ø§Ú¯ ÙØ¹Ø§Ù„ÛŒØªâ€ŒÙ‡Ø§ÛŒ Ø§Ø¯Ù…ÛŒÙ†';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='لاگ فعالیت‌های ادمین';
 
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
--- 14. Ø¬Ø¯ÙˆÙ„ Session Ù‡Ø§ÛŒ Ø§Ø¯Ù…ÛŒÙ†
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- ═══════════════════════════════════════════
+-- 14. جدول Session های ادمین
+-- ═══════════════════════════════════════════
 
 DROP TABLE IF EXISTS `admin_sessions`;
 
@@ -465,11 +465,11 @@ CREATE TABLE `admin_sessions` (
   
   CONSTRAINT `fk_sessions_admin` FOREIGN KEY (`admin_id`) REFERENCES `admins` (`id`) ON DELETE CASCADE
   
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Session Ù‡Ø§ÛŒ Ø§Ø¯Ù…ÛŒÙ†';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Session های ادمین';
 
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
--- 15. Ø¬Ø¯ÙˆÙ„ Ù„Ø§Ú¯ ÙˆØ±ÙˆØ¯
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- ═══════════════════════════════════════════
+-- 15. جدول لاگ ورود
+-- ═══════════════════════════════════════════
 
 DROP TABLE IF EXISTS `login_logs`;
 
@@ -493,11 +493,11 @@ CREATE TABLE `login_logs` (
   
   CONSTRAINT `fk_login_logs_admin` FOREIGN KEY (`admin_id`) REFERENCES `admins` (`id`) ON DELETE SET NULL
   
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Ù„Ø§Ú¯ ÙˆØ±ÙˆØ¯ Ø§Ø¯Ù…ÛŒÙ†â€ŒÙ‡Ø§';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='لاگ ورود ادمین‌ها';
 
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
--- 16. Ø¬Ø¯ÙˆÙ„ Queue Jobs (Ø¨Ø±Ø§ÛŒ Background Tasks)
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- ═══════════════════════════════════════════
+-- 16. جدول Queue Jobs (برای Background Tasks)
+-- ═══════════════════════════════════════════
 
 DROP TABLE IF EXISTS `jobs`;
 
@@ -515,11 +515,11 @@ CREATE TABLE `jobs` (
   KEY `idx_reserved_at` (`reserved_at`),
   KEY `idx_available_at` (`available_at`)
   
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='ØµÙ Ú©Ø§Ø±Ù‡Ø§';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='صف کارها';
 
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
--- 17. Ø¬Ø¯ÙˆÙ„ Failed Jobs
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- ═══════════════════════════════════════════
+-- 17. جدول Failed Jobs
+-- ═══════════════════════════════════════════
 
 DROP TABLE IF EXISTS `failed_jobs`;
 
@@ -535,13 +535,13 @@ CREATE TABLE `failed_jobs` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_uuid` (`uuid`)
   
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Ú©Ø§Ø±Ù‡Ø§ÛŒ Ù†Ø§Ù…ÙˆÙÙ‚';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='کارهای ناموفق';
 
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- ═══════════════════════════════════════════
 -- 18. Triggers
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- ═══════════════════════════════════════════
 
--- Trigger: Ø¨Ø±ÙˆØ²Ø±Ø³Ø§Ù†ÛŒ Ø¢Ù…Ø§Ø± Ú©Ø§Ø±Ø¨Ø± Ø¨Ø¹Ø¯ Ø§Ø² Ø¯ÙˆÙ†ÛŒØª Ù…ÙˆÙÙ‚
+-- Trigger: بروزرسانی آمار کاربر بعد از دونیت موفق
 DROP TRIGGER IF EXISTS `trg_donations_after_update`;
 
 CREATE TRIGGER `trg_donations_after_update`
@@ -565,7 +565,7 @@ BEGIN
     END IF;
 END;
 
--- Trigger: Ø«Ø¨Øª Ù„Ø§Ú¯ ØªØºÛŒÛŒØ±Ø§Øª ØªÙ†Ø¸ÛŒÙ…Ø§Øª
+-- Trigger: ثبت لاگ تغییرات تنظیمات
 DROP TRIGGER IF EXISTS `trg_settings_before_update`;
 
 CREATE TRIGGER `trg_settings_before_update`
@@ -578,7 +578,7 @@ BEGIN
     END IF;
 END;
 
--- Trigger: Ø§ÙØ²Ø§ÛŒØ´ match_count Ø¨Ø¹Ø¯ Ø§Ø² Ø«Ø¨Øª ØªØ·Ø§Ø¨Ù‚
+-- Trigger: افزایش match_count بعد از ثبت تطابق
 DROP TRIGGER IF EXISTS `trg_keyword_matches_after_insert`;
 
 CREATE TRIGGER `trg_keyword_matches_after_insert`
@@ -592,11 +592,11 @@ BEGIN
     WHERE `id` = NEW.keyword_id;
 END;
 
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- ═══════════════════════════════════════════
 -- 19. Views
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- ═══════════════════════════════════════════
 
--- View: Ø¢Ù…Ø§Ø± Ú©Ù„ÛŒ Ú©Ø§Ø±Ø¨Ø±Ø§Ù†
+-- View: آمار کلی کاربران
 DROP VIEW IF EXISTS `v_user_stats`;
 
 CREATE VIEW `v_user_stats` AS
@@ -611,7 +611,7 @@ SELECT
     SUM(donation_count) as total_donations_count
 FROM `users`;
 
--- View: Ø¢Ù…Ø§Ø± Ø±ÙˆØ²Ø§Ù†Ù‡ Ø¯ÙˆÙ†ÛŒØªâ€ŒÙ‡Ø§
+-- View: آمار روزانه دونیت‌ها
 DROP VIEW IF EXISTS `v_daily_donations`;
 
 CREATE VIEW `v_daily_donations` AS
@@ -627,7 +627,7 @@ FROM `donations`
 GROUP BY DATE(created_at)
 ORDER BY date DESC;
 
--- View: Ø¢Ù…Ø§Ø± Ø±ÙˆØ²Ø§Ù†Ù‡ Ù¾ÛŒØ§Ù…â€ŒÙ‡Ø§
+-- View: آمار روزانه پیام‌ها
 DROP VIEW IF EXISTS `v_daily_messages`;
 
 CREATE VIEW `v_daily_messages` AS
@@ -642,7 +642,7 @@ FROM `messages`
 GROUP BY DATE(created_at)
 ORDER BY date DESC;
 
--- View: Ø¨Ø±ØªØ±ÛŒÙ† Ú©Ø§Ø±Ø¨Ø±Ø§Ù†
+-- View: برترین کاربران
 DROP VIEW IF EXISTS `v_top_users`;
 
 CREATE VIEW `v_top_users` AS
@@ -661,11 +661,11 @@ FROM `users` u
 WHERE u.blocked = 0
 ORDER BY u.total_donations DESC;
 
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- ═══════════════════════════════════════════
 -- 20. Stored Procedures
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- ═══════════════════════════════════════════
 
--- Procedure: Ù¾Ø§Ú©Ø³Ø§Ø²ÛŒ Ù„Ø§Ú¯â€ŒÙ‡Ø§ÛŒ Ù‚Ø¯ÛŒÙ…ÛŒ
+-- Procedure: پاکسازی لاگ‌های قدیمی
 DROP PROCEDURE IF EXISTS `sp_cleanup_old_logs`;
 
 CREATE PROCEDURE `sp_cleanup_old_logs`(IN days_to_keep INT)
@@ -686,7 +686,7 @@ BEGIN
     WHERE `failed_at` < DATE_SUB(NOW(), INTERVAL days_to_keep DAY);
 END;
 
--- Procedure: Ø¨Ø±ÙˆØ²Ø±Ø³Ø§Ù†ÛŒ Ø¢Ù…Ø§Ø± Ú©Ø§Ø±Ø¨Ø±Ø§Ù†
+-- Procedure: بروزرسانی آمار کاربران
 DROP PROCEDURE IF EXISTS `sp_update_user_stats`;
 
 CREATE PROCEDURE `sp_update_user_stats`()
@@ -712,7 +712,7 @@ BEGIN
         );
 END;
 
--- Procedure: Ø¨Ø±Ø±Ø³ÛŒ Ùˆ Ø§Ø±ØªÙ‚Ø§ÛŒ Ø®ÙˆØ¯Ú©Ø§Ø± VIP
+-- Procedure: بررسی و ارتقای خودکار VIP
 DROP PROCEDURE IF EXISTS `sp_check_auto_vip`;
 
 CREATE PROCEDURE `sp_check_auto_vip`(IN vip_threshold DECIMAL(15,2))
@@ -724,82 +724,82 @@ BEGIN
     AND u.total_donations >= vip_threshold;
 END;
 
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
--- 21. Ø¯Ø§Ø¯Ù‡â€ŒÙ‡Ø§ÛŒ Ù¾ÛŒØ´â€ŒÙØ±Ø¶
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- ═══════════════════════════════════════════
+-- 21. داده‌های پیش‌فرض
+-- ═══════════════════════════════════════════
 
--- Ø§Ø¯Ù…ÛŒÙ† Ù¾ÛŒØ´â€ŒÙØ±Ø¶ (Ø±Ù…Ø²: Admin@12345)
+-- ادمین پیش‌فرض (رمز: Admin@12345)
 INSERT INTO `admins` (`username`, `password_hash`, `name`, `email`, `role`, `active`) VALUES
-('admin', '$2y$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/Le9Uyzg0yB.9l/O7G', 'Ù…Ø¯ÛŒØ± Ø³ÛŒØ³ØªÙ…', 'admin@example.com', 'super_admin', 1);
+('admin', '$2y$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/Le9Uyzg0yB.9l/O7G', 'مدیر سیستم', 'admin@example.com', 'super_admin', 1);
 
--- ØªÙ†Ø¸ÛŒÙ…Ø§Øª Ù¾ÛŒØ´â€ŒÙØ±Ø¶
+-- تنظیمات پیش‌فرض
 INSERT INTO `settings` (`key_name`, `value`, `type`, `category`, `description`, `sort_order`) VALUES
--- Ø¹Ù…ÙˆÙ…ÛŒ
-('site_name', 'Ø±Ø¨Ø§Øª ÛŒÙˆØªÛŒÙˆØ¨Ø±', 'string', 'general', 'Ù†Ø§Ù… Ø³Ø§ÛŒØª', 1),
-('site_url', '', 'url', 'general', 'Ø¢Ø¯Ø±Ø³ Ø³Ø§ÛŒØª', 2),
-('timezone', 'Asia/Tehran', 'string', 'general', 'Ù…Ù†Ø·Ù‚Ù‡ Ø²Ù…Ø§Ù†ÛŒ', 3),
-('maintenance_mode', '0', 'boolean', 'general', 'Ø­Ø§Ù„Øª ØªØ¹Ù…ÛŒØ±Ø§Øª', 4),
+-- عمومی
+('site_name', 'ربات یوتیوبر', 'string', 'general', 'نام سایت', 1),
+('site_url', '', 'url', 'general', 'آدرس سایت', 2),
+('timezone', 'Asia/Tehran', 'string', 'general', 'منطقه زمانی', 3),
+('maintenance_mode', '0', 'boolean', 'general', 'حالت تعمیرات', 4),
 
--- ØªÙ„Ú¯Ø±Ø§Ù…
-('welcome_text', 'Ø³Ù„Ø§Ù… {first_name} Ø¹Ø²ÛŒØ²! ðŸ‘‹\n\nØ¨Ù‡ Ø±Ø¨Ø§Øª Ù…Ø§ Ø®ÙˆØ´ Ø§ÙˆÙ…Ø¯ÛŒ ðŸŽ¬\n\nØ§Ø² Ù…Ù†ÙˆÛŒ Ø²ÛŒØ± Ø§Ø³ØªÙØ§Ø¯Ù‡ Ú©Ù†:', 'string', 'telegram', 'Ù…ØªÙ† Ø®ÙˆØ´â€ŒØ¢Ù…Ø¯Ú¯ÙˆÛŒÛŒ', 10),
-('welcome_photo', '', 'string', 'telegram', 'File ID Ø¹Ú©Ø³ Ø®ÙˆØ´â€ŒØ¢Ù…Ø¯Ú¯ÙˆÛŒÛŒ', 11),
-('donate_link', '', 'url', 'telegram', 'Ù„ÛŒÙ†Ú© Ø¯Ø±Ú¯Ø§Ù‡ Ø­Ù…Ø§ÛŒØª', 12),
-('donate_text', 'ðŸ’° Ø¨Ø§ Ø­Ù…Ø§ÛŒØª Ù…Ø§Ù„ÛŒ Ø§Ø² Ù…Ø§ØŒ Ø¨Ù‡ ØªÙˆÙ„ÛŒØ¯ Ù…Ø­ØªÙˆØ§ÛŒ Ø¨Ù‡ØªØ± Ú©Ù…Ú© Ù…ÛŒâ€ŒÚ©Ù†ÛŒØ¯!', 'string', 'telegram', 'Ù…ØªÙ† ØµÙØ­Ù‡ Ø­Ù…Ø§ÛŒØª', 13),
-('youtube_url', '', 'url', 'telegram', 'Ù„ÛŒÙ†Ú© Ú©Ø§Ù†Ø§Ù„ ÛŒÙˆØªÛŒÙˆØ¨', 14),
-('telegram_channel', '', 'string', 'telegram', 'Ø¢ÛŒØ¯ÛŒ Ú©Ø§Ù†Ø§Ù„ ØªÙ„Ú¯Ø±Ø§Ù…', 15),
+-- تلگرام
+('welcome_text', 'سلام {first_name} عزیز! 👋\n\nبه ربات ما خوش اومدی 🎬\n\nاز منوی زیر استفاده کن:', 'string', 'telegram', 'متن خوش‌آمدگویی', 10),
+('welcome_photo', '', 'string', 'telegram', 'File ID عکس خوش‌آمدگویی', 11),
+('donate_link', '', 'url', 'telegram', 'لینک درگاه حمایت', 12),
+('donate_text', '💰 با حمایت مالی از ما، به تولید محتوای بهتر کمک می‌کنید!', 'string', 'telegram', 'متن صفحه حمایت', 13),
+('youtube_url', '', 'url', 'telegram', 'لینک کانال یوتیوب', 14),
+('telegram_channel', '', 'string', 'telegram', 'آیدی کانال تلگرام', 15),
 
--- Ù‡ÙˆØ´ Ù…ØµÙ†ÙˆØ¹ÛŒ
-('ai_enabled', '0', 'boolean', 'ai', 'ÙØ¹Ø§Ù„â€ŒØ³Ø§Ø²ÛŒ Ù‡ÙˆØ´ Ù…ØµÙ†ÙˆØ¹ÛŒ', 20),
-('ai_provider', 'openai', 'string', 'ai', 'Ø§Ø±Ø§Ø¦Ù‡â€ŒØ¯Ù‡Ù†Ø¯Ù‡ AI', 21),
-('ai_api_key', '', 'string', 'ai', 'API Key Ù‡ÙˆØ´ Ù…ØµÙ†ÙˆØ¹ÛŒ', 22),
-('ai_model', 'gpt-4o-mini', 'string', 'ai', 'Ù…Ø¯Ù„ AI', 23),
-('ai_system_prompt', 'ØªÙˆ Ø¯Ø³ØªÛŒØ§Ø± ÛŒÚ© ÛŒÙˆØªÛŒÙˆØ¨Ø± ÙØ§Ø±Ø³ÛŒâ€ŒØ²Ø¨Ø§Ù† Ù‡Ø³ØªÛŒ. Ø¯ÙˆØ³ØªØ§Ù†Ù‡ Ùˆ Ú©ÙˆØªØ§Ù‡ Ø¬ÙˆØ§Ø¨ Ø¨Ø¯Ù‡.', 'string', 'ai', 'System Prompt', 24),
-('ai_max_tokens', '500', 'integer', 'ai', 'Ø­Ø¯Ø§Ú©Ø«Ø± ØªÙˆÚ©Ù† Ù¾Ø§Ø³Ø®', 25),
+-- هوش مصنوعی
+('ai_enabled', '0', 'boolean', 'ai', 'فعال‌سازی هوش مصنوعی', 20),
+('ai_provider', 'openai', 'string', 'ai', 'ارائه‌دهنده AI', 21),
+('ai_api_key', '', 'string', 'ai', 'API Key هوش مصنوعی', 22),
+('ai_model', 'gpt-4o-mini', 'string', 'ai', 'مدل AI', 23),
+('ai_system_prompt', 'تو دستیار یک یوتیوبر فارسی‌زبان هستی. دوستانه و کوتاه جواب بده.', 'string', 'ai', 'System Prompt', 24),
+('ai_max_tokens', '500', 'integer', 'ai', 'حداکثر توکن پاسخ', 25),
 ('ai_temperature', '0.7', 'float', 'ai', 'Temperature', 26),
 
 -- VIP
-('vip_threshold', '100000', 'integer', 'vip', 'Ø¢Ø³ØªØ§Ù†Ù‡ VIP (ØªÙˆÙ…Ø§Ù†)', 30),
-('vip_badge', 'ðŸ‘‘', 'string', 'vip', 'Ù†Ø´Ø§Ù† VIP', 31),
-('vip_duration_days', '30', 'integer', 'vip', 'Ù…Ø¯Øª VIP (Ø±ÙˆØ²)', 32),
+('vip_threshold', '100000', 'integer', 'vip', 'آستانه VIP (تومان)', 30),
+('vip_badge', '👑', 'string', 'vip', 'نشان VIP', 31),
+('vip_duration_days', '30', 'integer', 'vip', 'مدت VIP (روز)', 32),
 
--- Ø§Ù…Ù†ÛŒØªÛŒ
-('admin_ip_whitelist', '[]', 'array', 'security', 'Ù„ÛŒØ³Øª IP Ù‡Ø§ÛŒ Ù…Ø¬Ø§Ø²', 40),
-('login_max_attempts', '5', 'integer', 'security', 'Ø­Ø¯Ø§Ú©Ø«Ø± ØªÙ„Ø§Ø´ Ù†Ø§Ù…ÙˆÙÙ‚', 41),
-('login_lockout_minutes', '15', 'integer', 'security', 'Ù…Ø¯Øª Ù‚ÙÙ„ (Ø¯Ù‚ÛŒÙ‚Ù‡)', 42),
-('session_timeout', '3600', 'integer', 'security', 'Ø§Ù†Ù‚Ø¶Ø§ÛŒ Session (Ø«Ø§Ù†ÛŒÙ‡)', 43),
-('csrf_enabled', '1', 'boolean', 'security', 'ÙØ¹Ø§Ù„â€ŒØ³Ø§Ø²ÛŒ CSRF', 44),
-('two_factor_enabled', '0', 'boolean', 'security', 'Ø§Ø­Ø±Ø§Ø² Ù‡ÙˆÛŒØª Ø¯Ùˆ Ù…Ø±Ø­Ù„Ù‡â€ŒØ§ÛŒ', 45),
+-- امنیتی
+('admin_ip_whitelist', '[]', 'array', 'security', 'لیست IP های مجاز', 40),
+('login_max_attempts', '5', 'integer', 'security', 'حداکثر تلاش ناموفق', 41),
+('login_lockout_minutes', '15', 'integer', 'security', 'مدت قفل (دقیقه)', 42),
+('session_timeout', '3600', 'integer', 'security', 'انقضای Session (ثانیه)', 43),
+('csrf_enabled', '1', 'boolean', 'security', 'فعال‌سازی CSRF', 44),
+('two_factor_enabled', '0', 'boolean', 'security', 'احراز هویت دو مرحله‌ای', 45),
 
--- Ø¹Ù…Ù„Ú©Ø±Ø¯
-('cache_ttl', '3600', 'integer', 'performance', 'TTL Ú©Ø´ (Ø«Ø§Ù†ÛŒÙ‡)', 50),
-('broadcast_delay', '50', 'integer', 'performance', 'ØªØ£Ø®ÛŒØ± Broadcast (ms)', 51),
-('broadcast_batch_size', '30', 'integer', 'performance', 'Ø§Ù†Ø¯Ø§Ø²Ù‡ Batch', 52),
-('max_upload_size', '10485760', 'integer', 'performance', 'Ø­Ø¯Ø§Ú©Ø«Ø± Ø­Ø¬Ù… Ø¢Ù¾Ù„ÙˆØ¯ (bytes)', 53),
+-- عملکرد
+('cache_ttl', '3600', 'integer', 'performance', 'TTL کش (ثانیه)', 50),
+('broadcast_delay', '50', 'integer', 'performance', 'تأخیر Broadcast (ms)', 51),
+('broadcast_batch_size', '30', 'integer', 'performance', 'اندازه Batch', 52),
+('max_upload_size', '10485760', 'integer', 'performance', 'حداکثر حجم آپلود (bytes)', 53),
 
--- Ø§Ø¹Ù„Ø§Ù†â€ŒÙ‡Ø§
-('notify_new_user', '1', 'boolean', 'notifications', 'Ø§Ø·Ù„Ø§Ø¹â€ŒØ±Ø³Ø§Ù†ÛŒ Ú©Ø§Ø±Ø¨Ø± Ø¬Ø¯ÛŒØ¯', 60),
-('notify_new_donation', '1', 'boolean', 'notifications', 'Ø§Ø·Ù„Ø§Ø¹â€ŒØ±Ø³Ø§Ù†ÛŒ Ø¯ÙˆÙ†ÛŒØª Ø¬Ø¯ÛŒØ¯', 61),
-('notify_failed_login', '1', 'boolean', 'notifications', 'Ø§Ø·Ù„Ø§Ø¹â€ŒØ±Ø³Ø§Ù†ÛŒ ÙˆØ±ÙˆØ¯ Ù†Ø§Ù…ÙˆÙÙ‚', 62),
-('notify_blocked_user', '1', 'boolean', 'notifications', 'Ø§Ø·Ù„Ø§Ø¹â€ŒØ±Ø³Ø§Ù†ÛŒ Ú©Ø§Ø±Ø¨Ø± Ø¨Ù„Ø§Ú© Ø´Ø¯Ù‡', 63);
+-- اعلان‌ها
+('notify_new_user', '1', 'boolean', 'notifications', 'اطلاع‌رسانی کاربر جدید', 60),
+('notify_new_donation', '1', 'boolean', 'notifications', 'اطلاع‌رسانی دونیت جدید', 61),
+('notify_failed_login', '1', 'boolean', 'notifications', 'اطلاع‌رسانی ورود ناموفق', 62),
+('notify_blocked_user', '1', 'boolean', 'notifications', 'اطلاع‌رسانی کاربر بلاک شده', 63);
 
--- Ú©Ù„Ù…Ø§Øª Ú©Ù„ÛŒØ¯ÛŒ Ù¾ÛŒØ´â€ŒÙØ±Ø¶
+-- کلمات کلیدی پیش‌فرض
 INSERT INTO `keywords` (`keyword`, `answer`, `answer_type`, `priority`, `active`) VALUES
-('Ø³Ù„Ø§Ù…', 'Ø³Ù„Ø§Ù… {first_name} Ø¹Ø²ÛŒØ²! ðŸ‘‹\n\nÚ†Ø·ÙˆØ± Ù…ÛŒâ€ŒØªÙˆÙ†Ù… Ú©Ù…Ú©Øª Ú©Ù†Ù…ØŸ', 'text', 100, 1),
-('Ø¯Ø±ÙˆØ¯', 'Ø¯Ø±ÙˆØ¯ Ø¨Ø± Ø´Ù…Ø§! ðŸŒ¹\n\nØ®ÙˆØ´ Ø§ÙˆÙ…Ø¯ÛŒØ¯!', 'text', 99, 1),
-('Ù‚ÛŒÙ…Øª', 'Ø¨Ø±Ø§ÛŒ Ø§Ø·Ù„Ø§Ø¹ Ø§Ø² Ù‚ÛŒÙ…Øªâ€ŒÙ‡Ø§ Ø¨Ù‡ Ø³Ø§ÛŒØª Ù…Ø§ Ù…Ø±Ø§Ø¬Ø¹Ù‡ Ú©Ù†ÛŒØ¯:\nðŸŒ example.com', 'text', 90, 1),
-('Ø±Ø§Ù‡Ù†Ù…Ø§', 'ðŸ“– <b>Ø±Ø§Ù‡Ù†Ù…Ø§ÛŒ Ø§Ø³ØªÙØ§Ø¯Ù‡</b>\n\n1ï¸âƒ£ Ø§Ø² Ù…Ù†ÙˆÛŒ Ø§ØµÙ„ÛŒ Ø§Ø³ØªÙØ§Ø¯Ù‡ Ú©Ù†ÛŒØ¯\n2ï¸âƒ£ Ø¨Ø±Ø§ÛŒ Ø­Ù…Ø§ÛŒØª: /donate\n3ï¸âƒ£ Ø¨Ø±Ø§ÛŒ ØªÙ…Ø§Ø³: /contact\n\nØ³ÙˆØ§Ù„ Ø¯ÛŒÚ¯Ù‡â€ŒØ§ÛŒ Ø¯Ø§Ø±ÛŒØ¯ØŸ', 'text', 80, 1),
-('Ø­Ù…Ø§ÛŒØª', 'ðŸ’– Ù…Ù…Ù†ÙˆÙ† Ø§Ø² ØªÙˆØ¬Ù‡ Ø´Ù…Ø§!\n\nØ¨Ø±Ø§ÛŒ Ø­Ù…Ø§ÛŒØª Ù…Ø§Ù„ÛŒ Ø§Ø² Ø¯Ú©Ù…Ù‡ Ø²ÛŒØ± Ø§Ø³ØªÙØ§Ø¯Ù‡ Ú©Ù†ÛŒØ¯:', 'text', 70, 1),
-('ÛŒÙˆØªÛŒÙˆØ¨', 'ðŸŽ¬ Ú©Ø§Ù†Ø§Ù„ ÛŒÙˆØªÛŒÙˆØ¨ Ù…Ø§:\n\nØ­ØªÙ…Ø§Ù‹ Ø³Ø§Ø¨Ø³Ú©Ø±Ø§ÛŒØ¨ Ú©Ù†ÛŒØ¯ Ùˆ Ø²Ù†Ú¯ÙˆÙ„Ù‡ ðŸ”” Ø±Ùˆ Ø¨Ø²Ù†ÛŒØ¯!', 'text', 60, 1),
-('vip', 'ðŸ‘‘ <b>Ø¨Ø§Ø´Ú¯Ø§Ù‡ VIP</b>\n\nØ¨Ø§ Ø­Ù…Ø§ÛŒØª Ù…Ø§Ù„ÛŒØŒ Ø¨Ù‡ Ø¬Ù…Ø¹ VIP Ù‡Ø§ Ø¨Ù¾ÛŒÙˆÙ†Ø¯ÛŒØ¯ Ùˆ Ø§Ø² Ù…Ø²Ø§ÛŒØ§ÛŒ ÙˆÛŒÚ˜Ù‡ Ø¨Ù‡Ø±Ù‡â€ŒÙ…Ù†Ø¯ Ø´ÙˆÛŒØ¯!', 'text', 50, 1);
+('سلام', 'سلام {first_name} عزیز! 👋\n\nچطور می‌تونم کمکت کنم؟', 'text', 100, 1),
+('درود', 'درود بر شما! 🌹\n\nخوش اومدید!', 'text', 99, 1),
+('قیمت', 'برای اطلاع از قیمت‌ها به سایت ما مراجعه کنید:\n🌐 example.com', 'text', 90, 1),
+('راهنما', '📖 <b>راهنمای استفاده</b>\n\n1️⃣ از منوی اصلی استفاده کنید\n2️⃣ برای حمایت: /donate\n3️⃣ برای تماس: /contact\n\nسوال دیگه‌ای دارید؟', 'text', 80, 1),
+('حمایت', '💖 ممنون از توجه شما!\n\nبرای حمایت مالی از دکمه زیر استفاده کنید:', 'text', 70, 1),
+('یوتیوب', '🎬 کانال یوتیوب ما:\n\nحتماً سابسکرایب کنید و زنگوله 🔔 رو بزنید!', 'text', 60, 1),
+('vip', '👑 <b>باشگاه VIP</b>\n\nبا حمایت مالی، به جمع VIP ها بپیوندید و از مزایای ویژه بهره‌مند شوید!', 'text', 50, 1);
 
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
--- 22. Events (Ø¨Ø±Ø§ÛŒ Cron Jobs Ø¯Ø§Ø®Ù„ÛŒ)
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- ═══════════════════════════════════════════
+-- 22. Events (برای Cron Jobs داخلی)
+-- ═══════════════════════════════════════════
 
--- ÙØ¹Ø§Ù„â€ŒØ³Ø§Ø²ÛŒ Event Scheduler
+-- فعال‌سازی Event Scheduler
 SET GLOBAL event_scheduler = ON;
 
--- Event: Ù¾Ø§Ú©Ø³Ø§Ø²ÛŒ Ø±ÙˆØ²Ø§Ù†Ù‡ Ù„Ø§Ú¯â€ŒÙ‡Ø§ÛŒ Ù‚Ø¯ÛŒÙ…ÛŒ (Ù‡Ø± Ø±ÙˆØ² Ø³Ø§Ø¹Øª 3 ØµØ¨Ø­)
+-- Event: پاکسازی روزانه لاگ‌های قدیمی (هر روز ساعت 3 صبح)
 DROP EVENT IF EXISTS `evt_daily_cleanup`;
 
 CREATE EVENT `evt_daily_cleanup`
@@ -812,7 +812,7 @@ BEGIN
     CALL `sp_cleanup_old_logs`(90);
 END;
 
--- Event: Ø¨Ø±ÙˆØ²Ø±Ø³Ø§Ù†ÛŒ Ø¢Ù…Ø§Ø± Ú©Ø§Ø±Ø¨Ø±Ø§Ù† (Ù‡Ø± Ø³Ø§Ø¹Øª)
+-- Event: بروزرسانی آمار کاربران (هر ساعت)
 DROP EVENT IF EXISTS `evt_hourly_stats_update`;
 
 CREATE EVENT `evt_hourly_stats_update`
@@ -824,7 +824,7 @@ BEGIN
     CALL `sp_update_user_stats`();
 END;
 
--- Event: Ø¨Ø±Ø±Ø³ÛŒ VIP Ø®ÙˆØ¯Ú©Ø§Ø± (Ù‡Ø± 6 Ø³Ø§Ø¹Øª)
+-- Event: بررسی VIP خودکار (هر 6 ساعت)
 DROP EVENT IF EXISTS `evt_check_auto_vip`;
 
 CREATE EVENT `evt_check_auto_vip`
@@ -840,14 +840,14 @@ BEGIN
     END IF;
 END;
 
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
--- 23. Ù¾Ø§ÛŒØ§Ù†
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- ═══════════════════════════════════════════
+-- 23. پایان
+-- ═══════════════════════════════════════════
 
 SET FOREIGN_KEY_CHECKS = 1;
 
--- Ù†Ù…Ø§ÛŒØ´ Ø®Ù„Ø§ØµÙ‡
-SELECT 'âœ… Database schema created successfully!' as status;
+-- نمایش خلاصه
+SELECT '✅ Database schema created successfully!' as status;
 SELECT COUNT(*) as total_tables FROM information_schema.tables WHERE table_schema = DATABASE();
 SELECT COUNT(*) as total_views FROM information_schema.views WHERE table_schema = DATABASE();
 SELECT COUNT(*) as total_triggers FROM information_schema.triggers WHERE trigger_schema = DATABASE();

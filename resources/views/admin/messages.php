@@ -1,19 +1,19 @@
-﻿<?php
+<?php
 /**
  * ============================================
- * Messages Management - Ù…Ø¯ÛŒØ±ÛŒØª Ù¾ÛŒØ§Ù…â€ŒÙ‡Ø§
+ * Messages Management - مدیریت پیام‌ها
  * ============================================
- * Ù†Ø³Ø®Ù‡: 2.1.0
+ * نسخه: 2.0.0
  * 
- * Ù„ÛŒØ³Øª Ù¾ÛŒØ§Ù…â€ŒÙ‡Ø§ Ø¨Ø§ ÙÛŒÙ„ØªØ±ØŒ Ø¬Ø³ØªØ¬Ùˆ Ùˆ Ù…Ø´Ø§Ù‡Ø¯Ù‡ Ø¬Ø²Ø¦ÛŒØ§Øª
- * Ø§Ø² layout Ø§ØµÙ„ÛŒ (admin.php) Ø§Ø³ØªÙØ§Ø¯Ù‡ Ù…ÛŒâ€ŒÚ©Ù†Ù‡
+ * لیست پیام‌ها با فیلتر، جستجو و مشاهده جزئیات
+ * از layout اصلی (admin.php) استفاده می‌کنه
  */
 
-// Ù…ØªØºÛŒØ±Ù‡Ø§ÛŒ Ù…ÙˆØ±Ø¯ Ù†ÛŒØ§Ø² Ø§Ø² Controller:
-// - $messages (Ø¢Ø±Ø§ÛŒÙ‡ Ù¾ÛŒØ§Ù…â€ŒÙ‡Ø§)
-// - $pagination (Ø§Ø·Ù„Ø§Ø¹Ø§Øª ØµÙØ­Ù‡â€ŒØ¨Ù†Ø¯ÛŒ)
-// - $filters (ÙÛŒÙ„ØªØ±Ù‡Ø§ÛŒ ÙØ¹Ù„ÛŒ)
-// - $stats (Ø¢Ù…Ø§Ø± Ù¾ÛŒØ§Ù…â€ŒÙ‡Ø§)
+// متغیرهای مورد نیاز از Controller:
+// - $messages (آرایه پیام‌ها)
+// - $pagination (اطلاعات صفحه‌بندی)
+// - $filters (فیلترهای فعلی)
+// - $stats (آمار پیام‌ها)
 
 $messages = $messages ?? [];
 $pagination = $pagination ?? ['total' => 0, 'current_page' => 1, 'total_pages' => 1];
@@ -24,42 +24,42 @@ $stats = $stats ?? ['total' => 0, 'incoming' => 0, 'outgoing' => 0, 'today' => 0
 $csrfToken = $_SESSION['_csrf_token'] ?? '';
 ?>
 
-<!-- â•â•â• Ø¢Ù…Ø§Ø± Ø³Ø±ÛŒØ¹ â•â•â• -->
+<!-- ═══ آمار سریع ═══ -->
 <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
     <div class="glass rounded-xl p-4 text-center">
-        <div class="text-3xl mb-2">ðŸ“¨</div>
-        <div class="text-white/60 text-xs mb-1">Ú©Ù„ Ù¾ÛŒØ§Ù…â€ŒÙ‡Ø§</div>
+        <div class="text-3xl mb-2">📨</div>
+        <div class="text-white/60 text-xs mb-1">کل پیام‌ها</div>
         <div class="text-white text-2xl font-bold"><?= number_format($stats['total'] ?? 0) ?></div>
     </div>
     <div class="glass rounded-xl p-4 text-center">
-        <div class="text-3xl mb-2">ðŸ“¥</div>
-        <div class="text-white/60 text-xs mb-1">Ø¯Ø±ÛŒØ§ÙØªÛŒ</div>
+        <div class="text-3xl mb-2">📥</div>
+        <div class="text-white/60 text-xs mb-1">دریافتی</div>
         <div class="text-green-400 text-2xl font-bold"><?= number_format($stats['incoming'] ?? 0) ?></div>
     </div>
     <div class="glass rounded-xl p-4 text-center">
-        <div class="text-3xl mb-2">ðŸ“¤</div>
-        <div class="text-white/60 text-xs mb-1">Ø§Ø±Ø³Ø§Ù„ÛŒ</div>
+        <div class="text-3xl mb-2">📤</div>
+        <div class="text-white/60 text-xs mb-1">ارسالی</div>
         <div class="text-blue-400 text-2xl font-bold"><?= number_format($stats['outgoing'] ?? 0) ?></div>
     </div>
     <div class="glass rounded-xl p-4 text-center">
-        <div class="text-3xl mb-2">ðŸ“…</div>
-        <div class="text-white/60 text-xs mb-1">Ø§Ù…Ø±ÙˆØ²</div>
+        <div class="text-3xl mb-2">📅</div>
+        <div class="text-white/60 text-xs mb-1">امروز</div>
         <div class="text-purple-400 text-2xl font-bold"><?= number_format($stats['today'] ?? 0) ?></div>
     </div>
     <div class="glass rounded-xl p-4 text-center">
-        <div class="text-3xl mb-2">ðŸ””</div>
-        <div class="text-white/60 text-xs mb-1">Ø®ÙˆØ§Ù†Ø¯Ù‡ Ù†Ø´Ø¯Ù‡</div>
+        <div class="text-3xl mb-2">🔔</div>
+        <div class="text-white/60 text-xs mb-1">خوانده نشده</div>
         <div class="text-red-400 text-2xl font-bold"><?= number_format($stats['unread'] ?? 0) ?></div>
     </div>
 </div>
 
-<!-- â•â•â• ÙÛŒÙ„ØªØ±Ù‡Ø§ Ùˆ Ø¬Ø³ØªØ¬Ùˆ â•â•â• -->
+<!-- ═══ فیلترها و جستجو ═══ -->
 <div class="glass rounded-2xl p-5 mb-6">
     <form method="GET" action="/admin/messages.php" class="space-y-4">
         
-        <!-- Ø±Ø¯ÛŒÙ Ø§ÙˆÙ„: Ø¬Ø³ØªØ¬Ùˆ -->
+        <!-- ردیف اول: جستجو -->
         <div>
-            <label class="block text-white/70 text-sm mb-2">Ø¬Ø³ØªØ¬Ùˆ Ø¯Ø± Ù…ØªÙ† Ù¾ÛŒØ§Ù…</label>
+            <label class="block text-white/70 text-sm mb-2">جستجو در متن پیام</label>
             <div class="relative">
                 <span class="absolute right-3 top-1/2 -translate-y-1/2 text-white/40">
                     <i class="fas fa-search"></i>
@@ -68,71 +68,71 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                     type="text" 
                     name="search" 
                     value="<?= htmlspecialchars($filters['search'] ?? '') ?>"
-                    placeholder="Ø¬Ø³ØªØ¬Ùˆ Ø¯Ø± Ù…ØªÙ† Ù¾ÛŒØ§Ù…â€ŒÙ‡Ø§..."
+                    placeholder="جستجو در متن پیام‌ها..."
                     class="w-full bg-white/10 border border-white/20 rounded-lg py-2.5 pr-10 pl-4 text-white placeholder-white/40 focus:border-purple-500 transition"
                 >
             </div>
         </div>
         
-        <!-- Ø±Ø¯ÛŒÙ Ø¯ÙˆÙ…: ÙÛŒÙ„ØªØ±Ù‡Ø§ -->
+        <!-- ردیف دوم: فیلترها -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             
-            <!-- ÙÛŒÙ„ØªØ± Ø¬Ù‡Øª -->
+            <!-- فیلتر جهت -->
             <div>
-                <label class="block text-white/70 text-sm mb-2">Ø¬Ù‡Øª Ù¾ÛŒØ§Ù…</label>
+                <label class="block text-white/70 text-sm mb-2">جهت پیام</label>
                 <select 
                     name="direction" 
                     class="w-full bg-white/10 border border-white/20 rounded-lg py-2.5 px-4 text-white focus:border-purple-500 transition"
                 >
-                    <option value="" <?= empty($filters['direction']) ? 'selected' : '' ?>>Ù‡Ù…Ù‡</option>
-                    <option value="in" <?= ($filters['direction'] ?? '') === 'in' ? 'selected' : '' ?>>ðŸ“¥ Ø¯Ø±ÛŒØ§ÙØªÛŒ</option>
-                    <option value="out" <?= ($filters['direction'] ?? '') === 'out' ? 'selected' : '' ?>>ðŸ“¤ Ø§Ø±Ø³Ø§Ù„ÛŒ</option>
+                    <option value="" <?= empty($filters['direction']) ? 'selected' : '' ?>>همه</option>
+                    <option value="in" <?= ($filters['direction'] ?? '') === 'in' ? 'selected' : '' ?>>📥 دریافتی</option>
+                    <option value="out" <?= ($filters['direction'] ?? '') === 'out' ? 'selected' : '' ?>>📤 ارسالی</option>
                 </select>
             </div>
             
-            <!-- ÙÛŒÙ„ØªØ± Ù†ÙˆØ¹ -->
+            <!-- فیلتر نوع -->
             <div>
-                <label class="block text-white/70 text-sm mb-2">Ù†ÙˆØ¹ Ù¾ÛŒØ§Ù…</label>
+                <label class="block text-white/70 text-sm mb-2">نوع پیام</label>
                 <select 
                     name="type" 
                     class="w-full bg-white/10 border border-white/20 rounded-lg py-2.5 px-4 text-white focus:border-purple-500 transition"
                 >
-                    <option value="" <?= empty($filters['type']) ? 'selected' : '' ?>>Ù‡Ù…Ù‡</option>
-                    <option value="text" <?= ($filters['type'] ?? '') === 'text' ? 'selected' : '' ?>>ðŸ’¬ Ù…ØªÙ†ÛŒ</option>
-                    <option value="photo" <?= ($filters['type'] ?? '') === 'photo' ? 'selected' : '' ?>>ðŸ–¼ï¸ Ø¹Ú©Ø³</option>
-                    <option value="video" <?= ($filters['type'] ?? '') === 'video' ? 'selected' : '' ?>>ðŸŽ¥ ÙˆÛŒØ¯Ø¦Ùˆ</option>
-                    <option value="document" <?= ($filters['type'] ?? '') === 'document' ? 'selected' : '' ?>>ðŸ“„ ÙØ§ÛŒÙ„</option>
-                    <option value="audio" <?= ($filters['type'] ?? '') === 'audio' ? 'selected' : '' ?>>ðŸŽµ ØµØ¯Ø§</option>
-                    <option value="voice" <?= ($filters['type'] ?? '') === 'voice' ? 'selected' : '' ?>>ðŸŽ¤ ÙˆÛŒØ³</option>
-                    <option value="location" <?= ($filters['type'] ?? '') === 'location' ? 'selected' : '' ?>>ðŸ“ Ù…ÙˆÙ‚Ø¹ÛŒØª</option>
-                    <option value="contact" <?= ($filters['type'] ?? '') === 'contact' ? 'selected' : '' ?>>ðŸ“± ØªÙ…Ø§Ø³</option>
-                    <option value="sticker" <?= ($filters['type'] ?? '') === 'sticker' ? 'selected' : '' ?>>ðŸŽ­ Ø§Ø³ØªÛŒÚ©Ø±</option>
+                    <option value="" <?= empty($filters['type']) ? 'selected' : '' ?>>همه</option>
+                    <option value="text" <?= ($filters['type'] ?? '') === 'text' ? 'selected' : '' ?>>💬 متنی</option>
+                    <option value="photo" <?= ($filters['type'] ?? '') === 'photo' ? 'selected' : '' ?>>🖼️ عکس</option>
+                    <option value="video" <?= ($filters['type'] ?? '') === 'video' ? 'selected' : '' ?>>🎥 ویدئو</option>
+                    <option value="document" <?= ($filters['type'] ?? '') === 'document' ? 'selected' : '' ?>>📄 فایل</option>
+                    <option value="audio" <?= ($filters['type'] ?? '') === 'audio' ? 'selected' : '' ?>>🎵 صدا</option>
+                    <option value="voice" <?= ($filters['type'] ?? '') === 'voice' ? 'selected' : '' ?>>🎤 ویس</option>
+                    <option value="location" <?= ($filters['type'] ?? '') === 'location' ? 'selected' : '' ?>>📍 موقعیت</option>
+                    <option value="contact" <?= ($filters['type'] ?? '') === 'contact' ? 'selected' : '' ?>>📱 تماس</option>
+                    <option value="sticker" <?= ($filters['type'] ?? '') === 'sticker' ? 'selected' : '' ?>>🎭 استیکر</option>
                 </select>
             </div>
             
-            <!-- ÙÛŒÙ„ØªØ± ØªØ§Ø±ÛŒØ® -->
+            <!-- فیلتر تاریخ -->
             <div>
-                <label class="block text-white/70 text-sm mb-2">Ù…Ø±ØªØ¨â€ŒØ³Ø§Ø²ÛŒ</label>
+                <label class="block text-white/70 text-sm mb-2">مرتب‌سازی</label>
                 <select 
                     name="sort" 
                     class="w-full bg-white/10 border border-white/20 rounded-lg py-2.5 px-4 text-white focus:border-purple-500 transition"
                 >
-                    <option value="created_at" <?= ($filters['sort'] ?? '') === 'created_at' ? 'selected' : '' ?>>ØªØ§Ø±ÛŒØ® Ø§ÛŒØ¬Ø§Ø¯</option>
-                    <option value="id" <?= ($filters['sort'] ?? '') === 'id' ? 'selected' : '' ?>>Ø¢ÛŒØ¯ÛŒ</option>
-                    <option value="user_id" <?= ($filters['sort'] ?? '') === 'user_id' ? 'selected' : '' ?>>Ú©Ø§Ø±Ø¨Ø±</option>
+                    <option value="created_at" <?= ($filters['sort'] ?? '') === 'created_at' ? 'selected' : '' ?>>تاریخ ایجاد</option>
+                    <option value="id" <?= ($filters['sort'] ?? '') === 'id' ? 'selected' : '' ?>>آیدی</option>
+                    <option value="user_id" <?= ($filters['sort'] ?? '') === 'user_id' ? 'selected' : '' ?>>کاربر</option>
                 </select>
             </div>
             
         </div>
         
-        <!-- Ø±Ø¯ÛŒÙ Ø³ÙˆÙ…: Ø¯Ú©Ù…Ù‡â€ŒÙ‡Ø§ -->
+        <!-- ردیف سوم: دکمه‌ها -->
         <div class="flex flex-wrap gap-3">
             <button 
                 type="submit" 
                 class="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-6 py-2.5 rounded-lg hover:opacity-90 transition flex items-center gap-2"
             >
                 <i class="fas fa-filter"></i>
-                <span>Ø§Ø¹Ù…Ø§Ù„ ÙÛŒÙ„ØªØ±</span>
+                <span>اعمال فیلتر</span>
             </button>
             
             <a 
@@ -140,7 +140,7 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                 class="bg-white/10 text-white px-6 py-2.5 rounded-lg hover:bg-white/20 transition flex items-center gap-2"
             >
                 <i class="fas fa-times"></i>
-                <span>Ù¾Ø§Ú© Ú©Ø±Ø¯Ù† ÙÛŒÙ„ØªØ±Ù‡Ø§</span>
+                <span>پاک کردن فیلترها</span>
             </a>
             
             <button 
@@ -149,24 +149,24 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                 class="bg-green-500/20 border border-green-500/50 text-green-300 px-6 py-2.5 rounded-lg hover:bg-green-500/30 transition flex items-center gap-2"
             >
                 <i class="fas fa-download"></i>
-                <span>Ø®Ø±ÙˆØ¬ÛŒ CSV</span>
+                <span>خروجی CSV</span>
             </button>
         </div>
         
     </form>
 </div>
 
-<!-- â•â•â• Ù„ÛŒØ³Øª Ù¾ÛŒØ§Ù…â€ŒÙ‡Ø§ â•â•â• -->
+<!-- ═══ لیست پیام‌ها ═══ -->
 <div class="glass rounded-2xl overflow-hidden">
     
     <?php if (empty($messages)): ?>
     <!-- Empty State -->
     <div class="text-center py-16">
-        <div class="text-6xl mb-4">ðŸ“¨</div>
-        <h3 class="text-white text-xl font-bold mb-2">Ù‡Ù†ÙˆØ² Ù¾ÛŒØ§Ù…ÛŒ Ø¯Ø±ÛŒØ§ÙØª Ù†Ø´Ø¯Ù‡</h3>
-        <p class="text-white/50 text-sm mb-6">ÙˆÙ‚ØªÛŒ Ú©Ø§Ø±Ø¨Ø±Ø§Ù† Ø¨Ù‡ Ø±Ø¨Ø§Øª Ù¾ÛŒØ§Ù… Ø¨Ø¯Ù†ØŒ Ø§ÛŒÙ†Ø¬Ø§ Ù†Ù…Ø§ÛŒØ´ Ø¯Ø§Ø¯Ù‡ Ù…ÛŒâ€ŒØ´Ù†</p>
+        <div class="text-6xl mb-4">📨</div>
+        <h3 class="text-white text-xl font-bold mb-2">هنوز پیامی دریافت نشده</h3>
+        <p class="text-white/50 text-sm mb-6">وقتی کاربران به ربات پیام بدن، اینجا نمایش داده می‌شن</p>
         <a href="/admin/" class="inline-block bg-purple-500/20 border border-purple-500/50 text-purple-300 px-6 py-2.5 rounded-lg hover:bg-purple-500/30 transition">
-            Ø¨Ø§Ø²Ú¯Ø´Øª Ø¨Ù‡ Ø¯Ø§Ø´Ø¨ÙˆØ±Ø¯
+            بازگشت به داشبورد
         </a>
     </div>
     <?php else: ?>
@@ -176,20 +176,20 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
         <table class="w-full text-sm">
             <thead>
                 <tr class="bg-white/5 border-b border-white/10">
-                    <th class="text-right py-3 px-4 text-white/70 font-medium">Ø¢ÛŒØ¯ÛŒ</th>
-                    <th class="text-right py-3 px-4 text-white/70 font-medium">Ú©Ø§Ø±Ø¨Ø±</th>
-                    <th class="text-right py-3 px-4 text-white/70 font-medium">Ø¬Ù‡Øª</th>
-                    <th class="text-right py-3 px-4 text-white/70 font-medium">Ù†ÙˆØ¹</th>
-                    <th class="text-right py-3 px-4 text-white/70 font-medium">Ù…ØªÙ† Ù¾ÛŒØ§Ù…</th>
+                    <th class="text-right py-3 px-4 text-white/70 font-medium">آیدی</th>
+                    <th class="text-right py-3 px-4 text-white/70 font-medium">کاربر</th>
+                    <th class="text-right py-3 px-4 text-white/70 font-medium">جهت</th>
+                    <th class="text-right py-3 px-4 text-white/70 font-medium">نوع</th>
+                    <th class="text-right py-3 px-4 text-white/70 font-medium">متن پیام</th>
                     <th class="text-right py-3 px-4 text-white/70 font-medium hidden md:table-cell">
                         <a href="?sort=created_at&order=<?= ($filters['sort'] ?? '') === 'created_at' && ($filters['order'] ?? '') === 'ASC' ? 'DESC' : 'ASC' ?>&<?= http_build_query(array_diff_key($filters, ['sort' => '', 'order' => ''])) ?>" class="hover:text-white transition flex items-center gap-1">
-                            <span>ØªØ§Ø±ÛŒØ®</span>
+                            <span>تاریخ</span>
                             <?php if (($filters['sort'] ?? '') === 'created_at'): ?>
                             <i class="fas fa-sort-<?= ($filters['order'] ?? '') === 'ASC' ? 'up' : 'down' ?> text-xs"></i>
                             <?php endif; ?>
                         </a>
                     </th>
-                    <th class="text-right py-3 px-4 text-white/70 font-medium">Ø¹Ù…Ù„ÛŒØ§Øª</th>
+                    <th class="text-right py-3 px-4 text-white/70 font-medium">عملیات</th>
                 </tr>
             </thead>
             <tbody>
@@ -211,7 +211,7 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                             </div>
                             <div class="min-w-0">
                                 <div class="text-white text-sm font-medium truncate">
-                                    <?= htmlspecialchars($msg['user_display_name'] ?? 'Ú©Ø§Ø±Ø¨Ø±') ?>
+                                    <?= htmlspecialchars($msg['user_display_name'] ?? 'کاربر') ?>
                                 </div>
                                 <?php if (!empty($msg['username'])): ?>
                                 <a href="https://t.me/<?= htmlspecialchars($msg['username']) ?>" target="_blank" class="text-blue-400 text-xs hover:underline truncate block">
@@ -226,15 +226,15 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                     <td class="py-3 px-4">
                         <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium
                             <?= $msg['direction'] === 'in' ? 'bg-green-500/20 text-green-300' : 'bg-blue-500/20 text-blue-300' ?>">
-                            <span><?= $msg['direction_icon'] ?? 'ðŸ“' ?></span>
-                            <span><?= htmlspecialchars($msg['direction_text'] ?? 'Ù†Ø§Ù…Ø´Ø®Øµ') ?></span>
+                            <span><?= $msg['direction_icon'] ?? '📝' ?></span>
+                            <span><?= htmlspecialchars($msg['direction_text'] ?? 'نامشخص') ?></span>
                         </span>
                     </td>
                     
                     <!-- Type -->
                     <td class="py-3 px-4">
                         <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-white/10 text-white">
-                            <span><?= $msg['type_icon'] ?? 'ðŸ’¬' ?></span>
+                            <span><?= $msg['type_icon'] ?? '💬' ?></span>
                             <span class="hidden sm:inline"><?= htmlspecialchars($msg['message_type'] ?? 'text') ?></span>
                         </span>
                     </td>
@@ -258,7 +258,7 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                             <button 
                                 onclick="viewMessage(<?= $msg['id'] ?>)"
                                 class="bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 p-2 rounded-lg transition"
-                                title="Ù…Ø´Ø§Ù‡Ø¯Ù‡ Ø¬Ø²Ø¦ÛŒØ§Øª"
+                                title="مشاهده جزئیات"
                             >
                                 <i class="fas fa-eye text-sm"></i>
                             </button>
@@ -266,7 +266,7 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                             <a 
                                 href="/admin/chat.php?id=<?= $msg['user_id'] ?>"
                                 class="bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 p-2 rounded-lg transition"
-                                title="Ú†Øª Ø¨Ø§ Ú©Ø§Ø±Ø¨Ø±"
+                                title="چت با کاربر"
                             >
                                 <i class="fas fa-comments text-sm"></i>
                             </a>
@@ -274,7 +274,7 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                             <button 
                                 onclick="deleteMessage(<?= $msg['id'] ?>)"
                                 class="bg-red-500/20 hover:bg-red-500/30 text-red-300 p-2 rounded-lg transition"
-                                title="Ø­Ø°Ù Ù¾ÛŒØ§Ù…"
+                                title="حذف پیام"
                             >
                                 <i class="fas fa-trash text-sm"></i>
                             </button>
@@ -287,14 +287,14 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
         </table>
     </div>
     
-    <!-- â•â•â• Pagination â•â•â• -->
+    <!-- ═══ Pagination ═══ -->
     <?php if ($pagination['total_pages'] > 1): ?>
     <div class="border-t border-white/10 p-4">
         <div class="flex items-center justify-between flex-wrap gap-4">
             
             <!-- Info -->
             <div class="text-white/60 text-sm">
-                Ù†Ù…Ø§ÛŒØ´ <?= number_format($pagination['from'] ?? 0) ?> ØªØ§ <?= number_format($pagination['to'] ?? 0) ?> Ø§Ø² <?= number_format($pagination['total']) ?> Ù¾ÛŒØ§Ù…
+                نمایش <?= number_format($pagination['from'] ?? 0) ?> تا <?= number_format($pagination['to'] ?? 0) ?> از <?= number_format($pagination['total']) ?> پیام
             </div>
             
             <!-- Pagination Buttons -->
@@ -307,12 +307,12 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                     class="bg-white/10 hover:bg-white/20 text-white px-3 py-2 rounded-lg transition flex items-center gap-1"
                 >
                     <i class="fas fa-chevron-right text-xs"></i>
-                    <span class="hidden sm:inline">Ù‚Ø¨Ù„ÛŒ</span>
+                    <span class="hidden sm:inline">قبلی</span>
                 </a>
                 <?php else: ?>
                 <span class="bg-white/5 text-white/30 px-3 py-2 rounded-lg flex items-center gap-1 cursor-not-allowed">
                     <i class="fas fa-chevron-right text-xs"></i>
-                    <span class="hidden sm:inline">Ù‚Ø¨Ù„ÛŒ</span>
+                    <span class="hidden sm:inline">قبلی</span>
                 </span>
                 <?php endif; ?>
                 
@@ -352,12 +352,12 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                     href="?page=<?= $pagination['current_page'] + 1 ?>&<?= http_build_query($filters) ?>"
                     class="bg-white/10 hover:bg-white/20 text-white px-3 py-2 rounded-lg transition flex items-center gap-1"
                 >
-                    <span class="hidden sm:inline">Ø¨Ø¹Ø¯ÛŒ</span>
+                    <span class="hidden sm:inline">بعدی</span>
                     <i class="fas fa-chevron-left text-xs"></i>
                 </a>
                 <?php else: ?>
                 <span class="bg-white/5 text-white/30 px-3 py-2 rounded-lg flex items-center gap-1 cursor-not-allowed">
-                    <span class="hidden sm:inline">Ø¨Ø¹Ø¯ÛŒ</span>
+                    <span class="hidden sm:inline">بعدی</span>
                     <i class="fas fa-chevron-left text-xs"></i>
                 </span>
                 <?php endif; ?>
@@ -372,7 +372,7 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
     
 </div>
 
-<!-- â•â•â• Modal for Message Details â•â•â• -->
+<!-- ═══ Modal for Message Details ═══ -->
 <div id="messageModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
     <div class="glass rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         
@@ -380,7 +380,7 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
         <div class="p-5 border-b border-white/10 flex items-center justify-between">
             <h3 class="text-white font-bold text-lg flex items-center gap-2">
                 <i class="fas fa-envelope"></i>
-                <span>Ø¬Ø²Ø¦ÛŒØ§Øª Ù¾ÛŒØ§Ù…</span>
+                <span>جزئیات پیام</span>
             </h3>
             <button 
                 onclick="closeMessageModal()"
@@ -398,9 +398,9 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
     </div>
 </div>
 
-<!-- â•â•â• JavaScript â•â•â• -->
+<!-- ═══ JavaScript ═══ -->
 <script>
-// â•â•â• View Message Details â•â•â•
+// ═══ View Message Details ═══
 async function viewMessage(messageId) {
     try {
         const response = await fetch(`/admin/api/messages/${messageId}`);
@@ -413,53 +413,53 @@ async function viewMessage(messageId) {
                 <div class="space-y-4">
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="text-white/60 text-xs">Ø¢ÛŒØ¯ÛŒ Ù¾ÛŒØ§Ù…</label>
+                            <label class="text-white/60 text-xs">آیدی پیام</label>
                             <div class="text-white font-mono">#${msg.id}</div>
                         </div>
                         <div>
-                            <label class="text-white/60 text-xs">Ø¢ÛŒØ¯ÛŒ Ú©Ø§Ø±Ø¨Ø±</label>
+                            <label class="text-white/60 text-xs">آیدی کاربر</label>
                             <div class="text-white font-mono">${msg.user_id}</div>
                         </div>
                     </div>
                     
                     <div>
-                        <label class="text-white/60 text-xs">Ú©Ø§Ø±Ø¨Ø±</label>
-                        <div class="text-white font-medium">${msg.user_display_name || 'Ú©Ø§Ø±Ø¨Ø±'}</div>
+                        <label class="text-white/60 text-xs">کاربر</label>
+                        <div class="text-white font-medium">${msg.user_display_name || 'کاربر'}</div>
                         ${msg.username ? `<a href="https://t.me/${msg.username}" target="_blank" class="text-blue-400 text-sm hover:underline">@${msg.username}</a>` : ''}
                     </div>
                     
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="text-white/60 text-xs">Ø¬Ù‡Øª</label>
+                            <label class="text-white/60 text-xs">جهت</label>
                             <div class="text-white">${msg.direction_icon} ${msg.direction_text}</div>
                         </div>
                         <div>
-                            <label class="text-white/60 text-xs">Ù†ÙˆØ¹</label>
+                            <label class="text-white/60 text-xs">نوع</label>
                             <div class="text-white">${msg.type_icon} ${msg.message_type}</div>
                         </div>
                     </div>
                     
                     <div>
-                        <label class="text-white/60 text-xs">ØªØ§Ø±ÛŒØ® Ø§ÛŒØ¬Ø§Ø¯</label>
+                        <label class="text-white/60 text-xs">تاریخ ایجاد</label>
                         <div class="text-white">${msg.created_at}</div>
                         <div class="text-white/50 text-sm">${msg.time_ago}</div>
                     </div>
                     
                     <div>
-                        <label class="text-white/60 text-xs mb-2 block">Ù…ØªÙ† Ù¾ÛŒØ§Ù…</label>
+                        <label class="text-white/60 text-xs mb-2 block">متن پیام</label>
                         <div class="bg-white/5 rounded-lg p-4 text-white whitespace-pre-wrap break-words">
-                            ${msg.text ? msg.text.replace(/\n/g, '<br>') : '<span class="text-white/40">Ø¨Ø¯ÙˆÙ† Ù…ØªÙ†</span>'}
+                            ${msg.text ? msg.text.replace(/\n/g, '<br>') : '<span class="text-white/40">بدون متن</span>'}
                         </div>
                     </div>
                     
                     <div class="flex gap-3 pt-4">
                         <a href="/admin/chat.php?id=${msg.user_id}" class="flex-1 bg-purple-500/20 border border-purple-500/50 text-purple-300 px-4 py-2.5 rounded-lg hover:bg-purple-500/30 transition text-center">
                             <i class="fas fa-comments"></i>
-                            <span>Ú†Øª Ø¨Ø§ Ú©Ø§Ø±Ø¨Ø±</span>
+                            <span>چت با کاربر</span>
                         </a>
                         <button onclick="deleteMessage(${msg.id}, true)" class="flex-1 bg-red-500/20 border border-red-500/50 text-red-300 px-4 py-2.5 rounded-lg hover:bg-red-500/30 transition">
                             <i class="fas fa-trash"></i>
-                            <span>Ø­Ø°Ù Ù¾ÛŒØ§Ù…</span>
+                            <span>حذف پیام</span>
                         </button>
                     </div>
                 </div>
@@ -469,22 +469,22 @@ async function viewMessage(messageId) {
             document.getElementById('messageModal').classList.remove('hidden');
             document.getElementById('messageModal').classList.add('flex');
         } else {
-            showToast(data.error || 'Ø®Ø·Ø§ Ø¯Ø± Ø¯Ø±ÛŒØ§ÙØª Ø§Ø·Ù„Ø§Ø¹Ø§Øª', 'error');
+            showToast(data.error || 'خطا در دریافت اطلاعات', 'error');
         }
     } catch (error) {
-        showToast('Ø®Ø·Ø§ Ø¯Ø± Ø§Ø±ØªØ¨Ø§Ø· Ø¨Ø§ Ø³Ø±ÙˆØ±', 'error');
+        showToast('خطا در ارتباط با سرور', 'error');
     }
 }
 
-// â•â•â• Close Modal â•â•â•
+// ═══ Close Modal ═══
 function closeMessageModal() {
     document.getElementById('messageModal').classList.add('hidden');
     document.getElementById('messageModal').classList.remove('flex');
 }
 
-// â•â•â• Delete Message â•â•â•
+// ═══ Delete Message ═══
 async function deleteMessage(messageId, fromModal = false) {
-    if (!confirm('Ø¢ÛŒØ§ Ù…Ø·Ù…Ø¦Ù† Ù‡Ø³ØªÛŒØ¯ Ú©Ù‡ Ù…ÛŒâ€ŒØ®ÙˆØ§Ù‡ÛŒØ¯ Ø§ÛŒÙ† Ù¾ÛŒØ§Ù… Ø±Ø§ Ø­Ø°Ù Ú©Ù†ÛŒØ¯ØŸ')) {
+    if (!confirm('آیا مطمئن هستید که می‌خواهید این پیام را حذف کنید؟')) {
         return;
     }
     
@@ -501,7 +501,7 @@ async function deleteMessage(messageId, fromModal = false) {
         const data = await response.json();
         
         if (data.success) {
-            showToast('Ù¾ÛŒØ§Ù… Ø­Ø°Ù Ø´Ø¯', 'success');
+            showToast('پیام حذف شد', 'success');
             
             if (fromModal) {
                 closeMessageModal();
@@ -509,28 +509,28 @@ async function deleteMessage(messageId, fromModal = false) {
             
             setTimeout(() => location.reload(), 1000);
         } else {
-            showToast(data.error || 'Ø®Ø·Ø§', 'error');
+            showToast(data.error || 'خطا', 'error');
         }
     } catch (error) {
-        showToast('Ø®Ø·Ø§ Ø¯Ø± Ø§Ø±ØªØ¨Ø§Ø· Ø¨Ø§ Ø³Ø±ÙˆØ±', 'error');
+        showToast('خطا در ارتباط با سرور', 'error');
     }
 }
 
-// â•â•â• Export Messages â•â•â•
+// ═══ Export Messages ═══
 function exportMessages() {
     const params = new URLSearchParams(window.location.search);
     window.location.href = `/admin/api/messages/export?${params.toString()}`;
-    showToast('Ø¯Ø± Ø­Ø§Ù„ Ø¯Ø§Ù†Ù„ÙˆØ¯ ÙØ§ÛŒÙ„...', 'info');
+    showToast('در حال دانلود فایل...', 'info');
 }
 
-// â•â•â• Close Modal on Escape â•â•â•
+// ═══ Close Modal on Escape ═══
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         closeMessageModal();
     }
 });
 
-// â•â•â• Close Modal on Outside Click â•â•â•
+// ═══ Close Modal on Outside Click ═══
 document.getElementById('messageModal')?.addEventListener('click', function(e) {
     if (e.target === this) {
         closeMessageModal();

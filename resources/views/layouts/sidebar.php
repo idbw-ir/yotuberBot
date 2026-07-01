@@ -1,31 +1,31 @@
-﻿<?php
+<?php
 /**
  * ============================================
- * Admin Sidebar - Ø³Ø§ÛŒØ¯Ø¨Ø§Ø± Ù¾Ù†Ù„ Ù…Ø¯ÛŒØ±ÛŒØª
+ * Admin Sidebar - سایدبار پنل مدیریت
  * ============================================
- * Ù†Ø³Ø®Ù‡: 2.1.0
+ * نسخه: 2.0.0
  * 
- * Ø³Ø§ÛŒØ¯Ø¨Ø§Ø± Ù…Ø´ØªØ±Ú© ØªÙ…Ø§Ù… ØµÙØ­Ø§Øª Ø§Ø¯Ù…ÛŒÙ†
- * Ø´Ø§Ù…Ù„ Ù…Ù†ÙˆÛŒ Ù†Ø§ÙˆØ¨Ø±ÛŒØŒ Ø§Ø·Ù„Ø§Ø¹Ø§Øª Ø§Ø¯Ù…ÛŒÙ† Ùˆ Badge Ù‡Ø§
+ * سایدبار مشترک تمام صفحات ادمین
+ * شامل منوی ناوبری، اطلاعات ادمین و Badge ها
  */
 
-// Ø¯Ø±ÛŒØ§ÙØª Ù…Ø³ÛŒØ± ÙØ¹Ù„ÛŒ Ø¨Ø±Ø§ÛŒ ØªØ´Ø®ÛŒØµ ØµÙØ­Ù‡ ÙØ¹Ø§Ù„
+// دریافت مسیر فعلی برای تشخیص صفحه فعال
 $currentPath = $_SERVER['REQUEST_URI'] ?? '/admin/';
 $currentPath = parse_url($currentPath, PHP_URL_PATH);
 $currentPath = rtrim($currentPath, '/') ?: '/admin';
 
-// Ø§Ø·Ù„Ø§Ø¹Ø§Øª Ø§Ø¯Ù…ÛŒÙ† (Ø§Ø² layout Ø§ØµÙ„ÛŒ Ø§Ø±Ø³Ø§Ù„ Ù…ÛŒâ€ŒØ´Ù‡)
+// اطلاعات ادمین (از layout اصلی ارسال می‌شه)
 $currentAdmin = $currentAdmin ?? [
     'id' => $_SESSION['admin_id'] ?? 0,
     'username' => $_SESSION['admin_username'] ?? 'admin',
-    'name' => $_SESSION['admin_name'] ?? 'Ø§Ø¯Ù…ÛŒÙ†',
+    'name' => $_SESSION['admin_name'] ?? 'ادمین',
     'role' => $_SESSION['admin_role'] ?? 'admin'
 ];
 
-// ØªØ¹Ø¯Ø§Ø¯ Ù¾ÛŒØ§Ù…â€ŒÙ‡Ø§ÛŒ Ø®ÙˆØ§Ù†Ø¯Ù‡ Ù†Ø´Ø¯Ù‡
+// تعداد پیام‌های خوانده نشده
 $unreadMessages = $unreadMessages ?? 0;
 
-// ØªØ¹Ø¯Ø§Ø¯ Ø¯ÙˆÙ†ÛŒØªâ€ŒÙ‡Ø§ÛŒ Ø¯Ø± Ø§Ù†ØªØ¸Ø§Ø±
+// تعداد دونیت‌های در انتظار
 try {
     $pendingDonations = \App\Core\Database::getInstance()->fetchColumn(
         "SELECT COUNT(*) FROM donations WHERE status = 'pending'"
@@ -34,85 +34,85 @@ try {
     $pendingDonations = 0;
 }
 
-// Ù„ÛŒØ³Øª Ù…Ù†ÙˆÙ‡Ø§
+// لیست منوها
 $menuItems = [
     [
-        'title' => 'Ø¯Ø§Ø´Ø¨ÙˆØ±Ø¯',
+        'title' => 'داشبورد',
         'icon' => 'fa-chart-line',
-        'emoji' => 'ðŸ“Š',
+        'emoji' => '📊',
         'url' => '/admin/',
         'paths' => ['/admin', '/admin/index.php'],
         'badge' => null
     ],
     [
-        'title' => 'Ú†Øª Ø²Ù†Ø¯Ù‡',
+        'title' => 'چت زنده',
         'icon' => 'fa-comments',
-        'emoji' => 'ðŸ’¬',
+        'emoji' => '💬',
         'url' => '/admin/chat.php',
         'paths' => ['/admin/chat.php'],
         'badge' => $unreadMessages > 0 ? $unreadMessages : null,
         'badge_color' => 'bg-red-500'
     ],
     [
-        'title' => 'Ú©Ø§Ø±Ø¨Ø±Ø§Ù†',
+        'title' => 'کاربران',
         'icon' => 'fa-users',
-        'emoji' => 'ðŸ‘¥',
+        'emoji' => '👥',
         'url' => '/admin/users.php',
         'paths' => ['/admin/users.php'],
         'badge' => null
     ],
     [
-        'title' => 'Ù¾ÛŒØ§Ù…â€ŒÙ‡Ø§',
+        'title' => 'پیام‌ها',
         'icon' => 'fa-envelope',
-        'emoji' => 'ðŸ“¨',
+        'emoji' => '📨',
         'url' => '/admin/messages.php',
         'paths' => ['/admin/messages.php'],
         'badge' => null
     ],
     [
-        'title' => 'Ø¯ÙˆÙ†ÛŒØªâ€ŒÙ‡Ø§',
+        'title' => 'دونیت‌ها',
         'icon' => 'fa-hand-holding-usd',
-        'emoji' => 'ðŸ’°',
+        'emoji' => '💰',
         'url' => '/admin/donations.php',
         'paths' => ['/admin/donations.php'],
         'badge' => $pendingDonations > 0 ? $pendingDonations : null,
         'badge_color' => 'bg-yellow-500'
     ],
     [
-        'title' => 'Ú©Ù„Ù…Ø§Øª Ú©Ù„ÛŒØ¯ÛŒ',
+        'title' => 'کلمات کلیدی',
         'icon' => 'fa-key',
-        'emoji' => 'ðŸ”‘',
+        'emoji' => '🔑',
         'url' => '/admin/keywords.php',
         'paths' => ['/admin/keywords.php'],
         'badge' => null
     ],
     [
-        'title' => 'Ø§Ø±Ø³Ø§Ù„ Ø¯Ø³ØªÙ‡â€ŒØ¬Ù…Ø¹ÛŒ',
+        'title' => 'ارسال دسته‌جمعی',
         'icon' => 'fa-bullhorn',
-        'emoji' => 'ðŸ“¢',
+        'emoji' => '📢',
         'url' => '/admin/broadcast.php',
         'paths' => ['/admin/broadcast.php'],
         'badge' => null
     ],
     [
-        'title' => 'Ø¢Ù…Ø§Ø± Ùˆ Ú¯Ø²Ø§Ø±Ø´Ø§Øª',
+        'title' => 'آمار و گزارشات',
         'icon' => 'fa-chart-bar',
-        'emoji' => 'ðŸ“ˆ',
+        'emoji' => '📈',
         'url' => '/admin/statistics.php',
         'paths' => ['/admin/statistics.php'],
         'badge' => null
     ],
     [
-        'title' => 'ØªÙ†Ø¸ÛŒÙ…Ø§Øª',
+        'title' => 'تنظیمات',
         'icon' => 'fa-cog',
-        'emoji' => 'âš™ï¸',
+        'emoji' => '⚙️',
         'url' => '/admin/settings.php',
         'paths' => ['/admin/settings.php'],
         'badge' => null
     ],
 ];
 
-// ØªØ´Ø®ÛŒØµ ØµÙØ­Ù‡ ÙØ¹Ø§Ù„
+// تشخیص صفحه فعال
 function isActive($paths, $currentPath) {
     foreach ($paths as $path) {
         if ($currentPath === $path || $currentPath === rtrim($path, '/')) {
@@ -125,20 +125,20 @@ function isActive($paths, $currentPath) {
 
 <aside id="sidebar" class="sidebar w-64 bg-gray-900/50 border-l border-white/10 flex flex-col">
     
-    <!-- â•â•â• Logo & Title â•â•â• -->
+    <!-- ═══ Logo & Title ═══ -->
     <div class="p-4 border-b border-white/10">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-2xl">
-                ðŸŽ¬
+                🎬
             </div>
             <div>
-                <h2 class="text-white font-bold text-lg">Ù¾Ù†Ù„ Ù…Ø¯ÛŒØ±ÛŒØª</h2>
+                <h2 class="text-white font-bold text-lg">پنل مدیریت</h2>
                 <p class="text-white/50 text-xs">Youtuber Bot v2.0</p>
             </div>
         </div>
     </div>
     
-    <!-- â•â•â• Navigation Menu â•â•â• -->
+    <!-- ═══ Navigation Menu ═══ -->
     <nav class="flex-1 overflow-y-auto p-3 space-y-1">
         
         <?php foreach ($menuItems as $item): 
@@ -162,7 +162,7 @@ function isActive($paths, $currentPath) {
         
     </nav>
     
-    <!-- â•â•â• Admin Info â•â•â• -->
+    <!-- ═══ Admin Info ═══ -->
     <div class="border-t border-white/10 p-3">
         
         <!-- Admin Profile -->
@@ -173,7 +173,7 @@ function isActive($paths, $currentPath) {
                 </div>
                 <div class="flex-1 min-w-0">
                     <div class="text-white text-sm font-medium truncate">
-                        <?= htmlspecialchars($currentAdmin['name'] ?? 'Ø§Ø¯Ù…ÛŒÙ†') ?>
+                        <?= htmlspecialchars($currentAdmin['name'] ?? 'ادمین') ?>
                     </div>
                     <div class="text-white/50 text-xs flex items-center gap-1">
                         <span class="w-2 h-2 bg-green-500 rounded-full"></span>
@@ -190,25 +190,25 @@ function isActive($paths, $currentPath) {
                 class="bg-white/5 hover:bg-white/10 text-white/70 hover:text-white text-xs px-3 py-2 rounded-lg transition flex items-center justify-center gap-1"
             >
                 <i class="fas fa-user-circle"></i>
-                <span>Ù¾Ø±ÙˆÙØ§ÛŒÙ„</span>
+                <span>پروفایل</span>
             </a>
             <a 
                 href="/admin/logout.php" 
-                onclick="return confirm('Ø¢ÛŒØ§ Ù…Ø·Ù…Ø¦Ù† Ù‡Ø³ØªÛŒØ¯ Ú©Ù‡ Ù…ÛŒâ€ŒØ®ÙˆØ§Ù‡ÛŒØ¯ Ø®Ø§Ø±Ø¬ Ø´ÙˆÛŒØ¯ØŸ')"
+                onclick="return confirm('آیا مطمئن هستید که می‌خواهید خارج شوید؟')"
                 class="bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 text-xs px-3 py-2 rounded-lg transition flex items-center justify-center gap-1"
             >
                 <i class="fas fa-sign-out-alt"></i>
-                <span>Ø®Ø±ÙˆØ¬</span>
+                <span>خروج</span>
             </a>
         </div>
         
         <!-- System Status -->
         <div class="bg-white/5 rounded-lg p-2.5">
             <div class="flex items-center justify-between text-xs">
-                <span class="text-white/50">ÙˆØ¶Ø¹ÛŒØª Ø³ÛŒØ³ØªÙ…</span>
+                <span class="text-white/50">وضعیت سیستم</span>
                 <span class="flex items-center gap-1 text-green-400">
                     <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                    <span>Ø¢Ù†Ù„Ø§ÛŒÙ†</span>
+                    <span>آنلاین</span>
                 </span>
             </div>
         </div>
@@ -217,7 +217,7 @@ function isActive($paths, $currentPath) {
     
 </aside>
 
-<!-- â•â•â• Mobile Close Button â•â•â• -->
+<!-- ═══ Mobile Close Button ═══ -->
 <button 
     onclick="toggleSidebar()" 
     class="md:hidden fixed top-4 left-4 z-50 bg-gray-900/90 text-white p-2 rounded-lg shadow-lg"
@@ -228,7 +228,7 @@ function isActive($paths, $currentPath) {
 </button>
 
 <script>
-// Ù†Ù…Ø§ÛŒØ´/Ù…Ø®ÙÛŒ Ú©Ø±Ø¯Ù† Ø¯Ú©Ù…Ù‡ Ø¨Ø³ØªÙ† Ø¯Ø± Ù…ÙˆØ¨Ø§ÛŒÙ„
+// نمایش/مخفی کردن دکمه بستن در موبایل
 const sidebar = document.getElementById('sidebar');
 const closeBtn = document.getElementById('sidebarCloseBtn');
 
@@ -246,7 +246,7 @@ const observer = new MutationObserver(function(mutations) {
 
 observer.observe(sidebar, { attributes: true });
 
-// Ø¨Ø³ØªÙ† Sidebar Ø¨Ø§ Escape
+// بستن Sidebar با Escape
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape' && sidebar.classList.contains('open')) {
         toggleSidebar();

@@ -1,16 +1,16 @@
-﻿<?php
+<?php
 /**
  * ============================================
- * Dashboard Content - Ù…Ø­ØªÙˆØ§ÛŒ Ø¯Ø§Ø´Ø¨ÙˆØ±Ø¯
+ * Dashboard Content - محتوای داشبورد
  * ============================================
- * Ù†Ø³Ø®Ù‡: 2.1.0
+ * نسخه: 2.0.0
  * 
- * Ø§ÛŒÙ† ÙØ§ÛŒÙ„ Ù…Ø­ØªÙˆØ§ÛŒ Ø§ØµÙ„ÛŒ ØµÙØ­Ù‡ Ø¯Ø§Ø´Ø¨ÙˆØ±Ø¯ Ø±Ùˆ Ø¯Ø§Ø±Ù‡
- * Ø§Ø² layout Ø§ØµÙ„ÛŒ (admin.php) Ø§Ø³ØªÙØ§Ø¯Ù‡ Ù…ÛŒâ€ŒÚ©Ù†Ù‡
+ * این فایل محتوای اصلی صفحه داشبورد رو داره
+ * از layout اصلی (admin.php) استفاده می‌کنه
  */
 
-// Ø§ÛŒÙ† ÙØ§ÛŒÙ„ Ø§Ø² Ø·Ø±ÛŒÙ‚ include Ø¯Ø± public/admin/index.php Ø§Ø³ØªÙØ§Ø¯Ù‡ Ù…ÛŒâ€ŒØ´Ù‡
-// Ù…ØªØºÛŒØ±Ù‡Ø§ÛŒ Ù…ÙˆØ±Ø¯ Ù†ÛŒØ§Ø² Ø§Ø² index.php Ø§Ø±Ø³Ø§Ù„ Ù…ÛŒâ€ŒØ´Ù†:
+// این فایل از طریق include در public/admin/index.php استفاده می‌شه
+// متغیرهای مورد نیاز از index.php ارسال می‌شن:
 // - $stats
 // - $cards
 // - $donationChart
@@ -20,7 +20,7 @@
 // - $recentDonations
 // - $unreadCount
 
-// Ù…Ù‚Ø§Ø¯ÛŒØ± Ù¾ÛŒØ´â€ŒÙØ±Ø¶ Ø¨Ø±Ø§ÛŒ Ø¬Ù„ÙˆÚ¯ÛŒØ±ÛŒ Ø§Ø² Ø®Ø·Ø§
+// مقادیر پیش‌فرض برای جلوگیری از خطا
 $stats = $stats ?? ['users' => [], 'messages' => [], 'donations' => [], 'growth' => []];
 $cards = $cards ?? [];
 $donationChart = $donationChart ?? ['labels' => [], 'datasets' => []];
@@ -31,7 +31,7 @@ $recentDonations = $recentDonations ?? [];
 $unreadCount = $unreadCount ?? 0;
 ?>
 
-<!-- â•â•â• Ú©Ø§Ø±Øªâ€ŒÙ‡Ø§ÛŒ Ø¢Ù…Ø§Ø±ÛŒ â•â•â• -->
+<!-- ═══ کارت‌های آماری ═══ -->
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
     <?php foreach ($cards as $card): ?>
     <div class="card-hover bg-gradient-to-br <?= $card['color'] ?> rounded-2xl p-5 shadow-lg transition-all duration-300 hover:shadow-2xl">
@@ -55,23 +55,23 @@ $unreadCount = $unreadCount ?? 0;
     <?php endforeach; ?>
 </div>
 
-<!-- â•â•â• Ù†Ù…ÙˆØ¯Ø§Ø±Ù‡Ø§ â•â•â• -->
+<!-- ═══ نمودارها ═══ -->
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
     
-    <!-- Ù†Ù…ÙˆØ¯Ø§Ø± Ø¯ÙˆÙ†ÛŒØªâ€ŒÙ‡Ø§ -->
+    <!-- نمودار دونیت‌ها -->
     <div class="glass rounded-2xl p-5 shadow-lg">
         <div class="flex justify-between items-center mb-4">
             <div>
                 <h3 class="text-white font-bold text-lg flex items-center gap-2">
-                    <span>ðŸ’°</span>
-                    <span>Ù†Ù…ÙˆØ¯Ø§Ø± Ø¯ÙˆÙ†ÛŒØªâ€ŒÙ‡Ø§</span>
+                    <span>💰</span>
+                    <span>نمودار دونیت‌ها</span>
                 </h3>
-                <p class="text-white/50 text-xs mt-1">30 Ø±ÙˆØ² Ø§Ø®ÛŒØ±</p>
+                <p class="text-white/50 text-xs mt-1">30 روز اخیر</p>
             </div>
             <div class="flex gap-2">
-                <button onclick="updateDonationChart(7)" class="text-xs bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-lg transition">7 Ø±ÙˆØ²</button>
-                <button onclick="updateDonationChart(30)" class="text-xs bg-purple-500/30 text-white px-3 py-1.5 rounded-lg">30 Ø±ÙˆØ²</button>
-                <button onclick="updateDonationChart(90)" class="text-xs bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-lg">90 Ø±ÙˆØ²</button>
+                <button onclick="updateDonationChart(7)" class="text-xs bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-lg transition">7 روز</button>
+                <button onclick="updateDonationChart(30)" class="text-xs bg-purple-500/30 text-white px-3 py-1.5 rounded-lg">30 روز</button>
+                <button onclick="updateDonationChart(90)" class="text-xs bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-lg">90 روز</button>
             </div>
         </div>
         <div class="relative" style="height: 280px;">
@@ -79,20 +79,20 @@ $unreadCount = $unreadCount ?? 0;
         </div>
     </div>
     
-    <!-- Ù†Ù…ÙˆØ¯Ø§Ø± Ú©Ø§Ø±Ø¨Ø±Ø§Ù† -->
+    <!-- نمودار کاربران -->
     <div class="glass rounded-2xl p-5 shadow-lg">
         <div class="flex justify-between items-center mb-4">
             <div>
                 <h3 class="text-white font-bold text-lg flex items-center gap-2">
-                    <span>ðŸ‘¥</span>
-                    <span>Ø±Ø´Ø¯ Ú©Ø§Ø±Ø¨Ø±Ø§Ù†</span>
+                    <span>👥</span>
+                    <span>رشد کاربران</span>
                 </h3>
-                <p class="text-white/50 text-xs mt-1">30 Ø±ÙˆØ² Ø§Ø®ÛŒØ±</p>
+                <p class="text-white/50 text-xs mt-1">30 روز اخیر</p>
             </div>
             <div class="flex gap-2">
-                <button onclick="updateUserChart(7)" class="text-xs bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-lg transition">7 Ø±ÙˆØ²</button>
-                <button onclick="updateUserChart(30)" class="text-xs bg-purple-500/30 text-white px-3 py-1.5 rounded-lg">30 Ø±ÙˆØ²</button>
-                <button onclick="updateUserChart(90)" class="text-xs bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-lg">90 Ø±ÙˆØ²</button>
+                <button onclick="updateUserChart(7)" class="text-xs bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-lg transition">7 روز</button>
+                <button onclick="updateUserChart(30)" class="text-xs bg-purple-500/30 text-white px-3 py-1.5 rounded-lg">30 روز</button>
+                <button onclick="updateUserChart(90)" class="text-xs bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-lg">90 روز</button>
             </div>
         </div>
         <div class="relative" style="height: 280px;">
@@ -102,11 +102,11 @@ $unreadCount = $unreadCount ?? 0;
     
 </div>
 
-<!-- â•â•â• Ø¢Ù…Ø§Ø± Ø³Ø±ÛŒØ¹ â•â•â• -->
+<!-- ═══ آمار سریع ═══ -->
 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
     <div class="glass rounded-xl p-4 text-center">
-        <div class="text-3xl mb-2">ðŸŽ¯</div>
-        <div class="text-white/60 text-xs mb-1">Ù†Ø±Ø® ØªØ¨Ø¯ÛŒÙ„</div>
+        <div class="text-3xl mb-2">🎯</div>
+        <div class="text-white/60 text-xs mb-1">نرخ تبدیل</div>
         <div class="text-white text-xl font-bold">
             <?= isset($stats['donations']['total_count'], $stats['users']['total']) && $stats['users']['total'] > 0 
                 ? round(($stats['donations']['total_count'] / $stats['users']['total']) * 100, 1) 
@@ -114,52 +114,52 @@ $unreadCount = $unreadCount ?? 0;
         </div>
     </div>
     <div class="glass rounded-xl p-4 text-center">
-        <div class="text-3xl mb-2">ðŸ’Ž</div>
-        <div class="text-white/60 text-xs mb-1">Ù…ÛŒØ§Ù†Ú¯ÛŒÙ† Ø¯ÙˆÙ†ÛŒØª</div>
+        <div class="text-3xl mb-2">💎</div>
+        <div class="text-white/60 text-xs mb-1">میانگین دونیت</div>
         <div class="text-white text-xl font-bold">
             <?= isset($stats['donations']['average']) ? number_format($stats['donations']['average']) : 0 ?>
         </div>
-        <div class="text-white/40 text-xs">ØªÙˆÙ…Ø§Ù†</div>
+        <div class="text-white/40 text-xs">تومان</div>
     </div>
     <div class="glass rounded-xl p-4 text-center">
-        <div class="text-3xl mb-2">ðŸ”¥</div>
-        <div class="text-white/60 text-xs mb-1">Ú©Ø§Ø±Ø¨Ø±Ø§Ù† ÙØ¹Ø§Ù„</div>
+        <div class="text-3xl mb-2">🔥</div>
+        <div class="text-white/60 text-xs mb-1">کاربران فعال</div>
         <div class="text-white text-xl font-bold">
             <?= isset($stats['users']['active']) ? number_format($stats['users']['active']) : 0 ?>
         </div>
-        <div class="text-white/40 text-xs">Ù‡ÙØªÙ‡ Ø§Ø®ÛŒØ±</div>
+        <div class="text-white/40 text-xs">هفته اخیر</div>
     </div>
     <div class="glass rounded-xl p-4 text-center">
-        <div class="text-3xl mb-2">ðŸ“Š</div>
-        <div class="text-white/60 text-xs mb-1">Ù¾ÛŒØ§Ù… Ø§Ù…Ø±ÙˆØ²</div>
+        <div class="text-3xl mb-2">📊</div>
+        <div class="text-white/60 text-xs mb-1">پیام امروز</div>
         <div class="text-white text-xl font-bold">
             <?= isset($stats['messages']['today']) ? number_format($stats['messages']['today']) : 0 ?>
         </div>
-        <div class="text-white/40 text-xs">Ù¾ÛŒØ§Ù…</div>
+        <div class="text-white/40 text-xs">پیام</div>
     </div>
 </div>
 
-<!-- â•â•â• Ø¨Ø±ØªØ±ÛŒÙ†â€ŒÙ‡Ø§ Ùˆ ÙØ¹Ø§Ù„ÛŒØªâ€ŒÙ‡Ø§ÛŒ Ø§Ø®ÛŒØ± â•â•â• -->
+<!-- ═══ برترین‌ها و فعالیت‌های اخیر ═══ -->
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
     
-    <!-- Ø¨Ø±ØªØ±ÛŒÙ† Ø­Ø§Ù…ÛŒØ§Ù† -->
+    <!-- برترین حامیان -->
     <div class="glass rounded-2xl p-5 shadow-lg">
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-white font-bold text-lg flex items-center gap-2">
-                <span>ðŸ†</span>
-                <span>Ø¨Ø±ØªØ±ÛŒÙ† Ø­Ø§Ù…ÛŒØ§Ù†</span>
+                <span>🏆</span>
+                <span>برترین حامیان</span>
             </h3>
             <a href="/admin/donations.php" class="text-blue-400 text-sm hover:text-blue-300 transition flex items-center gap-1">
-                <span>Ù…Ø´Ø§Ù‡Ø¯Ù‡ Ù‡Ù…Ù‡</span>
+                <span>مشاهده همه</span>
                 <i class="fas fa-arrow-left text-xs"></i>
             </a>
         </div>
         
         <?php if (empty($topDonors)): ?>
         <div class="text-center py-12">
-            <div class="text-5xl mb-3">ðŸŽ</div>
-            <p class="text-white/50 text-sm">Ù‡Ù†ÙˆØ² Ø¯ÙˆÙ†ÛŒØªÛŒ Ø«Ø¨Øª Ù†Ø´Ø¯Ù‡</p>
-            <p class="text-white/30 text-xs mt-1">Ø§ÙˆÙ„ÛŒÙ† Ø¯ÙˆÙ†ÛŒØª Ø¨Ù‡ Ø²ÙˆØ¯ÛŒ Ø«Ø¨Øª Ù…ÛŒâ€ŒØ´Ù‡!</p>
+            <div class="text-5xl mb-3">🎁</div>
+            <p class="text-white/50 text-sm">هنوز دونیتی ثبت نشده</p>
+            <p class="text-white/30 text-xs mt-1">اولین دونیت به زودی ثبت می‌شه!</p>
         </div>
         <?php else: ?>
         <div class="space-y-3">
@@ -175,10 +175,10 @@ $unreadCount = $unreadCount ?? 0;
                     </div>
                     <div>
                         <div class="text-white text-sm font-medium group-hover:text-purple-300 transition">
-                            <?= htmlspecialchars($donor['display_name'] ?? $donor['first_name'] ?? 'Ú©Ø§Ø±Ø¨Ø±') ?>
+                            <?= htmlspecialchars($donor['display_name'] ?? $donor['first_name'] ?? 'کاربر') ?>
                         </div>
                         <div class="text-white/50 text-xs">
-                            <?= number_format($donor['donation_count'] ?? 0) ?> Ø¯ÙˆÙ†ÛŒØª
+                            <?= number_format($donor['donation_count'] ?? 0) ?> دونیت
                         </div>
                     </div>
                 </div>
@@ -186,7 +186,7 @@ $unreadCount = $unreadCount ?? 0;
                     <div class="text-green-400 font-bold text-sm">
                         <?= number_format($donor['total_amount'] ?? 0) ?>
                     </div>
-                    <div class="text-white/40 text-xs">ØªÙˆÙ…Ø§Ù†</div>
+                    <div class="text-white/40 text-xs">تومان</div>
                 </div>
             </div>
             <?php endforeach; ?>
@@ -194,29 +194,29 @@ $unreadCount = $unreadCount ?? 0;
         <?php endif; ?>
     </div>
     
-    <!-- Ø¢Ø®Ø±ÛŒÙ† Ù¾ÛŒØ§Ù…â€ŒÙ‡Ø§ -->
+    <!-- آخرین پیام‌ها -->
     <div class="glass rounded-2xl p-5 shadow-lg">
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-white font-bold text-lg flex items-center gap-2">
-                <span>ðŸ’¬</span>
-                <span>Ø¢Ø®Ø±ÛŒÙ† Ù¾ÛŒØ§Ù…â€ŒÙ‡Ø§</span>
+                <span>💬</span>
+                <span>آخرین پیام‌ها</span>
                 <?php if ($unreadCount > 0): ?>
                 <span class="bg-red-500 text-white text-xs rounded-full px-2 py-0.5">
-                    <?= $unreadCount ?> Ø¬Ø¯ÛŒØ¯
+                    <?= $unreadCount ?> جدید
                 </span>
                 <?php endif; ?>
             </h3>
             <a href="/admin/messages.php" class="text-blue-400 text-sm hover:text-blue-300 transition flex items-center gap-1">
-                <span>Ù…Ø´Ø§Ù‡Ø¯Ù‡ Ù‡Ù…Ù‡</span>
+                <span>مشاهده همه</span>
                 <i class="fas fa-arrow-left text-xs"></i>
             </a>
         </div>
         
         <?php if (empty($recentMessages)): ?>
         <div class="text-center py-12">
-            <div class="text-5xl mb-3">ðŸ“­</div>
-            <p class="text-white/50 text-sm">Ù‡Ù†ÙˆØ² Ù¾ÛŒØ§Ù…ÛŒ Ø¯Ø±ÛŒØ§ÙØª Ù†Ø´Ø¯Ù‡</p>
-            <p class="text-white/30 text-xs mt-1">Ù¾ÛŒØ§Ù…â€ŒÙ‡Ø§ÛŒ Ú©Ø§Ø±Ø¨Ø±Ø§Ù† Ø§ÛŒÙ†Ø¬Ø§ Ù†Ù…Ø§ÛŒØ´ Ø¯Ø§Ø¯Ù‡ Ù…ÛŒâ€ŒØ´Ù†</p>
+            <div class="text-5xl mb-3">📭</div>
+            <p class="text-white/50 text-sm">هنوز پیامی دریافت نشده</p>
+            <p class="text-white/30 text-xs mt-1">پیام‌های کاربران اینجا نمایش داده می‌شن</p>
         </div>
         <?php else: ?>
         <div class="space-y-2 max-h-96 overflow-y-auto">
@@ -228,10 +228,10 @@ $unreadCount = $unreadCount ?? 0;
                             <?= strtoupper(substr($msg['first_name'] ?? $msg['username'] ?? '?', 0, 1)) ?>
                         </div>
                         <span class="text-white text-sm font-medium group-hover:text-purple-300 transition">
-                            <?= htmlspecialchars($msg['user_display_name'] ?? 'Ú©Ø§Ø±Ø¨Ø±') ?>
+                            <?= htmlspecialchars($msg['user_display_name'] ?? 'کاربر') ?>
                         </span>
                         <?php if (!empty($msg['is_vip'])): ?>
-                        <span class="text-xs">ðŸ‘‘</span>
+                        <span class="text-xs">👑</span>
                         <?php endif; ?>
                     </div>
                     <span class="text-white/40 text-xs"><?= htmlspecialchars($msg['time_ago'] ?? '') ?></span>
@@ -247,35 +247,35 @@ $unreadCount = $unreadCount ?? 0;
     
 </div>
 
-<!-- â•â•â• Ø¢Ø®Ø±ÛŒÙ† Ø¯ÙˆÙ†ÛŒØªâ€ŒÙ‡Ø§ â•â•â• -->
+<!-- ═══ آخرین دونیت‌ها ═══ -->
 <div class="glass rounded-2xl p-5 shadow-lg mb-6">
     <div class="flex justify-between items-center mb-4">
         <h3 class="text-white font-bold text-lg flex items-center gap-2">
-            <span>ðŸ’³</span>
-            <span>Ø¢Ø®Ø±ÛŒÙ† Ø¯ÙˆÙ†ÛŒØªâ€ŒÙ‡Ø§</span>
+            <span>💳</span>
+            <span>آخرین دونیت‌ها</span>
         </h3>
         <a href="/admin/donations.php" class="text-blue-400 text-sm hover:text-blue-300 transition flex items-center gap-1">
-            <span>Ù…Ø´Ø§Ù‡Ø¯Ù‡ Ù‡Ù…Ù‡</span>
+            <span>مشاهده همه</span>
             <i class="fas fa-arrow-left text-xs"></i>
         </a>
     </div>
     
     <?php if (empty($recentDonations)): ?>
     <div class="text-center py-12">
-        <div class="text-5xl mb-3">ðŸ’¸</div>
-        <p class="text-white/50 text-sm">Ù‡Ù†ÙˆØ² Ø¯ÙˆÙ†ÛŒØªÛŒ Ø«Ø¨Øª Ù†Ø´Ø¯Ù‡</p>
-        <p class="text-white/30 text-xs mt-1">Ø¯ÙˆÙ†ÛŒØªâ€ŒÙ‡Ø§ÛŒ Ú©Ø§Ø±Ø¨Ø±Ø§Ù† Ø§ÛŒÙ†Ø¬Ø§ Ù†Ù…Ø§ÛŒØ´ Ø¯Ø§Ø¯Ù‡ Ù…ÛŒâ€ŒØ´Ù†</p>
+        <div class="text-5xl mb-3">💸</div>
+        <p class="text-white/50 text-sm">هنوز دونیتی ثبت نشده</p>
+        <p class="text-white/30 text-xs mt-1">دونیت‌های کاربران اینجا نمایش داده می‌شن</p>
     </div>
     <?php else: ?>
     <div class="overflow-x-auto">
         <table class="w-full text-sm">
             <thead>
                 <tr class="text-white/60 border-b border-white/10">
-                    <th class="text-right py-3 px-3 font-medium">Ú©Ø§Ø±Ø¨Ø±</th>
-                    <th class="text-right py-3 px-3 font-medium">Ù…Ø¨Ù„Øº</th>
-                    <th class="text-right py-3 px-3 font-medium hidden md:table-cell">Ø¯Ø±Ú¯Ø§Ù‡</th>
-                    <th class="text-right py-3 px-3 font-medium hidden sm:table-cell">ÙˆØ¶Ø¹ÛŒØª</th>
-                    <th class="text-right py-3 px-3 font-medium">Ø²Ù…Ø§Ù†</th>
+                    <th class="text-right py-3 px-3 font-medium">کاربر</th>
+                    <th class="text-right py-3 px-3 font-medium">مبلغ</th>
+                    <th class="text-right py-3 px-3 font-medium hidden md:table-cell">درگاه</th>
+                    <th class="text-right py-3 px-3 font-medium hidden sm:table-cell">وضعیت</th>
+                    <th class="text-right py-3 px-3 font-medium">زمان</th>
                 </tr>
             </thead>
             <tbody>
@@ -286,26 +286,26 @@ $unreadCount = $unreadCount ?? 0;
                             <div class="w-8 h-8 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center text-white text-xs font-bold">
                                 <?= strtoupper(substr($d['first_name'] ?? $d['username'] ?? '?', 0, 1)) ?>
                             </div>
-                            <span class="text-white"><?= htmlspecialchars($d['user_display_name'] ?? 'Ú©Ø§Ø±Ø¨Ø±') ?></span>
+                            <span class="text-white"><?= htmlspecialchars($d['user_display_name'] ?? 'کاربر') ?></span>
                         </div>
                     </td>
                     <td class="py-3 px-3">
                         <span class="text-green-400 font-bold">
                             <?= htmlspecialchars($d['amount_formatted'] ?? number_format($d['amount'] ?? 0)) ?>
                         </span>
-                        <span class="text-white/50 text-xs">Øª</span>
+                        <span class="text-white/50 text-xs">ت</span>
                     </td>
                     <td class="py-3 px-3 text-white/70 hidden md:table-cell">
-                        <span class="text-lg"><?= htmlspecialchars($d['gateway_icon'] ?? 'ðŸ’µ') ?></span>
-                        <span class="text-xs"><?= htmlspecialchars($d['gateway'] ?? 'Ù†Ø§Ù…Ø´Ø®Øµ') ?></span>
+                        <span class="text-lg"><?= htmlspecialchars($d['gateway_icon'] ?? '💵') ?></span>
+                        <span class="text-xs"><?= htmlspecialchars($d['gateway'] ?? 'نامشخص') ?></span>
                     </td>
                     <td class="py-3 px-3 hidden sm:table-cell">
                         <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs
                             <?= ($d['status'] ?? '') === 'success' ? 'bg-green-500/20 text-green-300' : 
                                (($d['status'] ?? '') === 'pending' ? 'bg-yellow-500/20 text-yellow-300' : 
                                'bg-red-500/20 text-red-300') ?>">
-                            <?= htmlspecialchars($d['status_icon'] ?? 'â“') ?>
-                            <span><?= htmlspecialchars($d['status_text'] ?? 'Ù†Ø§Ù…Ø´Ø®Øµ') ?></span>
+                            <?= htmlspecialchars($d['status_icon'] ?? '❓') ?>
+                            <span><?= htmlspecialchars($d['status_text'] ?? 'نامشخص') ?></span>
                         </span>
                     </td>
                     <td class="py-3 px-3 text-white/50 text-xs">
@@ -319,29 +319,29 @@ $unreadCount = $unreadCount ?? 0;
     <?php endif; ?>
 </div>
 
-<!-- â•â•â• Quick Actions â•â•â• -->
+<!-- ═══ Quick Actions ═══ -->
 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
     <a href="/admin/users.php" class="glass rounded-xl p-4 text-center hover:bg-white/10 transition group">
-        <div class="text-3xl mb-2 group-hover:scale-110 transition">ðŸ‘¥</div>
-        <div class="text-white text-sm font-medium">Ù…Ø¯ÛŒØ±ÛŒØª Ú©Ø§Ø±Ø¨Ø±Ø§Ù†</div>
+        <div class="text-3xl mb-2 group-hover:scale-110 transition">👥</div>
+        <div class="text-white text-sm font-medium">مدیریت کاربران</div>
     </a>
     <a href="/admin/broadcast.php" class="glass rounded-xl p-4 text-center hover:bg-white/10 transition group">
-        <div class="text-3xl mb-2 group-hover:scale-110 transition">ðŸ“¢</div>
-        <div class="text-white text-sm font-medium">Ø§Ø±Ø³Ø§Ù„ Ø¯Ø³ØªÙ‡â€ŒØ¬Ù…Ø¹ÛŒ</div>
+        <div class="text-3xl mb-2 group-hover:scale-110 transition">📢</div>
+        <div class="text-white text-sm font-medium">ارسال دسته‌جمعی</div>
     </a>
     <a href="/admin/keywords.php" class="glass rounded-xl p-4 text-center hover:bg-white/10 transition group">
-        <div class="text-3xl mb-2 group-hover:scale-110 transition">ðŸ”‘</div>
-        <div class="text-white text-sm font-medium">Ú©Ù„Ù…Ø§Øª Ú©Ù„ÛŒØ¯ÛŒ</div>
+        <div class="text-3xl mb-2 group-hover:scale-110 transition">🔑</div>
+        <div class="text-white text-sm font-medium">کلمات کلیدی</div>
     </a>
     <a href="/admin/settings.php" class="glass rounded-xl p-4 text-center hover:bg-white/10 transition group">
-        <div class="text-3xl mb-2 group-hover:scale-110 transition">âš™ï¸</div>
-        <div class="text-white text-sm font-medium">ØªÙ†Ø¸ÛŒÙ…Ø§Øª</div>
+        <div class="text-3xl mb-2 group-hover:scale-110 transition">⚙️</div>
+        <div class="text-white text-sm font-medium">تنظیمات</div>
     </a>
 </div>
 
-<!-- â•â•â• Chart.js Scripts â•â•â• -->
+<!-- ═══ Chart.js Scripts ═══ -->
 <script>
-// â•â•â• Ù†Ù…ÙˆØ¯Ø§Ø± Ø¯ÙˆÙ†ÛŒØªâ€ŒÙ‡Ø§ â•â•â•
+// ═══ نمودار دونیت‌ها ═══
 let donationChartInstance = null;
 
 function initDonationChart(data) {
@@ -382,7 +382,7 @@ function initDonationChart(data) {
                             if (label) label += ': ';
                             if (context.parsed.y !== null) {
                                 label += new Intl.NumberFormat('fa-IR').format(context.parsed.y);
-                                if (context.datasetIndex === 0) label += ' ØªÙˆÙ…Ø§Ù†';
+                                if (context.datasetIndex === 0) label += ' تومان';
                             }
                             return label;
                         }
@@ -414,7 +414,7 @@ function initDonationChart(data) {
     });
 }
 
-// â•â•â• Ù†Ù…ÙˆØ¯Ø§Ø± Ú©Ø§Ø±Ø¨Ø±Ø§Ù† â•â•â•
+// ═══ نمودار کاربران ═══
 let userChartInstance = null;
 
 function initUserChart(data) {
@@ -474,7 +474,7 @@ function initUserChart(data) {
     });
 }
 
-// â•â•â• Ø¨Ø±ÙˆØ²Ø±Ø³Ø§Ù†ÛŒ Ù†Ù…ÙˆØ¯Ø§Ø±Ù‡Ø§ â•â•â•
+// ═══ بروزرسانی نمودارها ═══
 async function updateDonationChart(days) {
     try {
         const response = await fetch(`/admin/api/chart/donations?days=${days}`);
@@ -482,10 +482,10 @@ async function updateDonationChart(days) {
         
         if (data.success) {
             initDonationChart(data.data);
-            showToast('Ù†Ù…ÙˆØ¯Ø§Ø± Ø¨Ø±ÙˆØ²Ø±Ø³Ø§Ù†ÛŒ Ø´Ø¯', 'success');
+            showToast('نمودار بروزرسانی شد', 'success');
         }
     } catch (error) {
-        showToast('Ø®Ø·Ø§ Ø¯Ø± Ø¨Ø±ÙˆØ²Ø±Ø³Ø§Ù†ÛŒ Ù†Ù…ÙˆØ¯Ø§Ø±', 'error');
+        showToast('خطا در بروزرسانی نمودار', 'error');
     }
 }
 
@@ -496,28 +496,28 @@ async function updateUserChart(days) {
         
         if (data.success) {
             initUserChart(data.data);
-            showToast('Ù†Ù…ÙˆØ¯Ø§Ø± Ø¨Ø±ÙˆØ²Ø±Ø³Ø§Ù†ÛŒ Ø´Ø¯', 'success');
+            showToast('نمودار بروزرسانی شد', 'success');
         }
     } catch (error) {
-        showToast('Ø®Ø·Ø§ Ø¯Ø± Ø¨Ø±ÙˆØ²Ø±Ø³Ø§Ù†ÛŒ Ù†Ù…ÙˆØ¯Ø§Ø±', 'error');
+        showToast('خطا در بروزرسانی نمودار', 'error');
     }
 }
 
-// â•â•â• Ø±Ø§Ù‡â€ŒØ§Ù†Ø¯Ø§Ø²ÛŒ Ø§ÙˆÙ„ÛŒÙ‡ â•â•â•
+// ═══ راه‌اندازی اولیه ═══
 document.addEventListener('DOMContentLoaded', function() {
-    // Ù†Ù…ÙˆØ¯Ø§Ø± Ø¯ÙˆÙ†ÛŒØªâ€ŒÙ‡Ø§
+    // نمودار دونیت‌ها
     const donationData = <?= json_encode($donationChart) ?>;
     if (donationData && donationData.labels && donationData.labels.length > 0) {
         initDonationChart(donationData);
     }
     
-    // Ù†Ù…ÙˆØ¯Ø§Ø± Ú©Ø§Ø±Ø¨Ø±Ø§Ù†
+    // نمودار کاربران
     const userData = <?= json_encode($userChart) ?>;
     if (userData && userData.labels && userData.labels.length > 0) {
         initUserChart(userData);
     }
     
-    // Auto-refresh Ù‡Ø± 5 Ø¯Ù‚ÛŒÙ‚Ù‡ (Ø§Ø®ØªÛŒØ§Ø±ÛŒ)
+    // Auto-refresh هر 5 دقیقه (اختیاری)
     // setInterval(() => location.reload(), 300000);
 });
 </script>

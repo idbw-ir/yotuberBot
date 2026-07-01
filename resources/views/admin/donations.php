@@ -1,19 +1,19 @@
-﻿<?php
+<?php
 /**
  * ============================================
- * Donations Management - Ù…Ø¯ÛŒØ±ÛŒØª Ø¯ÙˆÙ†ÛŒØªâ€ŒÙ‡Ø§
+ * Donations Management - مدیریت دونیت‌ها
  * ============================================
- * Ù†Ø³Ø®Ù‡: 2.1.0
+ * نسخه: 2.0.0
  * 
- * Ù„ÛŒØ³Øª Ø¯ÙˆÙ†ÛŒØªâ€ŒÙ‡Ø§ Ø¨Ø§ ÙÛŒÙ„ØªØ±ØŒ Ø¬Ø³ØªØ¬Ùˆ Ùˆ Ø¹Ù…Ù„ÛŒØ§Øª
- * Ø§Ø² layout Ø§ØµÙ„ÛŒ (admin.php) Ø§Ø³ØªÙØ§Ø¯Ù‡ Ù…ÛŒâ€ŒÚ©Ù†Ù‡
+ * لیست دونیت‌ها با فیلتر، جستجو و عملیات
+ * از layout اصلی (admin.php) استفاده می‌کنه
  */
 
-// Ù…ØªØºÛŒØ±Ù‡Ø§ÛŒ Ù…ÙˆØ±Ø¯ Ù†ÛŒØ§Ø² Ø§Ø² Controller:
-// - $donations (Ø¢Ø±Ø§ÛŒÙ‡ Ø¯ÙˆÙ†ÛŒØªâ€ŒÙ‡Ø§)
-// - $pagination (Ø§Ø·Ù„Ø§Ø¹Ø§Øª ØµÙØ­Ù‡â€ŒØ¨Ù†Ø¯ÛŒ)
-// - $filters (ÙÛŒÙ„ØªØ±Ù‡Ø§ÛŒ ÙØ¹Ù„ÛŒ)
-// - $stats (Ø¢Ù…Ø§Ø± Ø¯ÙˆÙ†ÛŒØªâ€ŒÙ‡Ø§)
+// متغیرهای مورد نیاز از Controller:
+// - $donations (آرایه دونیت‌ها)
+// - $pagination (اطلاعات صفحه‌بندی)
+// - $filters (فیلترهای فعلی)
+// - $stats (آمار دونیت‌ها)
 
 $donations = $donations ?? [];
 $pagination = $pagination ?? ['total' => 0, 'current_page' => 1, 'total_pages' => 1];
@@ -24,109 +24,109 @@ $stats = $stats ?? ['total_amount' => 0, 'total_count' => 0, 'today_amount' => 0
 $csrfToken = $_SESSION['_csrf_token'] ?? '';
 ?>
 
-<!-- â•â•â• Ø¢Ù…Ø§Ø± Ø³Ø±ÛŒØ¹ â•â•â• -->
+<!-- ═══ آمار سریع ═══ -->
 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
     <div class="glass rounded-xl p-4 text-center">
-        <div class="text-3xl mb-2">ðŸ’°</div>
-        <div class="text-white/60 text-xs mb-1">Ù…Ø¬Ù…ÙˆØ¹ Ø¯ÙˆÙ†ÛŒØª</div>
+        <div class="text-3xl mb-2">💰</div>
+        <div class="text-white/60 text-xs mb-1">مجموع دونیت</div>
         <div class="text-green-400 text-xl font-bold"><?= number_format($stats['total_amount'] ?? 0) ?></div>
-        <div class="text-white/40 text-xs">ØªÙˆÙ…Ø§Ù†</div>
+        <div class="text-white/40 text-xs">تومان</div>
     </div>
     <div class="glass rounded-xl p-4 text-center">
-        <div class="text-3xl mb-2">ðŸ’³</div>
-        <div class="text-white/60 text-xs mb-1">ØªØ¹Ø¯Ø§Ø¯ Ú©Ù„</div>
+        <div class="text-3xl mb-2">💳</div>
+        <div class="text-white/60 text-xs mb-1">تعداد کل</div>
         <div class="text-white text-xl font-bold"><?= number_format($stats['total_count'] ?? 0) ?></div>
-        <div class="text-white/40 text-xs">Ø¯ÙˆÙ†ÛŒØª</div>
+        <div class="text-white/40 text-xs">دونیت</div>
     </div>
     <div class="glass rounded-xl p-4 text-center">
-        <div class="text-3xl mb-2">ðŸ“…</div>
-        <div class="text-white/60 text-xs mb-1">Ø§Ù…Ø±ÙˆØ²</div>
+        <div class="text-3xl mb-2">📅</div>
+        <div class="text-white/60 text-xs mb-1">امروز</div>
         <div class="text-purple-400 text-xl font-bold"><?= number_format($stats['today_amount'] ?? 0) ?></div>
-        <div class="text-white/40 text-xs">ØªÙˆÙ…Ø§Ù†</div>
+        <div class="text-white/40 text-xs">تومان</div>
     </div>
     <div class="glass rounded-xl p-4 text-center">
-        <div class="text-3xl mb-2">ðŸ“Š</div>
-        <div class="text-white/60 text-xs mb-1">Ø§ÛŒÙ† Ù…Ø§Ù‡</div>
+        <div class="text-3xl mb-2">📊</div>
+        <div class="text-white/60 text-xs mb-1">این ماه</div>
         <div class="text-blue-400 text-xl font-bold"><?= number_format($stats['month_amount'] ?? 0) ?></div>
-        <div class="text-white/40 text-xs">ØªÙˆÙ…Ø§Ù†</div>
+        <div class="text-white/40 text-xs">تومان</div>
     </div>
     <div class="glass rounded-xl p-4 text-center">
-        <div class="text-3xl mb-2">â³</div>
-        <div class="text-white/60 text-xs mb-1">Ø¯Ø± Ø§Ù†ØªØ¸Ø§Ø±</div>
+        <div class="text-3xl mb-2">⏳</div>
+        <div class="text-white/60 text-xs mb-1">در انتظار</div>
         <div class="text-yellow-400 text-xl font-bold"><?= number_format($stats['pending'] ?? 0) ?></div>
-        <div class="text-white/40 text-xs">Ø¯ÙˆÙ†ÛŒØª</div>
+        <div class="text-white/40 text-xs">دونیت</div>
     </div>
     <div class="glass rounded-xl p-4 text-center">
-        <div class="text-3xl mb-2">ðŸ’Ž</div>
-        <div class="text-white/60 text-xs mb-1">Ù…ÛŒØ§Ù†Ú¯ÛŒÙ†</div>
+        <div class="text-3xl mb-2">💎</div>
+        <div class="text-white/60 text-xs mb-1">میانگین</div>
         <div class="text-white text-xl font-bold"><?= number_format($stats['average'] ?? 0) ?></div>
-        <div class="text-white/40 text-xs">ØªÙˆÙ…Ø§Ù†</div>
+        <div class="text-white/40 text-xs">تومان</div>
     </div>
 </div>
 
-<!-- â•â•â• ÙÛŒÙ„ØªØ±Ù‡Ø§ Ùˆ Ø¬Ø³ØªØ¬Ùˆ â•â•â• -->
+<!-- ═══ فیلترها و جستجو ═══ -->
 <div class="glass rounded-2xl p-5 mb-6">
     <form method="GET" action="/admin/donations.php" class="space-y-4">
         
-        <!-- Ø±Ø¯ÛŒÙ Ø§ÙˆÙ„: ÙˆØ¶Ø¹ÛŒØª Ùˆ Ø¯Ø±Ú¯Ø§Ù‡ -->
+        <!-- ردیف اول: وضعیت و درگاه -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             
-            <!-- ÙÛŒÙ„ØªØ± ÙˆØ¶Ø¹ÛŒØª -->
+            <!-- فیلتر وضعیت -->
             <div>
-                <label class="block text-white/70 text-sm mb-2">ÙˆØ¶Ø¹ÛŒØª</label>
+                <label class="block text-white/70 text-sm mb-2">وضعیت</label>
                 <select 
                     name="status" 
                     class="w-full bg-white/10 border border-white/20 rounded-lg py-2.5 px-4 text-white focus:border-purple-500 transition"
                 >
-                    <option value="" <?= empty($filters['status']) ? 'selected' : '' ?>>Ù‡Ù…Ù‡</option>
-                    <option value="success" <?= ($filters['status'] ?? '') === 'success' ? 'selected' : '' ?>>âœ… Ù…ÙˆÙÙ‚</option>
-                    <option value="pending" <?= ($filters['status'] ?? '') === 'pending' ? 'selected' : '' ?>>â³ Ø¯Ø± Ø§Ù†ØªØ¸Ø§Ø±</option>
-                    <option value="failed" <?= ($filters['status'] ?? '') === 'failed' ? 'selected' : '' ?>>âŒ Ù†Ø§Ù…ÙˆÙÙ‚</option>
+                    <option value="" <?= empty($filters['status']) ? 'selected' : '' ?>>همه</option>
+                    <option value="success" <?= ($filters['status'] ?? '') === 'success' ? 'selected' : '' ?>>✅ موفق</option>
+                    <option value="pending" <?= ($filters['status'] ?? '') === 'pending' ? 'selected' : '' ?>>⏳ در انتظار</option>
+                    <option value="failed" <?= ($filters['status'] ?? '') === 'failed' ? 'selected' : '' ?>>❌ ناموفق</option>
                 </select>
             </div>
             
-            <!-- ÙÛŒÙ„ØªØ± Ø¯Ø±Ú¯Ø§Ù‡ -->
+            <!-- فیلتر درگاه -->
             <div>
-                <label class="block text-white/70 text-sm mb-2">Ø¯Ø±Ú¯Ø§Ù‡ Ù¾Ø±Ø¯Ø§Ø®Øª</label>
+                <label class="block text-white/70 text-sm mb-2">درگاه پرداخت</label>
                 <select 
                     name="gateway" 
                     class="w-full bg-white/10 border border-white/20 rounded-lg py-2.5 px-4 text-white focus:border-purple-500 transition"
                 >
-                    <option value="" <?= empty($filters['gateway']) ? 'selected' : '' ?>>Ù‡Ù…Ù‡</option>
-                    <option value="zarinpal" <?= ($filters['gateway'] ?? '') === 'zarinpal' ? 'selected' : '' ?>>ðŸ’³ Ø²Ø±ÛŒÙ†â€ŒÙ¾Ø§Ù„</option>
-                    <option value="idpay" <?= ($filters['gateway'] ?? '') === 'idpay' ? 'selected' : '' ?>>ðŸ’° IDPay</option>
-                    <option value="nextpay" <?= ($filters['gateway'] ?? '') === 'nextpay' ? 'selected' : '' ?>>ðŸ¦ NextPay</option>
-                    <option value="nowpayments" <?= ($filters['gateway'] ?? '') === 'nowpayments' ? 'selected' : '' ?>>â‚¿ NowPayments</option>
-                    <option value="manual" <?= ($filters['gateway'] ?? '') === 'manual' ? 'selected' : '' ?>>âœ‹ Ø¯Ø³ØªÛŒ</option>
+                    <option value="" <?= empty($filters['gateway']) ? 'selected' : '' ?>>همه</option>
+                    <option value="zarinpal" <?= ($filters['gateway'] ?? '') === 'zarinpal' ? 'selected' : '' ?>>💳 زرین‌پال</option>
+                    <option value="idpay" <?= ($filters['gateway'] ?? '') === 'idpay' ? 'selected' : '' ?>>💰 IDPay</option>
+                    <option value="nextpay" <?= ($filters['gateway'] ?? '') === 'nextpay' ? 'selected' : '' ?>>🏦 NextPay</option>
+                    <option value="nowpayments" <?= ($filters['gateway'] ?? '') === 'nowpayments' ? 'selected' : '' ?>>₿ NowPayments</option>
+                    <option value="manual" <?= ($filters['gateway'] ?? '') === 'manual' ? 'selected' : '' ?>>✋ دستی</option>
                 </select>
             </div>
             
         </div>
         
-        <!-- Ø±Ø¯ÛŒÙ Ø¯ÙˆÙ…: Ø¨Ø§Ø²Ù‡ Ù…Ø¨Ù„Øº -->
+        <!-- ردیف دوم: بازه مبلغ -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             
-            <!-- Ø­Ø¯Ø§Ù‚Ù„ Ù…Ø¨Ù„Øº -->
+            <!-- حداقل مبلغ -->
             <div>
-                <label class="block text-white/70 text-sm mb-2">Ø­Ø¯Ø§Ù‚Ù„ Ù…Ø¨Ù„Øº (ØªÙˆÙ…Ø§Ù†)</label>
+                <label class="block text-white/70 text-sm mb-2">حداقل مبلغ (تومان)</label>
                 <input 
                     type="number" 
                     name="min_amount" 
                     value="<?= htmlspecialchars($filters['min_amount'] ?? '') ?>"
-                    placeholder="Ù…Ø«Ù„Ø§Ù‹: 10000"
+                    placeholder="مثلاً: 10000"
                     class="w-full bg-white/10 border border-white/20 rounded-lg py-2.5 px-4 text-white placeholder-white/40 focus:border-purple-500 transition"
                     min="0"
                 >
             </div>
             
-            <!-- Ø­Ø¯Ø§Ú©Ø«Ø± Ù…Ø¨Ù„Øº -->
+            <!-- حداکثر مبلغ -->
             <div>
-                <label class="block text-white/70 text-sm mb-2">Ø­Ø¯Ø§Ú©Ø«Ø± Ù…Ø¨Ù„Øº (ØªÙˆÙ…Ø§Ù†)</label>
+                <label class="block text-white/70 text-sm mb-2">حداکثر مبلغ (تومان)</label>
                 <input 
                     type="number" 
                     name="max_amount" 
                     value="<?= htmlspecialchars($filters['max_amount'] ?? '') ?>"
-                    placeholder="Ù…Ø«Ù„Ø§Ù‹: 1000000"
+                    placeholder="مثلاً: 1000000"
                     class="w-full bg-white/10 border border-white/20 rounded-lg py-2.5 px-4 text-white placeholder-white/40 focus:border-purple-500 transition"
                     min="0"
                 >
@@ -134,14 +134,14 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
             
         </div>
         
-        <!-- Ø±Ø¯ÛŒÙ Ø³ÙˆÙ…: Ø¯Ú©Ù…Ù‡â€ŒÙ‡Ø§ -->
+        <!-- ردیف سوم: دکمه‌ها -->
         <div class="flex flex-wrap gap-3">
             <button 
                 type="submit" 
                 class="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-6 py-2.5 rounded-lg hover:opacity-90 transition flex items-center gap-2"
             >
                 <i class="fas fa-filter"></i>
-                <span>Ø§Ø¹Ù…Ø§Ù„ ÙÛŒÙ„ØªØ±</span>
+                <span>اعمال فیلتر</span>
             </button>
             
             <a 
@@ -149,7 +149,7 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                 class="bg-white/10 text-white px-6 py-2.5 rounded-lg hover:bg-white/20 transition flex items-center gap-2"
             >
                 <i class="fas fa-times"></i>
-                <span>Ù¾Ø§Ú© Ú©Ø±Ø¯Ù† ÙÛŒÙ„ØªØ±Ù‡Ø§</span>
+                <span>پاک کردن فیلترها</span>
             </a>
             
             <button 
@@ -158,7 +158,7 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                 class="bg-green-500/20 border border-green-500/50 text-green-300 px-6 py-2.5 rounded-lg hover:bg-green-500/30 transition flex items-center gap-2"
             >
                 <i class="fas fa-download"></i>
-                <span>Ø®Ø±ÙˆØ¬ÛŒ CSV</span>
+                <span>خروجی CSV</span>
             </button>
             
             <button 
@@ -167,24 +167,24 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                 class="bg-blue-500/20 border border-blue-500/50 text-blue-300 px-6 py-2.5 rounded-lg hover:bg-blue-500/30 transition flex items-center gap-2"
             >
                 <i class="fas fa-file-invoice"></i>
-                <span>Ú¯Ø²Ø§Ø±Ø´ Ù…Ø§Ù„ÛŒ</span>
+                <span>گزارش مالی</span>
             </button>
         </div>
         
     </form>
 </div>
 
-<!-- â•â•â• Ù„ÛŒØ³Øª Ø¯ÙˆÙ†ÛŒØªâ€ŒÙ‡Ø§ â•â•â• -->
+<!-- ═══ لیست دونیت‌ها ═══ -->
 <div class="glass rounded-2xl overflow-hidden">
     
     <?php if (empty($donations)): ?>
     <!-- Empty State -->
     <div class="text-center py-16">
-        <div class="text-6xl mb-4">ðŸ’¸</div>
-        <h3 class="text-white text-xl font-bold mb-2">Ù‡Ù†ÙˆØ² Ø¯ÙˆÙ†ÛŒØªÛŒ Ø«Ø¨Øª Ù†Ø´Ø¯Ù‡</h3>
-        <p class="text-white/50 text-sm mb-6">ÙˆÙ‚ØªÛŒ Ú©Ø§Ø±Ø¨Ø±Ø§Ù† Ø­Ù…Ø§ÛŒØª Ù…Ø§Ù„ÛŒ Ú©Ù†Ù†ØŒ Ø§ÛŒÙ†Ø¬Ø§ Ù†Ù…Ø§ÛŒØ´ Ø¯Ø§Ø¯Ù‡ Ù…ÛŒâ€ŒØ´Ù†</p>
+        <div class="text-6xl mb-4">💸</div>
+        <h3 class="text-white text-xl font-bold mb-2">هنوز دونیتی ثبت نشده</h3>
+        <p class="text-white/50 text-sm mb-6">وقتی کاربران حمایت مالی کنن، اینجا نمایش داده می‌شن</p>
         <a href="/admin/" class="inline-block bg-purple-500/20 border border-purple-500/50 text-purple-300 px-6 py-2.5 rounded-lg hover:bg-purple-500/30 transition">
-            Ø¨Ø§Ø²Ú¯Ø´Øª Ø¨Ù‡ Ø¯Ø§Ø´Ø¨ÙˆØ±Ø¯
+            بازگشت به داشبورد
         </a>
     </div>
     <?php else: ?>
@@ -194,20 +194,20 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
         <table class="w-full text-sm">
             <thead>
                 <tr class="bg-white/5 border-b border-white/10">
-                    <th class="text-right py-3 px-4 text-white/70 font-medium">Ø¢ÛŒØ¯ÛŒ</th>
-                    <th class="text-right py-3 px-4 text-white/70 font-medium">Ú©Ø§Ø±Ø¨Ø±</th>
+                    <th class="text-right py-3 px-4 text-white/70 font-medium">آیدی</th>
+                    <th class="text-right py-3 px-4 text-white/70 font-medium">کاربر</th>
                     <th class="text-right py-3 px-4 text-white/70 font-medium">
                         <a href="?sort=amount&order=<?= ($filters['sort'] ?? '') === 'amount' && ($filters['order'] ?? '') === 'ASC' ? 'DESC' : 'ASC' ?>&<?= http_build_query(array_diff_key($filters, ['sort' => '', 'order' => ''])) ?>" class="hover:text-white transition flex items-center gap-1">
-                            <span>Ù…Ø¨Ù„Øº</span>
+                            <span>مبلغ</span>
                             <?php if (($filters['sort'] ?? '') === 'amount'): ?>
                             <i class="fas fa-sort-<?= ($filters['order'] ?? '') === 'ASC' ? 'up' : 'down' ?> text-xs"></i>
                             <?php endif; ?>
                         </a>
                     </th>
-                    <th class="text-right py-3 px-4 text-white/70 font-medium hidden md:table-cell">Ø¯Ø±Ú¯Ø§Ù‡</th>
+                    <th class="text-right py-3 px-4 text-white/70 font-medium hidden md:table-cell">درگاه</th>
                     <th class="text-right py-3 px-4 text-white/70 font-medium">
                         <a href="?sort=status&order=<?= ($filters['sort'] ?? '') === 'status' && ($filters['order'] ?? '') === 'ASC' ? 'DESC' : 'ASC' ?>&<?= http_build_query(array_diff_key($filters, ['sort' => '', 'order' => ''])) ?>" class="hover:text-white transition flex items-center gap-1">
-                            <span>ÙˆØ¶Ø¹ÛŒØª</span>
+                            <span>وضعیت</span>
                             <?php if (($filters['sort'] ?? '') === 'status'): ?>
                             <i class="fas fa-sort-<?= ($filters['order'] ?? '') === 'ASC' ? 'up' : 'down' ?> text-xs"></i>
                             <?php endif; ?>
@@ -215,13 +215,13 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                     </th>
                     <th class="text-right py-3 px-4 text-white/70 font-medium hidden lg:table-cell">
                         <a href="?sort=created_at&order=<?= ($filters['sort'] ?? '') === 'created_at' && ($filters['order'] ?? '') === 'ASC' ? 'DESC' : 'ASC' ?>&<?= http_build_query(array_diff_key($filters, ['sort' => '', 'order' => ''])) ?>" class="hover:text-white transition flex items-center gap-1">
-                            <span>ØªØ§Ø±ÛŒØ®</span>
+                            <span>تاریخ</span>
                             <?php if (($filters['sort'] ?? '') === 'created_at'): ?>
                             <i class="fas fa-sort-<?= ($filters['order'] ?? '') === 'ASC' ? 'up' : 'down' ?> text-xs"></i>
                             <?php endif; ?>
                         </a>
                     </th>
-                    <th class="text-right py-3 px-4 text-white/70 font-medium">Ø¹Ù…Ù„ÛŒØ§Øª</th>
+                    <th class="text-right py-3 px-4 text-white/70 font-medium">عملیات</th>
                 </tr>
             </thead>
             <tbody>
@@ -243,7 +243,7 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                             </div>
                             <div class="min-w-0">
                                 <div class="text-white text-sm font-medium truncate">
-                                    <?= htmlspecialchars($d['user_display_name'] ?? 'Ú©Ø§Ø±Ø¨Ø±') ?>
+                                    <?= htmlspecialchars($d['user_display_name'] ?? 'کاربر') ?>
                                 </div>
                                 <?php if (!empty($d['username'])): ?>
                                 <a href="https://t.me/<?= htmlspecialchars($d['username']) ?>" target="_blank" class="text-blue-400 text-xs hover:underline truncate block">
@@ -259,14 +259,14 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                         <div class="text-green-400 font-bold">
                             <?= htmlspecialchars($d['amount_formatted'] ?? number_format($d['amount'] ?? 0)) ?>
                         </div>
-                        <div class="text-white/40 text-xs">ØªÙˆÙ…Ø§Ù†</div>
+                        <div class="text-white/40 text-xs">تومان</div>
                     </td>
                     
                     <!-- Gateway -->
                     <td class="py-3 px-4 hidden md:table-cell">
                         <div class="flex items-center gap-2">
-                            <span class="text-xl"><?= htmlspecialchars($d['gateway_icon'] ?? 'ðŸ’µ') ?></span>
-                            <span class="text-white/70 text-xs"><?= htmlspecialchars($d['gateway'] ?? 'Ù†Ø§Ù…Ø´Ø®Øµ') ?></span>
+                            <span class="text-xl"><?= htmlspecialchars($d['gateway_icon'] ?? '💵') ?></span>
+                            <span class="text-white/70 text-xs"><?= htmlspecialchars($d['gateway'] ?? 'نامشخص') ?></span>
                         </div>
                     </td>
                     
@@ -276,8 +276,8 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                             <?= ($d['status'] ?? '') === 'success' ? 'bg-green-500/20 text-green-300' : 
                                (($d['status'] ?? '') === 'pending' ? 'bg-yellow-500/20 text-yellow-300' : 
                                'bg-red-500/20 text-red-300') ?>">
-                            <span><?= htmlspecialchars($d['status_icon'] ?? 'â“') ?></span>
-                            <span><?= htmlspecialchars($d['status_text'] ?? 'Ù†Ø§Ù…Ø´Ø®Øµ') ?></span>
+                            <span><?= htmlspecialchars($d['status_icon'] ?? '❓') ?></span>
+                            <span><?= htmlspecialchars($d['status_text'] ?? 'نامشخص') ?></span>
                         </span>
                     </td>
                     
@@ -293,7 +293,7 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                             <button 
                                 onclick="viewDonation(<?= $d['id'] ?>)"
                                 class="bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 p-2 rounded-lg transition"
-                                title="Ù…Ø´Ø§Ù‡Ø¯Ù‡ Ø¬Ø²Ø¦ÛŒØ§Øª"
+                                title="مشاهده جزئیات"
                             >
                                 <i class="fas fa-eye text-sm"></i>
                             </button>
@@ -302,14 +302,14 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                             <button 
                                 onclick="approveDonation(<?= $d['id'] ?>)"
                                 class="bg-green-500/20 hover:bg-green-500/30 text-green-300 p-2 rounded-lg transition"
-                                title="ØªØ£ÛŒÛŒØ¯"
+                                title="تأیید"
                             >
                                 <i class="fas fa-check text-sm"></i>
                             </button>
                             <button 
                                 onclick="rejectDonation(<?= $d['id'] ?>)"
                                 class="bg-red-500/20 hover:bg-red-500/30 text-red-300 p-2 rounded-lg transition"
-                                title="Ø±Ø¯"
+                                title="رد"
                             >
                                 <i class="fas fa-times text-sm"></i>
                             </button>
@@ -318,7 +318,7 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                             <button 
                                 onclick="deleteDonation(<?= $d['id'] ?>)"
                                 class="bg-red-500/20 hover:bg-red-500/30 text-red-300 p-2 rounded-lg transition"
-                                title="Ø­Ø°Ù"
+                                title="حذف"
                             >
                                 <i class="fas fa-trash text-sm"></i>
                             </button>
@@ -331,14 +331,14 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
         </table>
     </div>
     
-    <!-- â•â•â• Pagination â•â•â• -->
+    <!-- ═══ Pagination ═══ -->
     <?php if ($pagination['total_pages'] > 1): ?>
     <div class="border-t border-white/10 p-4">
         <div class="flex items-center justify-between flex-wrap gap-4">
             
             <!-- Info -->
             <div class="text-white/60 text-sm">
-                Ù†Ù…Ø§ÛŒØ´ <?= number_format($pagination['from'] ?? 0) ?> ØªØ§ <?= number_format($pagination['to'] ?? 0) ?> Ø§Ø² <?= number_format($pagination['total']) ?> Ø¯ÙˆÙ†ÛŒØª
+                نمایش <?= number_format($pagination['from'] ?? 0) ?> تا <?= number_format($pagination['to'] ?? 0) ?> از <?= number_format($pagination['total']) ?> دونیت
             </div>
             
             <!-- Pagination Buttons -->
@@ -351,12 +351,12 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                     class="bg-white/10 hover:bg-white/20 text-white px-3 py-2 rounded-lg transition flex items-center gap-1"
                 >
                     <i class="fas fa-chevron-right text-xs"></i>
-                    <span class="hidden sm:inline">Ù‚Ø¨Ù„ÛŒ</span>
+                    <span class="hidden sm:inline">قبلی</span>
                 </a>
                 <?php else: ?>
                 <span class="bg-white/5 text-white/30 px-3 py-2 rounded-lg flex items-center gap-1 cursor-not-allowed">
                     <i class="fas fa-chevron-right text-xs"></i>
-                    <span class="hidden sm:inline">Ù‚Ø¨Ù„ÛŒ</span>
+                    <span class="hidden sm:inline">قبلی</span>
                 </span>
                 <?php endif; ?>
                 
@@ -396,12 +396,12 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                     href="?page=<?= $pagination['current_page'] + 1 ?>&<?= http_build_query($filters) ?>"
                     class="bg-white/10 hover:bg-white/20 text-white px-3 py-2 rounded-lg transition flex items-center gap-1"
                 >
-                    <span class="hidden sm:inline">Ø¨Ø¹Ø¯ÛŒ</span>
+                    <span class="hidden sm:inline">بعدی</span>
                     <i class="fas fa-chevron-left text-xs"></i>
                 </a>
                 <?php else: ?>
                 <span class="bg-white/5 text-white/30 px-3 py-2 rounded-lg flex items-center gap-1 cursor-not-allowed">
-                    <span class="hidden sm:inline">Ø¨Ø¹Ø¯ÛŒ</span>
+                    <span class="hidden sm:inline">بعدی</span>
                     <i class="fas fa-chevron-left text-xs"></i>
                 </span>
                 <?php endif; ?>
@@ -416,7 +416,7 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
     
 </div>
 
-<!-- â•â•â• Modal for Donation Details â•â•â• -->
+<!-- ═══ Modal for Donation Details ═══ -->
 <div id="donationModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
     <div class="glass rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         
@@ -424,7 +424,7 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
         <div class="p-5 border-b border-white/10 flex items-center justify-between">
             <h3 class="text-white font-bold text-lg flex items-center gap-2">
                 <i class="fas fa-hand-holding-usd"></i>
-                <span>Ø¬Ø²Ø¦ÛŒØ§Øª Ø¯ÙˆÙ†ÛŒØª</span>
+                <span>جزئیات دونیت</span>
             </h3>
             <button 
                 onclick="closeDonationModal()"
@@ -442,12 +442,12 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
     </div>
 </div>
 
-<!-- â•â•â• Modal for Reject Reason â•â•â• -->
+<!-- ═══ Modal for Reject Reason ═══ -->
 <div id="rejectModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
     <div class="glass rounded-2xl max-w-md w-full">
         
         <div class="p-5 border-b border-white/10">
-            <h3 class="text-white font-bold text-lg">âŒ Ø±Ø¯ Ø¯ÙˆÙ†ÛŒØª</h3>
+            <h3 class="text-white font-bold text-lg">❌ رد دونیت</h3>
         </div>
         
         <div class="p-5">
@@ -455,12 +455,12 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                 <input type="hidden" id="rejectDonationId" name="donation_id">
                 
                 <div class="mb-4">
-                    <label class="block text-white/70 text-sm mb-2">Ø¯Ù„ÛŒÙ„ Ø±Ø¯ (Ø§Ø®ØªÛŒØ§Ø±ÛŒ)</label>
+                    <label class="block text-white/70 text-sm mb-2">دلیل رد (اختیاری)</label>
                     <textarea 
                         id="rejectReason"
                         name="reason"
                         rows="3"
-                        placeholder="Ù…Ø«Ù„Ø§Ù‹: Ù¾Ø±Ø¯Ø§Ø®Øª Ù†Ø§Ù…ÙˆÙÙ‚ØŒ Ø§Ø·Ù„Ø§Ø¹Ø§Øª Ù†Ø§Ø¯Ø±Ø³Øª..."
+                        placeholder="مثلاً: پرداخت ناموفق، اطلاعات نادرست..."
                         class="w-full bg-white/10 border border-white/20 rounded-lg py-2.5 px-4 text-white placeholder-white/40 focus:border-purple-500 transition resize-none"
                     ></textarea>
                 </div>
@@ -471,13 +471,13 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                         onclick="closeRejectModal()"
                         class="flex-1 bg-white/10 text-white px-4 py-2.5 rounded-lg hover:bg-white/20 transition"
                     >
-                        Ø§Ù†ØµØ±Ø§Ù
+                        انصراف
                     </button>
                     <button 
                         type="submit"
                         class="flex-1 bg-red-500 hover:bg-red-600 text-white px-4 py-2.5 rounded-lg transition"
                     >
-                        Ø±Ø¯ Ø¯ÙˆÙ†ÛŒØª
+                        رد دونیت
                     </button>
                 </div>
             </form>
@@ -486,9 +486,9 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
     </div>
 </div>
 
-<!-- â•â•â• JavaScript â•â•â• -->
+<!-- ═══ JavaScript ═══ -->
 <script>
-// â•â•â• View Donation Details â•â•â•
+// ═══ View Donation Details ═══
 async function viewDonation(donationId) {
     try {
         const response = await fetch(`/admin/api/donations/${donationId}`);
@@ -501,36 +501,36 @@ async function viewDonation(donationId) {
                 <div class="space-y-4">
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="text-white/60 text-xs">Ø¢ÛŒØ¯ÛŒ Ø¯ÙˆÙ†ÛŒØª</label>
+                            <label class="text-white/60 text-xs">آیدی دونیت</label>
                             <div class="text-white font-mono">#${d.id}</div>
                         </div>
                         <div>
-                            <label class="text-white/60 text-xs">Ø¢ÛŒØ¯ÛŒ Ú©Ø§Ø±Ø¨Ø±</label>
+                            <label class="text-white/60 text-xs">آیدی کاربر</label>
                             <div class="text-white font-mono">${d.user_id}</div>
                         </div>
                     </div>
                     
                     <div>
-                        <label class="text-white/60 text-xs">Ú©Ø§Ø±Ø¨Ø±</label>
-                        <div class="text-white font-medium">${d.user_display_name || 'Ú©Ø§Ø±Ø¨Ø±'}</div>
+                        <label class="text-white/60 text-xs">کاربر</label>
+                        <div class="text-white font-medium">${d.user_display_name || 'کاربر'}</div>
                         ${d.username ? `<a href="https://t.me/${d.username}" target="_blank" class="text-blue-400 text-sm hover:underline">@${d.username}</a>` : ''}
                     </div>
                     
                     <div class="bg-green-500/10 border border-green-500/30 rounded-lg p-4 text-center">
-                        <div class="text-white/60 text-xs mb-1">Ù…Ø¨Ù„Øº Ø¯ÙˆÙ†ÛŒØª</div>
-                        <div class="text-green-400 text-3xl font-bold">${d.amount_formatted || number_format(d.amount)} ØªÙˆÙ…Ø§Ù†</div>
+                        <div class="text-white/60 text-xs mb-1">مبلغ دونیت</div>
+                        <div class="text-green-400 text-3xl font-bold">${d.amount_formatted || number_format(d.amount)} تومان</div>
                     </div>
                     
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="text-white/60 text-xs">Ø¯Ø±Ú¯Ø§Ù‡</label>
+                            <label class="text-white/60 text-xs">درگاه</label>
                             <div class="text-white flex items-center gap-2">
-                                <span class="text-xl">${d.gateway_icon || 'ðŸ’µ'}</span>
-                                <span>${d.gateway || 'Ù†Ø§Ù…Ø´Ø®Øµ'}</span>
+                                <span class="text-xl">${d.gateway_icon || '💵'}</span>
+                                <span>${d.gateway || 'نامشخص'}</span>
                             </div>
                         </div>
                         <div>
-                            <label class="text-white/60 text-xs">ÙˆØ¶Ø¹ÛŒØª</label>
+                            <label class="text-white/60 text-xs">وضعیت</label>
                             <div class="text-white">${d.status_icon} ${d.status_text}</div>
                         </div>
                     </div>
@@ -550,21 +550,21 @@ async function viewDonation(donationId) {
                     ` : ''}
                     
                     <div>
-                        <label class="text-white/60 text-xs">ØªØ§Ø±ÛŒØ® Ø§ÛŒØ¬Ø§Ø¯</label>
+                        <label class="text-white/60 text-xs">تاریخ ایجاد</label>
                         <div class="text-white">${d.created_at}</div>
                         <div class="text-white/50 text-sm">${d.time_ago}</div>
                     </div>
                     
                     ${d.approved_at ? `
                     <div>
-                        <label class="text-white/60 text-xs">ØªØ§Ø±ÛŒØ® ØªØ£ÛŒÛŒØ¯</label>
+                        <label class="text-white/60 text-xs">تاریخ تأیید</label>
                         <div class="text-white">${d.approved_at}</div>
                     </div>
                     ` : ''}
                     
                     ${d.reject_reason ? `
                     <div class="bg-red-500/10 border border-red-500/30 rounded-lg p-3">
-                        <label class="text-red-300 text-xs">Ø¯Ù„ÛŒÙ„ Ø±Ø¯</label>
+                        <label class="text-red-300 text-xs">دلیل رد</label>
                         <div class="text-white text-sm mt-1">${d.reject_reason}</div>
                     </div>
                     ` : ''}
@@ -573,16 +573,16 @@ async function viewDonation(donationId) {
                         ${d.status === 'pending' ? `
                         <button onclick="approveDonation(${d.id}, true)" class="flex-1 bg-green-500/20 border border-green-500/50 text-green-300 px-4 py-2.5 rounded-lg hover:bg-green-500/30 transition">
                             <i class="fas fa-check"></i>
-                            <span>ØªØ£ÛŒÛŒØ¯</span>
+                            <span>تأیید</span>
                         </button>
                         <button onclick="showRejectModal(${d.id})" class="flex-1 bg-red-500/20 border border-red-500/50 text-red-300 px-4 py-2.5 rounded-lg hover:bg-red-500/30 transition">
                             <i class="fas fa-times"></i>
-                            <span>Ø±Ø¯</span>
+                            <span>رد</span>
                         </button>
                         ` : ''}
                         <a href="/admin/chat.php?id=${d.user_id}" class="flex-1 bg-purple-500/20 border border-purple-500/50 text-purple-300 px-4 py-2.5 rounded-lg hover:bg-purple-500/30 transition text-center">
                             <i class="fas fa-comments"></i>
-                            <span>Ú†Øª Ø¨Ø§ Ú©Ø§Ø±Ø¨Ø±</span>
+                            <span>چت با کاربر</span>
                         </a>
                     </div>
                 </div>
@@ -592,22 +592,22 @@ async function viewDonation(donationId) {
             document.getElementById('donationModal').classList.remove('hidden');
             document.getElementById('donationModal').classList.add('flex');
         } else {
-            showToast(data.error || 'Ø®Ø·Ø§ Ø¯Ø± Ø¯Ø±ÛŒØ§ÙØª Ø§Ø·Ù„Ø§Ø¹Ø§Øª', 'error');
+            showToast(data.error || 'خطا در دریافت اطلاعات', 'error');
         }
     } catch (error) {
-        showToast('Ø®Ø·Ø§ Ø¯Ø± Ø§Ø±ØªØ¨Ø§Ø· Ø¨Ø§ Ø³Ø±ÙˆØ±', 'error');
+        showToast('خطا در ارتباط با سرور', 'error');
     }
 }
 
-// â•â•â• Close Modal â•â•â•
+// ═══ Close Modal ═══
 function closeDonationModal() {
     document.getElementById('donationModal').classList.add('hidden');
     document.getElementById('donationModal').classList.remove('flex');
 }
 
-// â•â•â• Approve Donation â•â•â•
+// ═══ Approve Donation ═══
 async function approveDonation(donationId, fromModal = false) {
-    if (!confirm('Ø¢ÛŒØ§ Ù…Ø·Ù…Ø¦Ù† Ù‡Ø³ØªÛŒØ¯ Ú©Ù‡ Ù…ÛŒâ€ŒØ®ÙˆØ§Ù‡ÛŒØ¯ Ø§ÛŒÙ† Ø¯ÙˆÙ†ÛŒØª Ø±Ø§ ØªØ£ÛŒÛŒØ¯ Ú©Ù†ÛŒØ¯ØŸ')) {
+    if (!confirm('آیا مطمئن هستید که می‌خواهید این دونیت را تأیید کنید؟')) {
         return;
     }
     
@@ -624,7 +624,7 @@ async function approveDonation(donationId, fromModal = false) {
         const data = await response.json();
         
         if (data.success) {
-            showToast('Ø¯ÙˆÙ†ÛŒØª ØªØ£ÛŒÛŒØ¯ Ø´Ø¯', 'success');
+            showToast('دونیت تأیید شد', 'success');
             
             if (fromModal) {
                 closeDonationModal();
@@ -632,14 +632,14 @@ async function approveDonation(donationId, fromModal = false) {
             
             setTimeout(() => location.reload(), 1000);
         } else {
-            showToast(data.error || 'Ø®Ø·Ø§', 'error');
+            showToast(data.error || 'خطا', 'error');
         }
     } catch (error) {
-        showToast('Ø®Ø·Ø§ Ø¯Ø± Ø§Ø±ØªØ¨Ø§Ø· Ø¨Ø§ Ø³Ø±ÙˆØ±', 'error');
+        showToast('خطا در ارتباط با سرور', 'error');
     }
 }
 
-// â•â•â• Show Reject Modal â•â•â•
+// ═══ Show Reject Modal ═══
 function showRejectModal(donationId) {
     closeDonationModal();
     document.getElementById('rejectDonationId').value = donationId;
@@ -647,14 +647,14 @@ function showRejectModal(donationId) {
     document.getElementById('rejectModal').classList.add('flex');
 }
 
-// â•â•â• Close Reject Modal â•â•â•
+// ═══ Close Reject Modal ═══
 function closeRejectModal() {
     document.getElementById('rejectModal').classList.add('hidden');
     document.getElementById('rejectModal').classList.remove('flex');
     document.getElementById('rejectForm').reset();
 }
 
-// â•â•â• Reject Donation â•â•â•
+// ═══ Reject Donation ═══
 document.getElementById('rejectForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     
@@ -674,20 +674,20 @@ document.getElementById('rejectForm').addEventListener('submit', async function(
         const data = await response.json();
         
         if (data.success) {
-            showToast('Ø¯ÙˆÙ†ÛŒØª Ø±Ø¯ Ø´Ø¯', 'success');
+            showToast('دونیت رد شد', 'success');
             closeRejectModal();
             setTimeout(() => location.reload(), 1000);
         } else {
-            showToast(data.error || 'Ø®Ø·Ø§', 'error');
+            showToast(data.error || 'خطا', 'error');
         }
     } catch (error) {
-        showToast('Ø®Ø·Ø§ Ø¯Ø± Ø§Ø±ØªØ¨Ø§Ø· Ø¨Ø§ Ø³Ø±ÙˆØ±', 'error');
+        showToast('خطا در ارتباط با سرور', 'error');
     }
 });
 
-// â•â•â• Delete Donation â•â•â•
+// ═══ Delete Donation ═══
 async function deleteDonation(donationId) {
-    if (!confirm('Ø¢ÛŒØ§ Ù…Ø·Ù…Ø¦Ù† Ù‡Ø³ØªÛŒØ¯ Ú©Ù‡ Ù…ÛŒâ€ŒØ®ÙˆØ§Ù‡ÛŒØ¯ Ø§ÛŒÙ† Ø¯ÙˆÙ†ÛŒØª Ø±Ø§ Ø­Ø°Ù Ú©Ù†ÛŒØ¯ØŸ\n\nØ§ÛŒÙ† Ø¹Ù…Ù„ ØºÛŒØ±Ù‚Ø§Ø¨Ù„ Ø¨Ø§Ø²Ú¯Ø´Øª Ø§Ø³Øª!')) {
+    if (!confirm('آیا مطمئن هستید که می‌خواهید این دونیت را حذف کنید؟\n\nاین عمل غیرقابل بازگشت است!')) {
         return;
     }
     
@@ -704,36 +704,36 @@ async function deleteDonation(donationId) {
         const data = await response.json();
         
         if (data.success) {
-            showToast('Ø¯ÙˆÙ†ÛŒØª Ø­Ø°Ù Ø´Ø¯', 'success');
+            showToast('دونیت حذف شد', 'success');
             setTimeout(() => location.reload(), 1000);
         } else {
-            showToast(data.error || 'Ø®Ø·Ø§', 'error');
+            showToast(data.error || 'خطا', 'error');
         }
     } catch (error) {
-        showToast('Ø®Ø·Ø§ Ø¯Ø± Ø§Ø±ØªØ¨Ø§Ø· Ø¨Ø§ Ø³Ø±ÙˆØ±', 'error');
+        showToast('خطا در ارتباط با سرور', 'error');
     }
 }
 
-// â•â•â• Export Donations â•â•â•
+// ═══ Export Donations ═══
 function exportDonations() {
     const params = new URLSearchParams(window.location.search);
     window.location.href = `/admin/api/donations/export?${params.toString()}`;
-    showToast('Ø¯Ø± Ø­Ø§Ù„ Ø¯Ø§Ù†Ù„ÙˆØ¯ ÙØ§ÛŒÙ„...', 'info');
+    showToast('در حال دانلود فایل...', 'info');
 }
 
-// â•â•â• Show Financial Report â•â•â•
+// ═══ Show Financial Report ═══
 function showFinancialReport() {
-    const from = prompt('ØªØ§Ø±ÛŒØ® Ø´Ø±ÙˆØ¹ (YYYY-MM-DD):', new Date().toISOString().split('T')[0]);
+    const from = prompt('تاریخ شروع (YYYY-MM-DD):', new Date().toISOString().split('T')[0]);
     if (!from) return;
     
-    const to = prompt('ØªØ§Ø±ÛŒØ® Ù¾Ø§ÛŒØ§Ù† (YYYY-MM-DD):', new Date().toISOString().split('T')[0]);
+    const to = prompt('تاریخ پایان (YYYY-MM-DD):', new Date().toISOString().split('T')[0]);
     if (!to) return;
     
     window.location.href = `/admin/api/donations/financial-report?from=${from}&to=${to}`;
-    showToast('Ø¯Ø± Ø­Ø§Ù„ Ø¯Ø§Ù†Ù„ÙˆØ¯ Ú¯Ø²Ø§Ø±Ø´...', 'info');
+    showToast('در حال دانلود گزارش...', 'info');
 }
 
-// â•â•â• Close Modals on Escape â•â•â•
+// ═══ Close Modals on Escape ═══
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         closeDonationModal();
@@ -741,7 +741,7 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
-// â•â•â• Close Modals on Outside Click â•â•â•
+// ═══ Close Modals on Outside Click ═══
 document.getElementById('donationModal')?.addEventListener('click', function(e) {
     if (e.target === this) {
         closeDonationModal();

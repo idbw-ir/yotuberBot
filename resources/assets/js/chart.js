@@ -1,23 +1,23 @@
-﻿/**
+/**
  * ============================================
  * Youtuber Bot - Chart Management
  * ============================================
- * Ù†Ø³Ø®Ù‡: 2.1.0
+ * نسخه: 2.0.0
  * 
- * Ù…Ø¯ÛŒØ±ÛŒØª Ù†Ù…ÙˆØ¯Ø§Ø±Ù‡Ø§ÛŒ Chart.js Ø´Ø§Ù…Ù„:
- * - Ø³Ø§Ø®Øª Ù†Ù…ÙˆØ¯Ø§Ø±Ù‡Ø§ÛŒ Ù…Ø®ØªÙ„Ù
- * - Ø¨Ø±ÙˆØ²Ø±Ø³Ø§Ù†ÛŒ Ø¯ÛŒØªØ§
- * - Ø±Ù†Ú¯â€ŒÙ‡Ø§ÛŒ Ù¾ÛŒØ´â€ŒÙØ±Ø¶
- * - Tooltip Ø³ÙØ§Ø±Ø´ÛŒ
+ * مدیریت نمودارهای Chart.js شامل:
+ * - ساخت نمودارهای مختلف
+ * - بروزرسانی دیتا
+ * - رنگ‌های پیش‌فرض
+ * - Tooltip سفارشی
  * - Responsive support
  */
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// 1. Ø±Ù†Ú¯â€ŒÙ‡Ø§ÛŒ Ù¾ÛŒØ´â€ŒÙØ±Ø¶
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════
+// 1. رنگ‌های پیش‌فرض
+// ═══════════════════════════════════════════
 
 const CHART_COLORS = {
-    // Ø±Ù†Ú¯â€ŒÙ‡Ø§ÛŒ Ø§ØµÙ„ÛŒ
+    // رنگ‌های اصلی
     primary: '#8b5cf6',
     secondary: '#3b82f6',
     success: '#10b981',
@@ -25,14 +25,14 @@ const CHART_COLORS = {
     danger: '#ef4444',
     info: '#06b6d4',
     
-    // Ø±Ù†Ú¯â€ŒÙ‡Ø§ÛŒ Ø§Ø¶Ø§ÙÛŒ
+    // رنگ‌های اضافی
     purple: '#a855f7',
     pink: '#ec4899',
     orange: '#f97316',
     teal: '#14b8a6',
     indigo: '#6366f1',
     
-    // Ø±Ù†Ú¯â€ŒÙ‡Ø§ÛŒ Ø¨Ø§ Ø´ÙØ§ÙÛŒØª
+    // رنگ‌های با شفافیت
     primaryLight: 'rgba(139, 92, 246, 0.2)',
     secondaryLight: 'rgba(59, 130, 246, 0.2)',
     successLight: 'rgba(16, 185, 129, 0.2)',
@@ -41,15 +41,15 @@ const CHART_COLORS = {
     infoLight: 'rgba(6, 182, 212, 0.2)'
 };
 
-// Ù¾Ø§Ù„Øª Ø±Ù†Ú¯ÛŒ Ø¨Ø±Ø§ÛŒ Ù†Ù…ÙˆØ¯Ø§Ø±Ù‡Ø§ÛŒ Ú†Ù†Ø¯ØªØ§ÛŒÛŒ
+// پالت رنگی برای نمودارهای چندتایی
 const CHART_PALETTE = [
     '#8b5cf6', '#3b82f6', '#10b981', '#f59e0b', '#ef4444',
     '#06b6d4', '#a855f7', '#ec4899', '#f97316', '#14b8a6'
 ];
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// 2. ØªÙ†Ø¸ÛŒÙ…Ø§Øª Ù¾ÛŒØ´â€ŒÙØ±Ø¶
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════
+// 2. تنظیمات پیش‌فرض
+// ═══════════════════════════════════════════
 
 const CHART_DEFAULTS = {
     responsive: true,
@@ -142,9 +142,9 @@ const CHART_DEFAULTS = {
     }
 };
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// 3. Ú©Ù„Ø§Ø³ Chart Manager
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════
+// 3. کلاس Chart Manager
+// ═══════════════════════════════════════════
 
 class ChartManager {
     constructor() {
@@ -153,7 +153,7 @@ class ChartManager {
     }
     
     /**
-     * Ø³Ø§Ø®Øª Ù†Ù…ÙˆØ¯Ø§Ø± Ø®Ø·ÛŒ
+     * ساخت نمودار خطی
      */
     createLineChart(canvasId, data, options = {}) {
         const ctx = document.getElementById(canvasId);
@@ -194,7 +194,7 @@ class ChartManager {
     }
     
     /**
-     * Ø³Ø§Ø®Øª Ù†Ù…ÙˆØ¯Ø§Ø± Ù…ÛŒÙ„Ù‡â€ŒØ§ÛŒ
+     * ساخت نمودار میله‌ای
      */
     createBarChart(canvasId, data, options = {}) {
         const ctx = document.getElementById(canvasId);
@@ -227,7 +227,7 @@ class ChartManager {
     }
     
     /**
-     * Ø³Ø§Ø®Øª Ù†Ù…ÙˆØ¯Ø§Ø± Ø¯Ø§ÛŒØ±Ù‡â€ŒØ§ÛŒ
+     * ساخت نمودار دایره‌ای
      */
     createPieChart(canvasId, data, options = {}) {
         const ctx = document.getElementById(canvasId);
@@ -276,7 +276,7 @@ class ChartManager {
     }
     
     /**
-     * Ø³Ø§Ø®Øª Ù†Ù…ÙˆØ¯Ø§Ø± Ø¯ÙˆÙ†Ø§Øª
+     * ساخت نمودار دونات
      */
     createDoughnutChart(canvasId, data, options = {}) {
         const ctx = document.getElementById(canvasId);
@@ -326,7 +326,7 @@ class ChartManager {
     }
     
     /**
-     * Ø³Ø§Ø®Øª Ù†Ù…ÙˆØ¯Ø§Ø± ØªØ±Ú©ÛŒØ¨ÛŒ (Mixed)
+     * ساخت نمودار ترکیبی (Mixed)
      */
     createMixedChart(canvasId, data, options = {}) {
         const ctx = document.getElementById(canvasId);
@@ -362,7 +362,7 @@ class ChartManager {
     }
     
     /**
-     * Ø¨Ø±ÙˆØ²Ø±Ø³Ø§Ù†ÛŒ Ù†Ù…ÙˆØ¯Ø§Ø±
+     * بروزرسانی نمودار
      */
     updateChart(canvasId, newData) {
         const chart = this.charts.get(canvasId);
@@ -393,7 +393,7 @@ class ChartManager {
     }
     
     /**
-     * Ù†Ø§Ø¨ÙˆØ¯ Ú©Ø±Ø¯Ù† Ù†Ù…ÙˆØ¯Ø§Ø±
+     * نابود کردن نمودار
      */
     destroyChart(canvasId) {
         const chart = this.charts.get(canvasId);
@@ -406,14 +406,14 @@ class ChartManager {
     }
     
     /**
-     * Ø¯Ø±ÛŒØ§ÙØª Ù†Ù…ÙˆØ¯Ø§Ø±
+     * دریافت نمودار
      */
     getChart(canvasId) {
         return this.charts.get(canvasId);
     }
     
     /**
-     * Ù†Ø§Ø¨ÙˆØ¯ Ú©Ø±Ø¯Ù† Ù‡Ù…Ù‡ Ù†Ù…ÙˆØ¯Ø§Ø±Ù‡Ø§
+     * نابود کردن همه نمودارها
      */
     destroyAll() {
         this.charts.forEach((chart, id) => {
@@ -423,7 +423,7 @@ class ChartManager {
     }
     
     /**
-     * Ø§Ø¯ØºØ§Ù… ØªÙ†Ø¸ÛŒÙ…Ø§Øª
+     * ادغام تنظیمات
      */
     mergeOptions(defaults, custom) {
         return {
@@ -441,7 +441,7 @@ class ChartManager {
     }
     
     /**
-     * Ø¯Ø±ÛŒØ§ÙØª Ø±Ù†Ú¯ Ø¨Ø§ Ø´ÙØ§ÙÛŒØª
+     * دریافت رنگ با شفافیت
      */
     getColorWithOpacity(color, opacity) {
         if (color.startsWith('rgba')) {
@@ -459,17 +459,17 @@ class ChartManager {
     }
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// 4. ØªÙˆØ§Ø¨Ø¹ Ú©Ù…Ú©ÛŒ
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════
+// 4. توابع کمکی
+// ═══════════════════════════════════════════
 
 /**
- * ÙØ±Ù…Øª Ø¯Ø§Ø¯Ù‡â€ŒÙ‡Ø§ÛŒ Ù†Ù…ÙˆØ¯Ø§Ø± Ø¨Ø±Ø§ÛŒ Ù†Ù…Ø§ÛŒØ´ ÙØ§Ø±Ø³ÛŒ
+ * فرمت داده‌های نمودار برای نمایش فارسی
  */
 function formatChartData(data) {
     return {
         labels: data.labels.map(label => {
-            // ØªØ¨Ø¯ÛŒÙ„ ØªØ§Ø±ÛŒØ® Ø¨Ù‡ ÙØ±Ù…Øª ÙØ§Ø±Ø³ÛŒ
+            // تبدیل تاریخ به فرمت فارسی
             if (/^\d{4}-\d{2}-\d{2}$/.test(label)) {
                 const date = new Date(label);
                 return date.toLocaleDateString('fa-IR', { month: 'short', day: 'numeric' });
@@ -479,7 +479,7 @@ function formatChartData(data) {
         datasets: data.datasets.map(dataset => ({
             ...dataset,
             data: dataset.data.map(value => {
-                // ÙØ±Ù…Øª Ø§Ø¹Ø¯Ø§Ø¯ Ø¨Ø²Ø±Ú¯
+                // فرمت اعداد بزرگ
                 if (typeof value === 'number' && value >= 1000000) {
                     return value;
                 }
@@ -490,7 +490,7 @@ function formatChartData(data) {
 }
 
 /**
- * Ø³Ø§Ø®Øª Ø¯Ø§Ø¯Ù‡â€ŒÙ‡Ø§ÛŒ Ù†Ù…ÙˆØ¯Ø§Ø± Ø§Ø² API response
+ * ساخت داده‌های نمودار از API response
  */
 function parseChartData(apiResponse) {
     if (!apiResponse || !apiResponse.data) {
@@ -504,7 +504,7 @@ function parseChartData(apiResponse) {
 }
 
 /**
- * Ø¨Ø±ÙˆØ²Ø±Ø³Ø§Ù†ÛŒ Ù†Ù…ÙˆØ¯Ø§Ø± Ø§Ø² API
+ * بروزرسانی نمودار از API
  */
 async function updateChartFromAPI(canvasId, endpoint, params = {}) {
     try {
@@ -524,19 +524,19 @@ async function updateChartFromAPI(canvasId, endpoint, params = {}) {
             chartManager.updateChart(canvasId, data.data);
             return true;
         } else {
-            throw new Error(data.error || 'Ø®Ø·Ø§ Ø¯Ø± Ø¯Ø±ÛŒØ§ÙØª Ø¯Ø§Ø¯Ù‡â€ŒÙ‡Ø§');
+            throw new Error(data.error || 'خطا در دریافت داده‌ها');
         }
     } catch (error) {
         console.error('Error updating chart:', error);
         if (typeof showToast === 'function') {
-            showToast(error.message || 'Ø®Ø·Ø§ Ø¯Ø± Ø¨Ø±ÙˆØ²Ø±Ø³Ø§Ù†ÛŒ Ù†Ù…ÙˆØ¯Ø§Ø±', 'error');
+            showToast(error.message || 'خطا در بروزرسانی نمودار', 'error');
         }
         return false;
     }
 }
 
 /**
- * Ø³Ø§Ø®Øª Tooltip Ø³ÙØ§Ø±Ø´ÛŒ
+ * ساخت Tooltip سفارشی
  */
 function createCustomTooltip(context) {
     const tooltip = context.tooltip;
@@ -545,7 +545,7 @@ function createCustomTooltip(context) {
         return;
     }
     
-    // Ø³Ø§Ø®Øª ÛŒØ§ Ø¨Ø±ÙˆØ²Ø±Ø³Ø§Ù†ÛŒ tooltip element
+    // ساخت یا بروزرسانی tooltip element
     let tooltipEl = document.getElementById('chartjs-tooltip');
     
     if (!tooltipEl) {
@@ -556,7 +556,7 @@ function createCustomTooltip(context) {
         document.body.appendChild(tooltipEl);
     }
     
-    // ØªÙ†Ø¸ÛŒÙ… Ù…ÙˆÙ‚Ø¹ÛŒØª
+    // تنظیم موقعیت
     const { chart } = context;
     const position = chart.canvas.getBoundingClientRect();
     
@@ -564,7 +564,7 @@ function createCustomTooltip(context) {
     tooltipEl.style.top = position.top + window.pageYOffset + tooltip.caretY + 'px';
     tooltipEl.style.transform = 'translate(-50%, -100%)';
     
-    // ØªÙ†Ø¸ÛŒÙ… Ù…Ø­ØªÙˆØ§
+    // تنظیم محتوا
     const tooltipContent = tooltipEl.querySelector('div');
     
     if (tooltip.body) {
@@ -595,7 +595,7 @@ function createCustomTooltip(context) {
 }
 
 /**
- * Ø§ÙØ²ÙˆØ¯Ù† Plugin Ø¨Ø±Ø§ÛŒ Ù†Ù…Ø§ÛŒØ´ Ù…Ù‚Ø¯Ø§Ø± Ø¯Ø± Ù†Ù…ÙˆØ¯Ø§Ø±
+ * افزودن Plugin برای نمایش مقدار در نمودار
  */
 const dataLabelsPlugin = {
     id: 'dataLabels',
@@ -627,21 +627,21 @@ const dataLabelsPlugin = {
     }
 };
 
-// Ø«Ø¨Øª Plugin
+// ثبت Plugin
 Chart.register(dataLabelsPlugin);
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// 5. Ù†Ù…ÙˆØ¯Ø§Ø±Ù‡Ø§ÛŒ Ø¢Ù…Ø§Ø¯Ù‡
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════
+// 5. نمودارهای آماده
+// ═══════════════════════════════════════════
 
 /**
- * Ø³Ø§Ø®Øª Ù†Ù…ÙˆØ¯Ø§Ø± Ø±Ø´Ø¯ Ú©Ø§Ø±Ø¨Ø±Ø§Ù†
+ * ساخت نمودار رشد کاربران
  */
 function createUserGrowthChart(canvasId, data) {
     return chartManager.createLineChart(canvasId, {
         labels: data.labels,
         datasets: [{
-            label: 'Ú©Ø§Ø±Ø¨Ø±Ø§Ù† Ø¬Ø¯ÛŒØ¯',
+            label: 'کاربران جدید',
             data: data.data,
             borderColor: CHART_COLORS.primary,
             backgroundColor: CHART_COLORS.primaryLight,
@@ -651,7 +651,7 @@ function createUserGrowthChart(canvasId, data) {
         plugins: {
             title: {
                 display: true,
-                text: 'Ø±Ø´Ø¯ Ú©Ø§Ø±Ø¨Ø±Ø§Ù†',
+                text: 'رشد کاربران',
                 color: '#fff',
                 font: {
                     family: 'Vazirmatn',
@@ -673,7 +673,7 @@ function createUserGrowthChart(canvasId, data) {
 }
 
 /**
- * Ø³Ø§Ø®Øª Ù†Ù…ÙˆØ¯Ø§Ø± Ø¯Ø±Ø¢Ù…Ø¯
+ * ساخت نمودار درآمد
  */
 function createRevenueChart(canvasId, data) {
     return chartManager.createMixedChart(canvasId, {
@@ -681,7 +681,7 @@ function createRevenueChart(canvasId, data) {
         datasets: [
             {
                 type: 'bar',
-                label: 'Ù…Ø¨Ù„Øº Ø¯ÙˆÙ†ÛŒØª (ØªÙˆÙ…Ø§Ù†)',
+                label: 'مبلغ دونیت (تومان)',
                 data: data.amounts,
                 backgroundColor: CHART_COLORS.successLight,
                 borderColor: CHART_COLORS.success,
@@ -689,7 +689,7 @@ function createRevenueChart(canvasId, data) {
             },
             {
                 type: 'line',
-                label: 'ØªØ¹Ø¯Ø§Ø¯ Ø¯ÙˆÙ†ÛŒØª',
+                label: 'تعداد دونیت',
                 data: data.counts,
                 borderColor: CHART_COLORS.secondary,
                 backgroundColor: CHART_COLORS.secondaryLight,
@@ -718,11 +718,11 @@ function createRevenueChart(canvasId, data) {
 }
 
 /**
- * Ø³Ø§Ø®Øª Ù†Ù…ÙˆØ¯Ø§Ø± ÙˆØ¶Ø¹ÛŒØª Ú©Ø§Ø±Ø¨Ø±Ø§Ù†
+ * ساخت نمودار وضعیت کاربران
  */
 function createUserStatusChart(canvasId, data) {
     return chartManager.createDoughnutChart(canvasId, {
-        labels: ['VIP', 'ÙØ¹Ø§Ù„', 'ØºÛŒØ±ÙØ¹Ø§Ù„', 'Ø¨Ù„Ø§Ú© Ø´Ø¯Ù‡'],
+        labels: ['VIP', 'فعال', 'غیرفعال', 'بلاک شده'],
         data: [data.vip, data.active, data.inactive, data.blocked],
         backgroundColor: [
             CHART_COLORS.warning,
@@ -741,13 +741,13 @@ function createUserStatusChart(canvasId, data) {
 }
 
 /**
- * Ø³Ø§Ø®Øª Ù†Ù…ÙˆØ¯Ø§Ø± ÙØ¹Ø§Ù„ÛŒØª Ø³Ø§Ø¹ØªÛŒ
+ * ساخت نمودار فعالیت ساعتی
  */
 function createHourlyActivityChart(canvasId, data) {
     return chartManager.createBarChart(canvasId, {
         labels: data.labels,
         datasets: [{
-            label: 'ØªØ¹Ø¯Ø§Ø¯ Ù¾ÛŒØ§Ù…',
+            label: 'تعداد پیام',
             data: data.data,
             backgroundColor: CHART_COLORS.primaryLight,
             borderColor: CHART_COLORS.primary
@@ -764,21 +764,21 @@ function createHourlyActivityChart(canvasId, data) {
     });
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// 6. Ø±Ø§Ù‡â€ŒØ§Ù†Ø¯Ø§Ø²ÛŒ Ø§ÙˆÙ„ÛŒÙ‡
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════
+// 6. راه‌اندازی اولیه
+// ═══════════════════════════════════════════
 
-// Ø³Ø§Ø®Øª ChartManager instance
+// ساخت ChartManager instance
 const chartManager = new ChartManager();
 
-// ØªÙ†Ø¸ÛŒÙ… Chart.js defaults
+// تنظیم Chart.js defaults
 Chart.defaults.font.family = 'Vazirmatn';
 Chart.defaults.color = 'rgba(255, 255, 255, 0.6)';
 Chart.defaults.borderColor = 'rgba(255, 255, 255, 0.05)';
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════
 // 7. Export
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════
 
 window.ChartManager = ChartManager;
 window.chartManager = chartManager;
@@ -786,18 +786,18 @@ window.CHART_COLORS = CHART_COLORS;
 window.CHART_PALETTE = CHART_PALETTE;
 window.CHART_DEFAULTS = CHART_DEFAULTS;
 
-// ØªÙˆØ§Ø¨Ø¹ Ú©Ù…Ú©ÛŒ
+// توابع کمکی
 window.formatChartData = formatChartData;
 window.parseChartData = parseChartData;
 window.updateChartFromAPI = updateChartFromAPI;
 window.createCustomTooltip = createCustomTooltip;
 
-// Ù†Ù…ÙˆØ¯Ø§Ø±Ù‡Ø§ÛŒ Ø¢Ù…Ø§Ø¯Ù‡
+// نمودارهای آماده
 window.createUserGrowthChart = createUserGrowthChart;
 window.createRevenueChart = createRevenueChart;
 window.createUserStatusChart = createUserStatusChart;
 window.createHourlyActivityChart = createHourlyActivityChart;
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// Ù¾Ø§ÛŒØ§Ù† ÙØ§ÛŒÙ„
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════
+// پایان فایل
+// ═══════════════════════════════════════════

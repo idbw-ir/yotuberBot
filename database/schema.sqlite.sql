@@ -1,5 +1,5 @@
-﻿-- Youtuber Bot - Database Schema (SQLite/Bunny)
--- Ù†Ø³Ø®Ù‡: 2.1.0 - Ø³Ø§Ø²Ú¯Ø§Ø± Ø¨Ø§ SQLite Ùˆ Bunny Database (Turso)
+-- Youtuber Bot - Database Schema (SQLite/Bunny)
+-- نسخه: 2.1.0 - سازگار با SQLite و Bunny Database (Turso)
 
 PRAGMA foreign_keys = ON;
 
@@ -434,51 +434,51 @@ ORDER BY u.total_donations DESC;
 
 -- Default admin (password: Admin@12345)
 INSERT INTO admins (username, password_hash, name, email, role, active) VALUES
-('admin', '$2y$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/Le9Uyzg0yB.9l/O7G', 'Ù…Ø¯ÛŒØ± Ø³ÛŒØ³ØªÙ…', 'admin@example.com', 'super_admin', 1);
+('admin', '$2y$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/Le9Uyzg0yB.9l/O7G', 'مدیر سیستم', 'admin@example.com', 'super_admin', 1);
 
 -- Default settings
 INSERT INTO settings (key_name, value, type, category, description, sort_order) VALUES
-('site_name', 'Ø±Ø¨Ø§Øª ÛŒÙˆØªÛŒÙˆØ¨Ø±', 'string', 'general', 'Ù†Ø§Ù… Ø³Ø§ÛŒØª', 1),
-('site_url', '', 'url', 'general', 'Ø¢Ø¯Ø±Ø³ Ø³Ø§ÛŒØª', 2),
-('timezone', 'Asia/Tehran', 'string', 'general', 'Ù…Ù†Ø·Ù‚Ù‡ Ø²Ù…Ø§Ù†ÛŒ', 3),
-('maintenance_mode', '0', 'boolean', 'general', 'Ø­Ø§Ù„Øª ØªØ¹Ù…ÛŒØ±Ø§Øª', 4),
-('welcome_text', 'Ø³Ù„Ø§Ù… {first_name} Ø¹Ø²ÛŒØ²! ðŸ‘‹\n\nØ¨Ù‡ Ø±Ø¨Ø§Øª Ù…Ø§ Ø®ÙˆØ´ Ø§ÙˆÙ…Ø¯ÛŒ ðŸŽ¬\n\nØ§Ø² Ù…Ù†ÙˆÛŒ Ø²ÛŒØ± Ø§Ø³ØªÙØ§Ø¯Ù‡ Ú©Ù†:', 'string', 'telegram', 'Ù…ØªÙ† Ø®ÙˆØ´â€ŒØ¢Ù…Ø¯Ú¯ÙˆÛŒÛŒ', 10),
-('welcome_photo', '', 'string', 'telegram', 'File ID Ø¹Ú©Ø³ Ø®ÙˆØ´â€ŒØ¢Ù…Ø¯Ú¯ÙˆÛŒÛŒ', 11),
-('donate_link', '', 'url', 'telegram', 'Ù„ÛŒÙ†Ú© Ø¯Ø±Ú¯Ø§Ù‡ Ø­Ù…Ø§ÛŒØª', 12),
-('donate_text', 'ðŸ’° Ø¨Ø§ Ø­Ù…Ø§ÛŒØª Ù…Ø§Ù„ÛŒ Ø§Ø² Ù…Ø§ØŒ Ø¨Ù‡ ØªÙˆÙ„ÛŒØ¯ Ù…Ø­ØªÙˆØ§ÛŒ Ø¨Ù‡ØªØ± Ú©Ù…Ú© Ù…ÛŒâ€ŒÚ©Ù†ÛŒØ¯!', 'string', 'telegram', 'Ù…ØªÙ† ØµÙØ­Ù‡ Ø­Ù…Ø§ÛŒØª', 13),
-('youtube_url', '', 'url', 'telegram', 'Ù„ÛŒÙ†Ú© Ú©Ø§Ù†Ø§Ù„ ÛŒÙˆØªÛŒÙˆØ¨', 14),
-('telegram_channel', '', 'string', 'telegram', 'Ø¢ÛŒØ¯ÛŒ Ú©Ø§Ù†Ø§Ù„ ØªÙ„Ú¯Ø±Ø§Ù…', 15),
-('ai_enabled', '0', 'boolean', 'ai', 'ÙØ¹Ø§Ù„â€ŒØ³Ø§Ø²ÛŒ Ù‡ÙˆØ´ Ù…ØµÙ†ÙˆØ¹ÛŒ', 20),
-('ai_provider', 'openai', 'string', 'ai', 'Ø§Ø±Ø§Ø¦Ù‡â€ŒØ¯Ù‡Ù†Ø¯Ù‡ AI', 21),
-('ai_api_key', '', 'string', 'ai', 'API Key Ù‡ÙˆØ´ Ù…ØµÙ†ÙˆØ¹ÛŒ', 22),
-('ai_model', 'gpt-4o-mini', 'string', 'ai', 'Ù…Ø¯Ù„ AI', 23),
-('ai_system_prompt', 'ØªÙˆ Ø¯Ø³ØªÛŒØ§Ø± ÛŒÚ© ÛŒÙˆØªÛŒÙˆØ¨Ø± ÙØ§Ø±Ø³ÛŒâ€ŒØ²Ø¨Ø§Ù† Ù‡Ø³ØªÛŒ. Ø¯ÙˆØ³ØªØ§Ù†Ù‡ Ùˆ Ú©ÙˆØªØ§Ù‡ Ø¬ÙˆØ§Ø¨ Ø¨Ø¯Ù‡.', 'string', 'ai', 'System Prompt', 24),
-('ai_max_tokens', '500', 'integer', 'ai', 'Ø­Ø¯Ø§Ú©Ø«Ø± ØªÙˆÚ©Ù† Ù¾Ø§Ø³Ø®', 25),
+('site_name', 'ربات یوتیوبر', 'string', 'general', 'نام سایت', 1),
+('site_url', '', 'url', 'general', 'آدرس سایت', 2),
+('timezone', 'Asia/Tehran', 'string', 'general', 'منطقه زمانی', 3),
+('maintenance_mode', '0', 'boolean', 'general', 'حالت تعمیرات', 4),
+('welcome_text', 'سلام {first_name} عزیز! 👋\n\nبه ربات ما خوش اومدی 🎬\n\nاز منوی زیر استفاده کن:', 'string', 'telegram', 'متن خوش‌آمدگویی', 10),
+('welcome_photo', '', 'string', 'telegram', 'File ID عکس خوش‌آمدگویی', 11),
+('donate_link', '', 'url', 'telegram', 'لینک درگاه حمایت', 12),
+('donate_text', '💰 با حمایت مالی از ما، به تولید محتوای بهتر کمک می‌کنید!', 'string', 'telegram', 'متن صفحه حمایت', 13),
+('youtube_url', '', 'url', 'telegram', 'لینک کانال یوتیوب', 14),
+('telegram_channel', '', 'string', 'telegram', 'آیدی کانال تلگرام', 15),
+('ai_enabled', '0', 'boolean', 'ai', 'فعال‌سازی هوش مصنوعی', 20),
+('ai_provider', 'openai', 'string', 'ai', 'ارائه‌دهنده AI', 21),
+('ai_api_key', '', 'string', 'ai', 'API Key هوش مصنوعی', 22),
+('ai_model', 'gpt-4o-mini', 'string', 'ai', 'مدل AI', 23),
+('ai_system_prompt', 'تو دستیار یک یوتیوبر فارسی‌زبان هستی. دوستانه و کوتاه جواب بده.', 'string', 'ai', 'System Prompt', 24),
+('ai_max_tokens', '500', 'integer', 'ai', 'حداکثر توکن پاسخ', 25),
 ('ai_temperature', '0.7', 'float', 'ai', 'Temperature', 26),
-('vip_threshold', '100000', 'integer', 'vip', 'Ø¢Ø³ØªØ§Ù†Ù‡ VIP (ØªÙˆÙ…Ø§Ù†)', 30),
-('vip_badge', 'ðŸ‘‘', 'string', 'vip', 'Ù†Ø´Ø§Ù† VIP', 31),
-('vip_duration_days', '30', 'integer', 'vip', 'Ù…Ø¯Øª VIP (Ø±ÙˆØ²)', 32),
-('admin_ip_whitelist', '[]', 'array', 'security', 'Ù„ÛŒØ³Øª IP Ù‡Ø§ÛŒ Ù…Ø¬Ø§Ø²', 40),
-('login_max_attempts', '5', 'integer', 'security', 'Ø­Ø¯Ø§Ú©Ø«Ø± ØªÙ„Ø§Ø´ Ù†Ø§Ù…ÙˆÙÙ‚', 41),
-('login_lockout_minutes', '15', 'integer', 'security', 'Ù…Ø¯Øª Ù‚ÙÙ„ (Ø¯Ù‚ÛŒÙ‚Ù‡)', 42),
-('session_timeout', '3600', 'integer', 'security', 'Ø§Ù†Ù‚Ø¶Ø§ÛŒ Session (Ø«Ø§Ù†ÛŒÙ‡)', 43),
-('csrf_enabled', '1', 'boolean', 'security', 'ÙØ¹Ø§Ù„â€ŒØ³Ø§Ø²ÛŒ CSRF', 44),
-('two_factor_enabled', '0', 'boolean', 'security', 'Ø§Ø­Ø±Ø§Ø² Ù‡ÙˆÛŒØª Ø¯Ùˆ Ù…Ø±Ø­Ù„Ù‡â€ŒØ§ÛŒ', 45),
-('cache_ttl', '3600', 'integer', 'performance', 'TTL Ú©Ø´ (Ø«Ø§Ù†ÛŒÙ‡)', 50),
-('broadcast_delay', '50', 'integer', 'performance', 'ØªØ£Ø®ÛŒØ± Broadcast (ms)', 51),
-('broadcast_batch_size', '30', 'integer', 'performance', 'Ø§Ù†Ø¯Ø§Ø²Ù‡ Batch', 52),
-('max_upload_size', '10485760', 'integer', 'performance', 'Ø­Ø¯Ø§Ú©Ø«Ø± Ø­Ø¬Ù… Ø¢Ù¾Ù„ÙˆØ¯ (bytes)', 53),
-('notify_new_user', '1', 'boolean', 'notifications', 'Ø§Ø·Ù„Ø§Ø¹â€ŒØ±Ø³Ø§Ù†ÛŒ Ú©Ø§Ø±Ø¨Ø± Ø¬Ø¯ÛŒØ¯', 60),
-('notify_new_donation', '1', 'boolean', 'notifications', 'Ø§Ø·Ù„Ø§Ø¹â€ŒØ±Ø³Ø§Ù†ÛŒ Ø¯ÙˆÙ†ÛŒØª Ø¬Ø¯ÛŒØ¯', 61),
-('notify_failed_login', '1', 'boolean', 'notifications', 'Ø§Ø·Ù„Ø§Ø¹â€ŒØ±Ø³Ø§Ù†ÛŒ ÙˆØ±ÙˆØ¯ Ù†Ø§Ù…ÙˆÙÙ‚', 62),
-('notify_blocked_user', '1', 'boolean', 'notifications', 'Ø§Ø·Ù„Ø§Ø¹â€ŒØ±Ø³Ø§Ù†ÛŒ Ú©Ø§Ø±Ø¨Ø± Ø¨Ù„Ø§Ú© Ø´Ø¯Ù‡', 63);
+('vip_threshold', '100000', 'integer', 'vip', 'آستانه VIP (تومان)', 30),
+('vip_badge', '👑', 'string', 'vip', 'نشان VIP', 31),
+('vip_duration_days', '30', 'integer', 'vip', 'مدت VIP (روز)', 32),
+('admin_ip_whitelist', '[]', 'array', 'security', 'لیست IP های مجاز', 40),
+('login_max_attempts', '5', 'integer', 'security', 'حداکثر تلاش ناموفق', 41),
+('login_lockout_minutes', '15', 'integer', 'security', 'مدت قفل (دقیقه)', 42),
+('session_timeout', '3600', 'integer', 'security', 'انقضای Session (ثانیه)', 43),
+('csrf_enabled', '1', 'boolean', 'security', 'فعال‌سازی CSRF', 44),
+('two_factor_enabled', '0', 'boolean', 'security', 'احراز هویت دو مرحله‌ای', 45),
+('cache_ttl', '3600', 'integer', 'performance', 'TTL کش (ثانیه)', 50),
+('broadcast_delay', '50', 'integer', 'performance', 'تأخیر Broadcast (ms)', 51),
+('broadcast_batch_size', '30', 'integer', 'performance', 'اندازه Batch', 52),
+('max_upload_size', '10485760', 'integer', 'performance', 'حداکثر حجم آپلود (bytes)', 53),
+('notify_new_user', '1', 'boolean', 'notifications', 'اطلاع‌رسانی کاربر جدید', 60),
+('notify_new_donation', '1', 'boolean', 'notifications', 'اطلاع‌رسانی دونیت جدید', 61),
+('notify_failed_login', '1', 'boolean', 'notifications', 'اطلاع‌رسانی ورود ناموفق', 62),
+('notify_blocked_user', '1', 'boolean', 'notifications', 'اطلاع‌رسانی کاربر بلاک شده', 63);
 
 -- Default keywords
 INSERT INTO keywords (keyword, answer, answer_type, priority, active) VALUES
-('Ø³Ù„Ø§Ù…', 'Ø³Ù„Ø§Ù… {first_name} Ø¹Ø²ÛŒØ²! ðŸ‘‹\n\nÚ†Ø·ÙˆØ± Ù…ÛŒâ€ŒØªÙˆÙ†Ù… Ú©Ù…Ú©Øª Ú©Ù†Ù…ØŸ', 'text', 100, 1),
-('Ø¯Ø±ÙˆØ¯', 'Ø¯Ø±ÙˆØ¯ Ø¨Ø± Ø´Ù…Ø§! ðŸŒ¹\n\nØ®ÙˆØ´ Ø§ÙˆÙ…Ø¯ÛŒØ¯!', 'text', 99, 1),
-('Ù‚ÛŒÙ…Øª', 'Ø¨Ø±Ø§ÛŒ Ø§Ø·Ù„Ø§Ø¹ Ø§Ø² Ù‚ÛŒÙ…Øªâ€ŒÙ‡Ø§ Ø¨Ù‡ Ø³Ø§ÛŒØª Ù…Ø§ Ù…Ø±Ø§Ø¬Ø¹Ù‡ Ú©Ù†ÛŒØ¯:\nðŸŒ example.com', 'text', 90, 1),
-('Ø±Ø§Ù‡Ù†Ù…Ø§', 'ðŸ“– <b>Ø±Ø§Ù‡Ù†Ù…Ø§ÛŒ Ø§Ø³ØªÙØ§Ø¯Ù‡</b>\n\n1ï¸âƒ£ Ø§Ø² Ù…Ù†ÙˆÛŒ Ø§ØµÙ„ÛŒ Ø§Ø³ØªÙØ§Ø¯Ù‡ Ú©Ù†ÛŒØ¯\n2ï¸âƒ£ Ø¨Ø±Ø§ÛŒ Ø­Ù…Ø§ÛŒØª: /donate\n3ï¸âƒ£ Ø¨Ø±Ø§ÛŒ ØªÙ…Ø§Ø³: /contact\n\nØ³ÙˆØ§Ù„ Ø¯ÛŒÚ¯Ù‡â€ŒØ§ÛŒ Ø¯Ø§Ø±ÛŒØ¯ØŸ', 'text', 80, 1),
-('Ø­Ù…Ø§ÛŒØª', 'ðŸ’– Ù…Ù…Ù†ÙˆÙ† Ø§Ø² ØªÙˆØ¬Ù‡ Ø´Ù…Ø§!\n\nØ¨Ø±Ø§ÛŒ Ø­Ù…Ø§ÛŒØª Ù…Ø§Ù„ÛŒ Ø§Ø² Ø¯Ú©Ù…Ù‡ Ø²ÛŒØ± Ø§Ø³ØªÙØ§Ø¯Ù‡ Ú©Ù†ÛŒØ¯:', 'text', 70, 1),
-('ÛŒÙˆØªÛŒÙˆØ¨', 'ðŸŽ¬ Ú©Ø§Ù†Ø§Ù„ ÛŒÙˆØªÛŒÙˆØ¨ Ù…Ø§:\n\nØ­ØªÙ…Ø§Ù‹ Ø³Ø§Ø¨Ø³Ú©Ø±Ø§ÛŒØ¨ Ú©Ù†ÛŒØ¯ Ùˆ Ø²Ù†Ú¯ÙˆÙ„Ù‡ ðŸ”” Ø±Ùˆ Ø¨Ø²Ù†ÛŒØ¯!', 'text', 60, 1),
-('vip', 'ðŸ‘‘ <b>Ø¨Ø§Ø´Ú¯Ø§Ù‡ VIP</b>\n\nØ¨Ø§ Ø­Ù…Ø§ÛŒØª Ù…Ø§Ù„ÛŒØŒ Ø¨Ù‡ Ø¬Ù…Ø¹ VIP Ù‡Ø§ Ø¨Ù¾ÛŒÙˆÙ†Ø¯ÛŒØ¯ Ùˆ Ø§Ø² Ù…Ø²Ø§ÛŒØ§ÛŒ ÙˆÛŒÚ˜Ù‡ Ø¨Ù‡Ø±Ù‡â€ŒÙ…Ù†Ø¯ Ø´ÙˆÛŒØ¯!', 'text', 50, 1);
+('سلام', 'سلام {first_name} عزیز! 👋\n\nچطور می‌تونم کمکت کنم؟', 'text', 100, 1),
+('درود', 'درود بر شما! 🌹\n\nخوش اومدید!', 'text', 99, 1),
+('قیمت', 'برای اطلاع از قیمت‌ها به سایت ما مراجعه کنید:\n🌐 example.com', 'text', 90, 1),
+('راهنما', '📖 <b>راهنمای استفاده</b>\n\n1️⃣ از منوی اصلی استفاده کنید\n2️⃣ برای حمایت: /donate\n3️⃣ برای تماس: /contact\n\nسوال دیگه‌ای دارید؟', 'text', 80, 1),
+('حمایت', '💖 ممنون از توجه شما!\n\nبرای حمایت مالی از دکمه زیر استفاده کنید:', 'text', 70, 1),
+('یوتیوب', '🎬 کانال یوتیوب ما:\n\nحتماً سابسکرایب کنید و زنگوله 🔔 رو بزنید!', 'text', 60, 1),
+('vip', '👑 <b>باشگاه VIP</b>\n\nبا حمایت مالی، به جمع VIP ها بپیوندید و از مزایای ویژه بهره‌مند شوید!', 'text', 50, 1);
