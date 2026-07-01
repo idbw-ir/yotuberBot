@@ -30,8 +30,9 @@ SET SQL_MODE = 'STRICT_TRANS_TABLES,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_E
 DROP TABLE IF EXISTS `users`;
 
 CREATE TABLE `users` (
-  `id` BIGINT UNSIGNED NOT NULL COMMENT 'آیدی عددی تلگرام',
-  `username` VARCHAR(100) DEFAULT NULL COMMENT 'یوزرنیم تلگرام',
+  `id` BIGINT UNSIGNED NOT NULL COMMENT 'آیدی عددی کاربر',
+  `platform` VARCHAR(20) NOT NULL DEFAULT 'telegram' COMMENT 'پلتفرم (telegram, bale)',
+  `username` VARCHAR(100) DEFAULT NULL COMMENT 'یوزرنیم',
   `first_name` VARCHAR(100) DEFAULT NULL COMMENT 'نام',
   `last_name` VARCHAR(100) DEFAULT NULL COMMENT 'نام خانوادگی',
   `phone` VARCHAR(20) DEFAULT NULL COMMENT 'شماره تماس',

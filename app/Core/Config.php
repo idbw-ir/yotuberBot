@@ -311,6 +311,14 @@ class Config {
         return $this->get("app.{$key}", $default);
     }
     
+    // تنظیمات بله
+    public function bale($key = null, $default = null) {
+        if ($key === null) {
+            return $this->get('bale', []);
+        }
+        return $this->get("bale.{$key}", $default);
+    }
+    
     // تنظیمات هوش مصنوعی
     public function ai($key = null, $default = null) {
         if ($key === null) {

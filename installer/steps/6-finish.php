@@ -8,6 +8,7 @@ $data = $_SESSION['installer_data'] ?? [];
 $errors = [];
 $success = true;
 $webhookResult = ['success' => false];
+$baleWebhookResult = ['success' => false];
 
 // جلوگیری از اجرای مجدد
 if (file_exists(__DIR__ . '/../../config/config.php') && file_exists(__DIR__ . '/../../install.lock')) {
@@ -102,19 +103,34 @@ if ($success && !empty($data['bot_token'])) {
 }
 
 // ══════════════════════════════════════
-// 6. قفل کردن نصب
+// 6. تنظیم وب‌هوک بله
+// ══════════════════════════════════════
+if ($success && !empty($data['bale_bot_token'])) {
+    $baleWebhookUrl = rtrim($data['site_url'] ?? '', '/') . '/webhook-bale.php';
+    
+    $baleWebhookResult = $installer->setBaleWebhook(
+        $data['bale_bot_token'],
+        $baleWebhookUrl
+    );
+}
+
+// ══════════════════════════════════════
+// 7. قفل کردن نصب
 // ══════════════════════════════════════
 if ($success) {
     $installer->lockInstallation();
 }
 
 // ══════════════════════════════════════
-// 7. ذخیره اطلاعات برای نمایش
+// 8. ذخیره اطلاعات برای نمایش
 // ══════════════════════════════════════
 $installedData = [
     'admin_username' => $data['admin_username'] ?? 'admin',
     'site_url' => rtrim($data['site_url'] ?? '', '/'),
     'webhook_status' => $webhookResult['success'],
+    'bale_webhook_status' => $baleWebhookResult['success'],
+    'telegram_enabled' => !empty($data['bot_token']),
+    'bale_enabled' => !empty($data['bale_bot_token']),
     'database' => $data['db_name'] ?? 'youtuber_bot'
 ];
 
@@ -131,7 +147,7 @@ unset($_SESSION['admin_created']);
 <div class="text-center mb-6">
     <div class="inline-block animate-bounce text-6xl mb-4">🎉</div>
     <h2 class="text-3xl font-bold text-white mb-2">تبریک! نصب با موفقیت انجام شد</h2>
-    <p class="text-white/60">ربات تلگرام شما آماده استفاده است</p>
+    <p class="text-white/60">ربات شما آماده استفاده است</p>
 </div>
 
 <!-- ═══ وضعیت نصب ═══ -->
@@ -150,14 +166,28 @@ unset($_SESSION['admin_created']);
         <div class="flex items-center gap-2 text-green-300 text-sm">
             <span>✅</span> <span>فایل کانفیگ نوشته شد</span>
         </div>
+        <?php if ($finalData['telegram_enabled']): ?>
         <?php if ($webhookResult['success']): ?>
         <div class="flex items-center gap-2 text-green-300 text-sm">
             <span>✅</span> <span>وب‌هوک تلگرام تنظیم شد</span>
         </div>
         <?php else: ?>
         <div class="flex items-center gap-2 text-yellow-300 text-sm">
-            <span>⚠️</span> <span>وب‌هوک تنظیم نشد (دستی تنظیم کنید)</span>
+            <span>⚠️</span> <span>وب‌هوک تلگرام تنظیم نشد (دستی تنظیم کنید)</span>
         </div>
+        <?php endif; ?>
+        <?php endif; ?>
+        
+        <?php if ($finalData['bale_enabled']): ?>
+        <?php if ($baleWebhookResult['success']): ?>
+        <div class="flex items-center gap-2 text-green-300 text-sm">
+            <span>✅</span> <span>وب‌هوک بله تنظیم شد</span>
+        </div>
+        <?php else: ?>
+        <div class="flex items-center gap-2 text-yellow-300 text-sm">
+            <span>⚠️</span> <span>وب‌هوک بله تنظیم نشد (دستی تنظیم کنید)</span>
+        </div>
+        <?php endif; ?>
         <?php endif; ?>
         <div class="flex items-center gap-2 text-green-300 text-sm">
             <span>✅</span> <span>نصب قفل شد</span>
@@ -201,14 +231,26 @@ unset($_SESSION['admin_created']);
     </ul>
 </div>
 
-<?php if (!$webhookResult['success']): ?>
-<!-- ═══ دستور تنظیم وب‌هوک ═══ -->
+<?php if (!$webhookResult['success'] && $finalData['telegram_enabled']): ?>
+<!-- ═══ دستور تنظیم وب‌هوک تلگرام ═══ -->
 <div class="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4 mb-6">
-    <h3 class="text-yellow-300 font-bold mb-2 text-sm">⚠️ تنظیم دستی وب‌هوک:</h3>
+    <h3 class="text-yellow-300 font-bold mb-2 text-sm">⚠️ تنظیم دستی وب‌هوک تلگرام:</h3>
     <p class="text-white/70 text-xs mb-2">این دستور را در ترمینال اجرا کنید:</p>
     <div class="bg-black/40 rounded p-3 text-xs font-mono text-green-400 overflow-x-auto" dir="ltr">
-        curl -F "url=<?= htmlspecialchars($finalData['site_url']) ?>/webhook.php" \<br>
+        curl -F "url=<?= htmlspecialchars($finalData['site_url']) ?>/webhook.php" -F "secret_token=YOUR_SECRET" \<br>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://api.telegram.org/bot&lt;YOUR_BOT_TOKEN&gt;/setWebhook
+    </div>
+</div>
+<?php endif; ?>
+
+<?php if (!$baleWebhookResult['success'] && $finalData['bale_enabled']): ?>
+<!-- ═══ دستور تنظیم وب‌هوک بله ═══ -->
+<div class="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4 mb-6">
+    <h3 class="text-yellow-300 font-bold mb-2 text-sm">⚠️ تنظیم دستی وب‌هوک بله:</h3>
+    <p class="text-white/70 text-xs mb-2">این دستور را در ترمینال اجرا کنید:</p>
+    <div class="bg-black/40 rounded p-3 text-xs font-mono text-green-400 overflow-x-auto" dir="ltr">
+        curl -F "url=<?= htmlspecialchars($finalData['site_url']) ?>/webhook-bale.php" \<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://tapi.bale.ai/bot&lt;YOUR_BOT_TOKEN&gt;/setWebhook
     </div>
 </div>
 <?php endif; ?>

@@ -6,6 +6,11 @@
 return [
 
     // ──────────────────────────────────────
+    // پلتفرم‌های فعال: 'telegram', 'bale' یا ['telegram', 'bale']
+    // ──────────────────────────────────────
+    'platforms' => {{PLATFORMS}},
+
+    // ──────────────────────────────────────
     // نوع دیتابیس: 'mysql' یا 'bunny'
     // mysql = MySQL/MariaDB (PDO)
     // bunny = Bunny Database (Turso/libSQL via HTTP)
@@ -29,9 +34,18 @@ return [
     // تنظیمات ربات تلگرام
     // ──────────────────────────────────────
     'telegram' => [
-        'bot_token' => '{{BOT_TOKEN}}',
-        'admin_id' => '{{ADMIN_ID}}',
-        'webhook_secret' => '{{WEBHOOK_SECRET}}',
+        'bot_token' => '{{TELEGRAM_BOT_TOKEN}}',
+        'admin_id' => '{{TELEGRAM_ADMIN_ID}}',
+        'webhook_secret' => '{{TELEGRAM_WEBHOOK_SECRET}}',
+        'verify_ssl' => true,
+    ],
+
+    // ──────────────────────────────────────
+    // تنظیمات ربات بله
+    // ──────────────────────────────────────
+    'bale' => [
+        'bot_token' => '{{BALE_BOT_TOKEN}}',
+        'admin_id' => '{{BALE_ADMIN_ID}}',
         'verify_ssl' => true,
     ],
 

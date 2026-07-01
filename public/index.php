@@ -168,6 +168,12 @@ if ($uri === '/webhook' || $uri === '/webhook.php') {
     exit;
 }
 
+// Webhook بله
+if ($uri === '/webhook-bale' || $uri === '/webhook-bale.php') {
+    require PUBLIC_PATH . '/webhook-bale.php';
+    exit;
+}
+
 // ──────────────────────────────────────
 // 11. Route های Admin
 // ──────────────────────────────────────

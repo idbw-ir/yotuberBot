@@ -2,27 +2,27 @@
 
 declare(strict_types=1);
 
-namespace App\Telegram;
+namespace App\Bale;
 
 use App\Core\BotBase;
 
 class Bot extends BotBase {
     protected function getDefaultApiBaseUrl(): string {
-        return 'https://api.telegram.org/bot';
+        return 'https://tapi.bale.ai/bot';
     }
 
     protected function getDefaultFileBaseUrl(): string {
-        return 'https://api.telegram.org/file/bot';
+        return 'https://tapi.bale.ai/file/bot';
     }
 
     protected function getPlatformName(): string {
-        return 'telegram';
+        return 'bale';
     }
 
     public function getFileUrl($fileId) {
         $file = $this->getFile($fileId);
         if ($file && isset($file['file_path'])) {
-            return "https://api.telegram.org/file/bot{$this->token}/{$file['file_path']}";
+            return "https://tapi.bale.ai/file/bot{$this->token}/{$file['file_path']}";
         }
         return false;
     }

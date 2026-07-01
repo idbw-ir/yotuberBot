@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (empty($siteUrl) || !filter_var($siteUrl, FILTER_VALIDATE_URL)) {
         $error = 'آدرس سایت معتبر نیست';
     } elseif (strpos($siteUrl, 'http://') === 0) {
-        $error = 'آدرس سایت باید با https شروع شود (الزامی برای تلگرام)';
+        $error = 'آدرس سایت باید با https شروع شود';
     } else {
         $success = true;
     }
@@ -84,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                dir="ltr"
                placeholder="https://bot.yourdomain.com">
         <p class="text-xs text-white/50 mt-1">
-            ⚠️ حتماً با <code class="bg-white/10 px-1 rounded">https</code> شروع شود (الزامی برای تلگرام)
+            ⚠️ حتماً با <code class="bg-white/10 px-1 rounded">https</code> شروع شود (الزامی برای وب‌هوک)
         </p>
     </div>
     

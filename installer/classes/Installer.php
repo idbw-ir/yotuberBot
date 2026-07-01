@@ -310,7 +310,22 @@ class Installer {
         $driver = $data['db_driver'] ?? 'mysql';
         $proxyEnabled = !empty($data['proxy_enabled']) && ($data['proxy_enabled'] === '1' || $data['proxy_enabled'] === 'on');
         
+        // تعیین پلتفرم‌های فعال
+        $platforms = [];
+        if (!empty($data['telegram_enabled'])) {
+            $platforms[] = "'telegram'";
+        }
+        if (!empty($data['bale_enabled'])) {
+            $platforms[] = "'bale'";
+        }
+        if (empty($platforms)) {
+            // برای backward compatibility
+            $platforms[] = "'telegram'";
+        }
+        $platformsStr = '[' . implode(', ', $platforms) . ']';
+        
         $replacements = [
+            '{{PLATFORMS}}' => $platformsStr,
             '{{DB_DRIVER}}' => $driver,
             '{{DB_HOST}}' => $data['db_host'] ?? 'localhost',
             '{{DB_NAME}}' => $data['db_name'] ?? 'youtuber_bot',
@@ -318,11 +333,13 @@ class Installer {
             '{{DB_PASS}}' => $data['db_pass'] ?? '',
             '{{BUNNY_URL}}' => $data['bunny_url'] ?? '',
             '{{BUNNY_TOKEN}}' => $data['bunny_token'] ?? '',
-            '{{BOT_TOKEN}}' => $data['bot_token'],
-            '{{ADMIN_ID}}' => $data['admin_id'],
+            '{{TELEGRAM_BOT_TOKEN}}' => $data['bot_token'] ?? '',
+            '{{TELEGRAM_ADMIN_ID}}' => $data['admin_id'] ?? '',
+            '{{TELEGRAM_WEBHOOK_SECRET}}' => bin2hex(random_bytes(32)),
+            '{{BALE_BOT_TOKEN}}' => $data['bale_bot_token'] ?? '',
+            '{{BALE_ADMIN_ID}}' => $data['bale_admin_id'] ?? '',
             '{{SITE_URL}}' => rtrim($data['site_url'], '/'),
             '{{SITE_NAME}}' => $data['site_name'],
-            '{{WEBHOOK_SECRET}}' => bin2hex(random_bytes(32)),
             '{{PROXY_ENABLED}}' => $proxyEnabled ? 'true' : 'false',
             '{{PROXY_TYPE}}' => $data['proxy_type'] ?? 'http',
             '{{PROXY_HOST}}' => $data['proxy_host'] ?? '',
@@ -347,14 +364,17 @@ class Installer {
     // ──────────────────────────────────────
     // تنظیم وب‌هوک تلگرام
     // ──────────────────────────────────────
-    public function setWebhook($botToken, $webhookUrl, $secret) {
+    public function setWebhook($botToken, $webhookUrl, $secret = '') {
         $url = "https://api.telegram.org/bot{$botToken}/setWebhook";
         $params = [
             'url' => $webhookUrl,
-            'secret_token' => $secret,
             'allowed_updates' => ['message', 'callback_query'],
             'max_connections' => 40
         ];
+        
+        if (!empty($secret)) {
+            $params['secret_token'] = $secret;
+        }
         
         $ch = curl_init($url);
         curl_setopt_array($ch, [
@@ -390,7 +410,31 @@ class Installer {
             CURLOPT_TIMEOUT => 10
         ]);
         
-        // اگر داده‌های پروکسی در متغیر کلاس ذخیره شده، اعمال کن
+        $this->applyProxyToCurl($ch);
+        
+        $response = curl_exec($ch);
+        curl_close($ch);
+        
+        $data = json_decode($response, true);
+        
+        if (isset($data['ok']) && $data['ok']) {
+            return ['success' => true, 'bot' => $data['result']];
+        }
+        
+        return ['success' => false, 'error' => 'توکن نامعتبر است'];
+    }
+    
+    // ──────────────────────────────────────
+    // تست توکن ربات بله
+    // ──────────────────────────────────────
+    public function testBaleBotToken($token) {
+        $ch = curl_init("https://tapi.bale.ai/bot{$token}/getMe");
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_TIMEOUT => 10
+        ]);
+        
         $this->applyProxyToCurl($ch);
         
         $response = curl_exec($ch);
@@ -408,6 +452,40 @@ class Installer {
     // ──────────────────────────────────────
     // قفل کردن نصب
     // ──────────────────────────────────────
+    // ──────────────────────────────────────
+    // تنظیم وب‌هوک بله
+    // ──────────────────────────────────────
+    public function setBaleWebhook($botToken, $webhookUrl) {
+        $url = "https://tapi.bale.ai/bot{$botToken}/setWebhook";
+        $params = [
+            'url' => $webhookUrl,
+            'allowed_updates' => ['message', 'callback_query'],
+            'max_connections' => 40
+        ];
+        
+        $ch = curl_init($url);
+        curl_setopt_array($ch, [
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => http_build_query($params),
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_TIMEOUT => 10
+        ]);
+        
+        $this->applyProxyToCurl($ch);
+        
+        $response = curl_exec($ch);
+        curl_close($ch);
+        
+        $data = json_decode($response, true);
+        
+        if (isset($data['ok']) && $data['ok']) {
+            return ['success' => true];
+        }
+        
+        return ['success' => false, 'error' => $data['description'] ?? 'خطای نامشخص'];
+    }
+    
     public function lockInstallation() {
         $lockFile = $this->basePath . '/install.lock';
         $content = json_encode([

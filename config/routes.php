@@ -146,7 +146,7 @@ $router->get('/privacy', function() {
 });
 
 // ──────────────────────────────────────
-// 3. Webhook Routes (تلگرام)
+// 3. Webhook Routes (تلگرام و بله)
 // ──────────────────────────────────────
 
 // Webhook تلگرام
@@ -156,6 +156,15 @@ $router->post('/webhook', function() {
 
 $router->post('/webhook.php', function() {
     require PUBLIC_PATH . '/webhook.php';
+});
+
+// Webhook بله
+$router->post('/webhook-bale', function() {
+    require PUBLIC_PATH . '/webhook-bale.php';
+});
+
+$router->post('/webhook-bale.php', function() {
+    require PUBLIC_PATH . '/webhook-bale.php';
 });
 
 // ──────────────────────────────────────
