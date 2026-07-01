@@ -1,22 +1,22 @@
-<?php
+﻿<?php
 /**
  * ============================================
- * Admin Login Page - صفحه ورود ادمین
+ * Admin Login Page - ØµÙØ­Ù‡ ÙˆØ±ÙˆØ¯ Ø§Ø¯Ù…ÛŒÙ†
  * ============================================
- * نسخه: 2.0.0
+ * Ù†Ø³Ø®Ù‡: 2.1.0
  * 
- * صفحه ورود مستقل (بدون layout اصلی)
- * با طراحی مدرن و امنیت بالا
+ * ØµÙØ­Ù‡ ÙˆØ±ÙˆØ¯ Ù…Ø³ØªÙ‚Ù„ (Ø¨Ø¯ÙˆÙ† layout Ø§ØµÙ„ÛŒ)
+ * Ø¨Ø§ Ø·Ø±Ø§Ø­ÛŒ Ù…Ø¯Ø±Ù† Ùˆ Ø§Ù…Ù†ÛŒØª Ø¨Ø§Ù„Ø§
  */
 
-// دریافت خطا و پیام‌ها
+// Ø¯Ø±ÛŒØ§ÙØª Ø®Ø·Ø§ Ùˆ Ù¾ÛŒØ§Ù…â€ŒÙ‡Ø§
 $error = $error ?? '';
 $success = $success ?? '';
 
 // CSRF Token
 $csrfToken = $_SESSION['_csrf_token'] ?? '';
 
-// اطلاعات قبلی (برای پر کردن مجدد فرم)
+// Ø§Ø·Ù„Ø§Ø¹Ø§Øª Ù‚Ø¨Ù„ÛŒ (Ø¨Ø±Ø§ÛŒ Ù¾Ø± Ú©Ø±Ø¯Ù† Ù…Ø¬Ø¯Ø¯ ÙØ±Ù…)
 $oldUsername = $_SESSION['old_username'] ?? '';
 unset($_SESSION['old_username']);
 ?>
@@ -26,15 +26,15 @@ unset($_SESSION['old_username']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="<?= htmlspecialchars($csrfToken) ?>">
-    <title>ورود به پنل مدیریت</title>
+    <title>ÙˆØ±ÙˆØ¯ Ø¨Ù‡ Ù¾Ù†Ù„ Ù…Ø¯ÛŒØ±ÛŒØª</title>
     
-    <!-- ═══ Fonts ═══ -->
+    <!-- â•â•â• Fonts â•â•â• -->
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
     
-    <!-- ═══ TailwindCSS ═══ -->
+    <!-- â•â•â• TailwindCSS â•â•â• -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- ═══ Font Awesome ═══ -->
+    <!-- â•â•â• Font Awesome â•â•â• -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -119,18 +119,18 @@ unset($_SESSION['old_username']);
     
     <div class="w-full max-w-md">
         
-        <!-- ═══ Logo & Title ═══ -->
+        <!-- â•â•â• Logo & Title â•â•â• -->
         <div class="text-center mb-8">
             <div class="inline-block float">
                 <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-4xl shadow-2xl mb-4">
-                    🎬
+                    ðŸŽ¬
                 </div>
             </div>
-            <h1 class="text-3xl font-bold text-white mb-2">پنل مدیریت</h1>
-            <p class="text-white/60 text-sm">برای ورود، اطلاعات خود را وارد کنید</p>
+            <h1 class="text-3xl font-bold text-white mb-2">Ù¾Ù†Ù„ Ù…Ø¯ÛŒØ±ÛŒØª</h1>
+            <p class="text-white/60 text-sm">Ø¨Ø±Ø§ÛŒ ÙˆØ±ÙˆØ¯ØŒ Ø§Ø·Ù„Ø§Ø¹Ø§Øª Ø®ÙˆØ¯ Ø±Ø§ ÙˆØ§Ø±Ø¯ Ú©Ù†ÛŒØ¯</p>
         </div>
         
-        <!-- ═══ Login Form ═══ -->
+        <!-- â•â•â• Login Form â•â•â• -->
         <div class="glass rounded-2xl p-8 shadow-2xl">
             
             <!-- Flash Messages -->
@@ -157,7 +157,7 @@ unset($_SESSION['old_username']);
                 <div>
                     <label class="block text-white/80 text-sm font-medium mb-2">
                         <i class="fas fa-user ml-1"></i>
-                        <span>نام کاربری</span>
+                        <span>Ù†Ø§Ù… Ú©Ø§Ø±Ø¨Ø±ÛŒ</span>
                         <span class="text-red-400">*</span>
                     </label>
                     <div class="relative">
@@ -170,7 +170,7 @@ unset($_SESSION['old_username']);
                             autofocus
                             autocomplete="username"
                             class="w-full bg-white/10 border border-white/20 rounded-lg py-3 px-4 pr-11 text-white placeholder-white/40 transition"
-                            placeholder="نام کاربری خود را وارد کنید"
+                            placeholder="Ù†Ø§Ù… Ú©Ø§Ø±Ø¨Ø±ÛŒ Ø®ÙˆØ¯ Ø±Ø§ ÙˆØ§Ø±Ø¯ Ú©Ù†ÛŒØ¯"
                         >
                         <span class="absolute right-3 top-1/2 -translate-y-1/2 text-white/40">
                             <i class="fas fa-user"></i>
@@ -182,7 +182,7 @@ unset($_SESSION['old_username']);
                 <div>
                     <label class="block text-white/80 text-sm font-medium mb-2">
                         <i class="fas fa-lock ml-1"></i>
-                        <span>رمز عبور</span>
+                        <span>Ø±Ù…Ø² Ø¹Ø¨ÙˆØ±</span>
                         <span class="text-red-400">*</span>
                     </label>
                     <div class="relative">
@@ -193,7 +193,7 @@ unset($_SESSION['old_username']);
                             required
                             autocomplete="current-password"
                             class="w-full bg-white/10 border border-white/20 rounded-lg py-3 px-4 pr-11 pl-11 text-white placeholder-white/40 transition"
-                            placeholder="رمز عبور خود را وارد کنید"
+                            placeholder="Ø±Ù…Ø² Ø¹Ø¨ÙˆØ± Ø®ÙˆØ¯ Ø±Ø§ ÙˆØ§Ø±Ø¯ Ú©Ù†ÛŒØ¯"
                         >
                         <span class="absolute right-3 top-1/2 -translate-y-1/2 text-white/40">
                             <i class="fas fa-lock"></i>
@@ -202,7 +202,7 @@ unset($_SESSION['old_username']);
                             type="button" 
                             onclick="togglePassword()"
                             class="absolute left-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/60 transition"
-                            title="نمایش/مخفی رمز عبور"
+                            title="Ù†Ù…Ø§ÛŒØ´/Ù…Ø®ÙÛŒ Ø±Ù…Ø² Ø¹Ø¨ÙˆØ±"
                         >
                             <i class="fas fa-eye" id="passwordToggleIcon"></i>
                         </button>
@@ -218,14 +218,14 @@ unset($_SESSION['old_username']);
                             id="remember"
                             class="w-4 h-4 rounded border-white/20 bg-white/10 text-purple-500 focus:ring-purple-500"
                         >
-                        <span class="text-white/70 text-sm">مرا به خاطر بسپار</span>
+                        <span class="text-white/70 text-sm">Ù…Ø±Ø§ Ø¨Ù‡ Ø®Ø§Ø·Ø± Ø¨Ø³Ù¾Ø§Ø±</span>
                     </label>
                     
                     <a 
                         href="/admin/forgot-password.php" 
                         class="text-purple-400 text-sm hover:text-purple-300 transition"
                     >
-                        فراموشی رمز؟
+                        ÙØ±Ø§Ù…ÙˆØ´ÛŒ Ø±Ù…Ø²ØŸ
                     </a>
                 </div>
                 
@@ -236,7 +236,7 @@ unset($_SESSION['old_username']);
                     class="w-full bg-gradient-to-r from-purple-500 to-blue-500 text-white font-bold py-3 rounded-lg hover:opacity-90 transition transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"
                 >
                     <i class="fas fa-sign-in-alt"></i>
-                    <span>ورود به پنل</span>
+                    <span>ÙˆØ±ÙˆØ¯ Ø¨Ù‡ Ù¾Ù†Ù„</span>
                 </button>
                 
             </form>
@@ -245,25 +245,25 @@ unset($_SESSION['old_username']);
             <div class="mt-6 pt-6 border-t border-white/10">
                 <div class="flex items-center justify-center gap-2 text-white/50 text-xs">
                     <i class="fas fa-shield-alt"></i>
-                    <span>اتصال امن با رمزنگاری SSL</span>
+                    <span>Ø§ØªØµØ§Ù„ Ø§Ù…Ù† Ø¨Ø§ Ø±Ù…Ø²Ù†Ú¯Ø§Ø±ÛŒ SSL</span>
                 </div>
                 <p class="text-white/40 text-xs text-center mt-2">
-                    در صورت فراموشی رمز عبور، با پشتیبانی تماس بگیرید
+                    Ø¯Ø± ØµÙˆØ±Øª ÙØ±Ø§Ù…ÙˆØ´ÛŒ Ø±Ù…Ø² Ø¹Ø¨ÙˆØ±ØŒ Ø¨Ø§ Ù¾Ø´ØªÛŒØ¨Ø§Ù†ÛŒ ØªÙ…Ø§Ø³ Ø¨Ú¯ÛŒØ±ÛŒØ¯
                 </p>
             </div>
             
         </div>
         
-        <!-- ═══ Footer ═══ -->
+        <!-- â•â•â• Footer â•â•â• -->
         <div class="text-center mt-6 text-white/40 text-xs">
-            <p>Youtuber Bot v2.0.0 | ساخته شده با ❤️</p>
+            <p>Youtuber Bot v2.1.0 | Ø³Ø§Ø®ØªÙ‡ Ø´Ø¯Ù‡ Ø¨Ø§ â¤ï¸</p>
         </div>
         
     </div>
     
-    <!-- ═══ JavaScript ═══ -->
+    <!-- â•â•â• JavaScript â•â•â• -->
     <script>
-    // ═══ Toggle Password Visibility ═══
+    // â•â•â• Toggle Password Visibility â•â•â•
     function togglePassword() {
         const passwordInput = document.getElementById('password');
         const toggleIcon = document.getElementById('passwordToggleIcon');
@@ -279,14 +279,14 @@ unset($_SESSION['old_username']);
         }
     }
     
-    // ═══ Form Validation ═══
+    // â•â•â• Form Validation â•â•â•
     document.getElementById('loginForm').addEventListener('submit', function(e) {
         const username = document.getElementById('username').value.trim();
         const password = document.getElementById('password').value;
         
         if (!username || !password) {
             e.preventDefault();
-            showToast('لطفاً تمام فیلدها را پر کنید', 'warning');
+            showToast('Ù„Ø·ÙØ§Ù‹ ØªÙ…Ø§Ù… ÙÛŒÙ„Ø¯Ù‡Ø§ Ø±Ø§ Ù¾Ø± Ú©Ù†ÛŒØ¯', 'warning');
             return false;
         }
         
@@ -294,19 +294,19 @@ unset($_SESSION['old_username']);
         const submitBtn = document.getElementById('submitBtn');
         submitBtn.classList.add('btn-loading');
         submitBtn.disabled = true;
-        submitBtn.innerHTML = '<span>در حال ورود...</span>';
+        submitBtn.innerHTML = '<span>Ø¯Ø± Ø­Ø§Ù„ ÙˆØ±ÙˆØ¯...</span>';
         
         // Re-enable after 5 seconds (in case of error)
         setTimeout(() => {
             if (submitBtn.classList.contains('btn-loading')) {
                 submitBtn.classList.remove('btn-loading');
                 submitBtn.disabled = false;
-                submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i><span>ورود به پنل</span>';
+                submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i><span>ÙˆØ±ÙˆØ¯ Ø¨Ù‡ Ù¾Ù†Ù„</span>';
             }
         }, 5000);
     });
     
-    // ═══ Toast Notification ═══
+    // â•â•â• Toast Notification â•â•â•
     function showToast(message, type = 'info') {
         const toast = document.createElement('div');
         toast.className = `fixed top-4 left-1/2 -translate-x-1/2 z-50 px-6 py-3 rounded-lg shadow-lg text-white text-sm flex items-center gap-2 animate-slideIn`;
@@ -339,12 +339,12 @@ unset($_SESSION['old_username']);
         }, 3000);
     }
     
-    // ═══ Auto-focus on error ═══
+    // â•â•â• Auto-focus on error â•â•â•
     <?php if ($error): ?>
     document.getElementById('username').focus();
     <?php endif; ?>
     
-    // ═══ Keyboard Shortcuts ═══
+    // â•â•â• Keyboard Shortcuts â•â•â•
     document.addEventListener('keydown', function(e) {
         // Ctrl+Enter to submit
         if (e.ctrlKey && e.key === 'Enter') {

@@ -1,15 +1,15 @@
-/**
+﻿/**
  * ============================================
  * Youtuber Bot Installer - JavaScript
- * نسخه: 2.0.0
+ * Ù†Ø³Ø®Ù‡: 2.1.0
  * ============================================
  */
 
-// ──────────────────────────────────────
-// 1. راه‌اندازی اولیه
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// 1. Ø±Ø§Ù‡â€ŒØ§Ù†Ø¯Ø§Ø²ÛŒ Ø§ÙˆÙ„ÛŒÙ‡
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🎬 Youtuber Bot Installer v2.0.0');
+    console.log('ðŸŽ¬ Youtuber Bot Installer v2.1.0');
     
     initFormValidation();
     initCopyButtons();
@@ -18,9 +18,9 @@ document.addEventListener('DOMContentLoaded', function() {
     initPasswordStrength();
 });
 
-// ──────────────────────────────────────
-// 2. اعتبارسنجی فرم‌ها
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// 2. Ø§Ø¹ØªØ¨Ø§Ø±Ø³Ù†Ø¬ÛŒ ÙØ±Ù…â€ŒÙ‡Ø§
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function initFormValidation() {
     const forms = document.querySelectorAll('form');
     
@@ -30,20 +30,20 @@ function initFormValidation() {
             
             if (submitBtn) {
                 submitBtn.disabled = true;
-                submitBtn.innerHTML = '<span class="spinner spinner-sm inline-block"></span> در حال پردازش...';
+                submitBtn.innerHTML = '<span class="spinner spinner-sm inline-block"></span> Ø¯Ø± Ø­Ø§Ù„ Ù¾Ø±Ø¯Ø§Ø²Ø´...';
                 
-                // فعال‌سازی مجدد بعد از 5 ثانیه (برای خطا)
+                // ÙØ¹Ø§Ù„â€ŒØ³Ø§Ø²ÛŒ Ù…Ø¬Ø¯Ø¯ Ø¨Ø¹Ø¯ Ø§Ø² 5 Ø«Ø§Ù†ÛŒÙ‡ (Ø¨Ø±Ø§ÛŒ Ø®Ø·Ø§)
                 setTimeout(() => {
                     if (submitBtn.disabled) {
                         submitBtn.disabled = false;
-                        submitBtn.innerHTML = submitBtn.dataset.originalText || 'ادامه';
+                        submitBtn.innerHTML = submitBtn.dataset.originalText || 'Ø§Ø¯Ø§Ù…Ù‡';
                     }
                 }, 5000);
             }
         });
     });
     
-    // اعتبارسنجی real-time برای فیلدهای خاص
+    // Ø§Ø¹ØªØ¨Ø§Ø±Ø³Ù†Ø¬ÛŒ real-time Ø¨Ø±Ø§ÛŒ ÙÛŒÙ„Ø¯Ù‡Ø§ÛŒ Ø®Ø§Øµ
     const requiredFields = document.querySelectorAll('[required]');
     requiredFields.forEach(field => {
         field.addEventListener('blur', function() {
@@ -62,17 +62,17 @@ function validateField(field) {
     const value = field.value.trim();
     let isValid = true;
     
-    // بررسی required
+    // Ø¨Ø±Ø±Ø³ÛŒ required
     if (field.hasAttribute('required') && !value) {
         isValid = false;
     }
     
-    // بررسی minlength
+    // Ø¨Ø±Ø±Ø³ÛŒ minlength
     if (field.hasAttribute('minlength') && value.length < parseInt(field.getAttribute('minlength'))) {
         isValid = false;
     }
     
-    // بررسی pattern
+    // Ø¨Ø±Ø±Ø³ÛŒ pattern
     if (field.hasAttribute('pattern')) {
         const pattern = new RegExp(field.getAttribute('pattern'));
         if (!pattern.test(value)) {
@@ -80,7 +80,7 @@ function validateField(field) {
         }
     }
     
-    // بررسی type
+    // Ø¨Ø±Ø±Ø³ÛŒ type
     if (field.type === 'email' && value) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         isValid = emailRegex.test(value);
@@ -95,7 +95,7 @@ function validateField(field) {
         }
     }
     
-    // نمایش خطا
+    // Ù†Ù…Ø§ÛŒØ´ Ø®Ø·Ø§
     if (isValid) {
         field.classList.remove('border-red-500');
         field.classList.add('border-green-500');
@@ -107,9 +107,9 @@ function validateField(field) {
     return isValid;
 }
 
-// ──────────────────────────────────────
-// 3. دکمه‌های کپی
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// 3. Ø¯Ú©Ù…Ù‡â€ŒÙ‡Ø§ÛŒ Ú©Ù¾ÛŒ
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function initCopyButtons() {
     const copyButtons = document.querySelectorAll('[data-copy]');
     
@@ -121,7 +121,7 @@ function initCopyButtons() {
             try {
                 await navigator.clipboard.writeText(textToCopy);
                 
-                this.innerHTML = '✅ کپی شد!';
+                this.innerHTML = 'âœ… Ú©Ù¾ÛŒ Ø´Ø¯!';
                 this.classList.add('bg-green-500/30');
                 
                 setTimeout(() => {
@@ -129,9 +129,9 @@ function initCopyButtons() {
                     this.classList.remove('bg-green-500/30');
                 }, 2000);
             } catch (err) {
-                console.error('خطا در کپی:', err);
+                console.error('Ø®Ø·Ø§ Ø¯Ø± Ú©Ù¾ÛŒ:', err);
                 
-                // Fallback برای مرورگرهای قدیمی
+                // Fallback Ø¨Ø±Ø§ÛŒ Ù…Ø±ÙˆØ±Ú¯Ø±Ù‡Ø§ÛŒ Ù‚Ø¯ÛŒÙ…ÛŒ
                 const textarea = document.createElement('textarea');
                 textarea.value = textToCopy;
                 textarea.style.position = 'fixed';
@@ -141,7 +141,7 @@ function initCopyButtons() {
                 document.execCommand('copy');
                 document.body.removeChild(textarea);
                 
-                this.innerHTML = '✅ کپی شد!';
+                this.innerHTML = 'âœ… Ú©Ù¾ÛŒ Ø´Ø¯!';
                 setTimeout(() => {
                     this.innerHTML = originalText;
                 }, 2000);
@@ -150,11 +150,11 @@ function initCopyButtons() {
     });
 }
 
-// ──────────────────────────────────────
-// 4. انیمیشن‌های ورود
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// 4. Ø§Ù†ÛŒÙ…ÛŒØ´Ù†â€ŒÙ‡Ø§ÛŒ ÙˆØ±ÙˆØ¯
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function initAnimations() {
-    // انیمیشن fade-in برای المان‌ها
+    // Ø§Ù†ÛŒÙ…ÛŒØ´Ù† fade-in Ø¨Ø±Ø§ÛŒ Ø§Ù„Ù…Ø§Ù†â€ŒÙ‡Ø§
     const animatedElements = document.querySelectorAll('.animate-fadeInUp, .animate-fadeIn, .animate-slideInRight');
     
     const observer = new IntersectionObserver((entries) => {
@@ -170,7 +170,7 @@ function initAnimations() {
         observer.observe(el);
     });
     
-    // انیمیشن برای کارت‌های وضعیت
+    // Ø§Ù†ÛŒÙ…ÛŒØ´Ù† Ø¨Ø±Ø§ÛŒ Ú©Ø§Ø±Øªâ€ŒÙ‡Ø§ÛŒ ÙˆØ¶Ø¹ÛŒØª
     const statusCards = document.querySelectorAll('.status-card');
     statusCards.forEach((card, index) => {
         card.style.animationDelay = `${index * 0.1}s`;
@@ -178,9 +178,9 @@ function initAnimations() {
     });
 }
 
-// ──────────────────────────────────────
-// 5. Tooltip ها
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// 5. Tooltip Ù‡Ø§
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function initTooltips() {
     const tooltips = document.querySelectorAll('[data-tooltip]');
     
@@ -208,9 +208,9 @@ function initTooltips() {
     });
 }
 
-// ──────────────────────────────────────
-// 6. بررسی قدرت رمز عبور
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// 6. Ø¨Ø±Ø±Ø³ÛŒ Ù‚Ø¯Ø±Øª Ø±Ù…Ø² Ø¹Ø¨ÙˆØ±
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function initPasswordStrength() {
     const passwordFields = document.querySelectorAll('input[type="password"]');
     
@@ -258,7 +258,7 @@ function updatePasswordStrengthUI(field, strength) {
     const label = strengthBar.querySelector('div:last-child');
     
     const colors = ['bg-red-500', 'bg-orange-500', 'bg-yellow-500', 'bg-blue-500', 'bg-green-500'];
-    const labels = ['خیلی ضعیف', 'ضعیف', 'متوسط', 'قوی', 'خیلی قوی'];
+    const labels = ['Ø®ÛŒÙ„ÛŒ Ø¶Ø¹ÛŒÙ', 'Ø¶Ø¹ÛŒÙ', 'Ù…ØªÙˆØ³Ø·', 'Ù‚ÙˆÛŒ', 'Ø®ÛŒÙ„ÛŒ Ù‚ÙˆÛŒ'];
     
     bars.forEach((bar, index) => {
         bar.className = 'h-1 flex-1 rounded';
@@ -277,18 +277,18 @@ function updatePasswordStrengthUI(field, strength) {
     }
 }
 
-// ──────────────────────────────────────
-// 7. تایید قبل از حذف
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// 7. ØªØ§ÛŒÛŒØ¯ Ù‚Ø¨Ù„ Ø§Ø² Ø­Ø°Ù
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function confirmAction(message, callback) {
     if (confirm(message)) {
         callback();
     }
 }
 
-// ──────────────────────────────────────
-// 8. نمایش/مخفی کردن المان‌ها
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// 8. Ù†Ù…Ø§ÛŒØ´/Ù…Ø®ÙÛŒ Ú©Ø±Ø¯Ù† Ø§Ù„Ù…Ø§Ù†â€ŒÙ‡Ø§
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function toggleElement(selector, show = null) {
     const element = document.querySelector(selector);
     if (!element) return;
@@ -302,9 +302,9 @@ function toggleElement(selector, show = null) {
     }
 }
 
-// ──────────────────────────────────────
-// 9. اسکرول نرم
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// 9. Ø§Ø³Ú©Ø±ÙˆÙ„ Ù†Ø±Ù…
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function smoothScrollTo(selector) {
     const element = document.querySelector(selector);
     if (element) {
@@ -312,9 +312,9 @@ function smoothScrollTo(selector) {
     }
 }
 
-// ──────────────────────────────────────
-// 10. نمایش نوتیفیکیشن
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// 10. Ù†Ù…Ø§ÛŒØ´ Ù†ÙˆØªÛŒÙÛŒÚ©ÛŒØ´Ù†
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function showNotification(message, type = 'info', duration = 3000) {
     const notification = document.createElement('div');
     notification.className = `fixed top-4 right-4 bg-${type}-500/90 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-slideInRight`;
@@ -329,9 +329,9 @@ function showNotification(message, type = 'info', duration = 3000) {
     }, duration);
 }
 
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // 11. Auto-resize textarea
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function autoResizeTextarea(textarea) {
     textarea.style.height = 'auto';
     textarea.style.height = textarea.scrollHeight + 'px';
@@ -343,11 +343,11 @@ document.addEventListener('input', function(e) {
     }
 });
 
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // 12. Keyboard Shortcuts
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 document.addEventListener('keydown', function(e) {
-    // Ctrl + Enter برای submit فرم
+    // Ctrl + Enter Ø¨Ø±Ø§ÛŒ submit ÙØ±Ù…
     if (e.ctrlKey && e.key === 'Enter') {
         const form = document.activeElement.closest('form');
         if (form) {
@@ -355,16 +355,16 @@ document.addEventListener('keydown', function(e) {
         }
     }
     
-    // Escape برای بستن modal ها
+    // Escape Ø¨Ø±Ø§ÛŒ Ø¨Ø³ØªÙ† modal Ù‡Ø§
     if (e.key === 'Escape') {
         const modals = document.querySelectorAll('.modal:not(.hidden)');
         modals.forEach(modal => modal.classList.add('hidden'));
     }
 });
 
-// ──────────────────────────────────────
-// 13. Lazy Loading برای تصاویر
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// 13. Lazy Loading Ø¨Ø±Ø§ÛŒ ØªØµØ§ÙˆÛŒØ±
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 if ('IntersectionObserver' in window) {
     const imageObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
@@ -382,9 +382,9 @@ if ('IntersectionObserver' in window) {
     });
 }
 
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // 14. Prevent Double Submit
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 let isSubmitting = false;
 
 document.addEventListener('submit', function(e) {
@@ -403,16 +403,16 @@ document.addEventListener('submit', function(e) {
     }
 }, true);
 
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // 15. Console Welcome Message
-// ──────────────────────────────────────
-console.log('%c🎬 Youtuber Bot Installer', 'font-size: 20px; font-weight: bold; color: #667eea;');
-console.log('%cنسخه 2.0.0', 'font-size: 12px; color: #10b981;');
-console.log('%c⚠️ توجه: این کنسول برای توسعه‌دهندگان است. اگر کسی از شما خواست چیزی اینجا کپی کنید، احتمالاً کلاهبرداری است.', 'font-size: 11px; color: #f59e0b;');
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+console.log('%cðŸŽ¬ Youtuber Bot Installer', 'font-size: 20px; font-weight: bold; color: #667eea;');
+console.log('%cÙ†Ø³Ø®Ù‡ 2.1.0', 'font-size: 12px; color: #10b981;');
+console.log('%câš ï¸ ØªÙˆØ¬Ù‡: Ø§ÛŒÙ† Ú©Ù†Ø³ÙˆÙ„ Ø¨Ø±Ø§ÛŒ ØªÙˆØ³Ø¹Ù‡â€ŒØ¯Ù‡Ù†Ø¯Ú¯Ø§Ù† Ø§Ø³Øª. Ø§Ú¯Ø± Ú©Ø³ÛŒ Ø§Ø² Ø´Ù…Ø§ Ø®ÙˆØ§Ø³Øª Ú†ÛŒØ²ÛŒ Ø§ÛŒÙ†Ø¬Ø§ Ú©Ù¾ÛŒ Ú©Ù†ÛŒØ¯ØŒ Ø§Ø­ØªÙ…Ø§Ù„Ø§Ù‹ Ú©Ù„Ø§Ù‡Ø¨Ø±Ø¯Ø§Ø±ÛŒ Ø§Ø³Øª.', 'font-size: 11px; color: #f59e0b;');
 
-// ──────────────────────────────────────
-// 16. Export برای استفاده خارجی
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// 16. Export Ø¨Ø±Ø§ÛŒ Ø§Ø³ØªÙØ§Ø¯Ù‡ Ø®Ø§Ø±Ø¬ÛŒ
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 window.Installer = {
     showNotification,
     toggleElement,

@@ -1,25 +1,25 @@
-<?php
+﻿<?php
 /**
  * ============================================
- * Admin Layout - قالب اصلی پنل مدیریت
+ * Admin Layout - Ù‚Ø§Ù„Ø¨ Ø§ØµÙ„ÛŒ Ù¾Ù†Ù„ Ù…Ø¯ÛŒØ±ÛŒØª
  * ============================================
- * نسخه: 2.0.0
+ * Ù†Ø³Ø®Ù‡: 2.1.0
  * 
- * این فایل قالب اصلی تمام صفحات ادمین هست
- * همه صفحات از این layout استفاده می‌کنن
+ * Ø§ÛŒÙ† ÙØ§ÛŒÙ„ Ù‚Ø§Ù„Ø¨ Ø§ØµÙ„ÛŒ ØªÙ…Ø§Ù… ØµÙØ­Ø§Øª Ø§Ø¯Ù…ÛŒÙ† Ù‡Ø³Øª
+ * Ù‡Ù…Ù‡ ØµÙØ­Ø§Øª Ø§Ø² Ø§ÛŒÙ† layout Ø§Ø³ØªÙØ§Ø¯Ù‡ Ù…ÛŒâ€ŒÚ©Ù†Ù†
  * 
- * نحوه استفاده:
- * $pageTitle = 'عنوان صفحه';
- * $pageIcon = '📊';
+ * Ù†Ø­ÙˆÙ‡ Ø§Ø³ØªÙØ§Ø¯Ù‡:
+ * $pageTitle = 'Ø¹Ù†ÙˆØ§Ù† ØµÙØ­Ù‡';
+ * $pageIcon = 'ðŸ“Š';
  * ob_start();
- * // محتوای صفحه اینجا
+ * // Ù…Ø­ØªÙˆØ§ÛŒ ØµÙØ­Ù‡ Ø§ÛŒÙ†Ø¬Ø§
  * $pageContent = ob_get_clean();
  * include __DIR__ . '/../../resources/views/layouts/admin.php';
  */
 
-// مقادیر پیش‌فرض
-$pageTitle = $pageTitle ?? 'داشبورد';
-$pageIcon = $pageIcon ?? '📊';
+// Ù…Ù‚Ø§Ø¯ÛŒØ± Ù¾ÛŒØ´â€ŒÙØ±Ø¶
+$pageTitle = $pageTitle ?? 'Ø¯Ø§Ø´Ø¨ÙˆØ±Ø¯';
+$pageIcon = $pageIcon ?? 'ðŸ“Š';
 $pageDescription = $pageDescription ?? '';
 $extraCss = $extraCss ?? '';
 $extraJs = $extraJs ?? '';
@@ -36,12 +36,12 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
     <meta name="csrf-token" content="<?= htmlspecialchars($csrfToken) ?>">
     <meta name="description" content="<?= htmlspecialchars($pageDescription) ?>">
     
-    <title><?= htmlspecialchars($pageIcon . ' ' . $pageTitle) ?> - پنل مدیریت</title>
+    <title><?= htmlspecialchars($pageIcon . ' ' . $pageTitle) ?> - Ù¾Ù†Ù„ Ù…Ø¯ÛŒØ±ÛŒØª</title>
     
-    <!-- ═══ Fonts ═══ -->
+    <!-- â•â•â• Fonts â•â•â• -->
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
     
-    <!-- ═══ TailwindCSS ═══ -->
+    <!-- â•â•â• TailwindCSS â•â•â• -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -65,13 +65,13 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
         }
     </script>
     
-    <!-- ═══ Chart.js ═══ -->
+    <!-- â•â•â• Chart.js â•â•â• -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     
-    <!-- ═══ Font Awesome ═══ -->
+    <!-- â•â•â• Font Awesome â•â•â• -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- ═══ Custom CSS ═══ -->
+    <!-- â•â•â• Custom CSS â•â•â• -->
     <link rel="stylesheet" href="/assets/css/app.css">
     
     <?= $extraCss ?>
@@ -202,21 +202,21 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
 
 <body class="bg-gradient-to-br from-slate-900 via-purple-900/50 to-indigo-900 min-h-screen">
 
-<!-- ═══ Toast Container ═══ -->
+<!-- â•â•â• Toast Container â•â•â• -->
 <div id="toastContainer"></div>
 
-<!-- ═══ Mobile Sidebar Overlay ═══ -->
+<!-- â•â•â• Mobile Sidebar Overlay â•â•â• -->
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
 <div class="flex min-h-screen">
     
-    <!-- ═══ Sidebar ═══ -->
+    <!-- â•â•â• Sidebar â•â•â• -->
     <?php include __DIR__ . '/sidebar.php'; ?>
     
-    <!-- ═══ Main Content ═══ -->
+    <!-- â•â•â• Main Content â•â•â• -->
     <main class="flex-1 flex flex-col min-w-0">
         
-        <!-- ═══ Top Header ═══ -->
+        <!-- â•â•â• Top Header â•â•â• -->
         <header class="glass border-b border-white/10 px-4 md:px-6 py-3 sticky top-0 z-30">
             <div class="flex items-center justify-between gap-4">
                 
@@ -226,7 +226,7 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                     <button 
                         onclick="toggleSidebar()" 
                         class="md:hidden text-white hover:bg-white/10 p-2 rounded-lg transition"
-                        aria-label="منو"
+                        aria-label="Ù…Ù†Ùˆ"
                     >
                         <i class="fas fa-bars text-xl"></i>
                     </button>
@@ -248,7 +248,7 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                     
                     <!-- Notifications Badge -->
                     <?php if (!empty($unreadMessages)): ?>
-                    <a href="/admin/chat.php" class="relative text-white hover:bg-white/10 p-2 rounded-lg transition" title="پیام‌های جدید">
+                    <a href="/admin/chat.php" class="relative text-white hover:bg-white/10 p-2 rounded-lg transition" title="Ù¾ÛŒØ§Ù…â€ŒÙ‡Ø§ÛŒ Ø¬Ø¯ÛŒØ¯">
                         <i class="fas fa-bell text-lg"></i>
                         <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
                             <?= (int)$unreadMessages ?>
@@ -260,7 +260,7 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                     <button 
                         onclick="location.reload()" 
                         class="text-white hover:bg-white/10 p-2 rounded-lg transition"
-                        title="بروزرسانی"
+                        title="Ø¨Ø±ÙˆØ²Ø±Ø³Ø§Ù†ÛŒ"
                     >
                         <i class="fas fa-sync-alt"></i>
                     </button>
@@ -271,7 +271,7 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                             <?= strtoupper(substr($currentAdmin['name'] ?? 'A', 0, 1)) ?>
                         </div>
                         <div class="hidden md:block">
-                            <div class="text-white text-sm font-medium"><?= htmlspecialchars($currentAdmin['name'] ?? 'ادمین') ?></div>
+                            <div class="text-white text-sm font-medium"><?= htmlspecialchars($currentAdmin['name'] ?? 'Ø§Ø¯Ù…ÛŒÙ†') ?></div>
                             <div class="text-white/50 text-xs"><?= htmlspecialchars($currentAdmin['role'] ?? 'admin') ?></div>
                         </div>
                     </div>
@@ -281,20 +281,20 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
             </div>
         </header>
         
-        <!-- ═══ Flash Messages ═══ -->
+        <!-- â•â•â• Flash Messages â•â•â• -->
         <?php if (function_exists('displayFlashMessages')): ?>
             <?= displayFlashMessages() ?>
         <?php endif; ?>
         
-        <!-- ═══ Page Content ═══ -->
+        <!-- â•â•â• Page Content â•â•â• -->
         <div class="flex-1 p-4 md:p-6 animate-fadeIn">
             <?= $pageContent ?? '' ?>
         </div>
         
-        <!-- ═══ Footer ═══ -->
+        <!-- â•â•â• Footer â•â•â• -->
         <footer class="border-t border-white/10 px-6 py-4 text-center">
             <p class="text-white/40 text-xs">
-                🎬 Youtuber Bot v2.0.0 | ساخته شده با ❤️ | 
+                ðŸŽ¬ Youtuber Bot v2.1.0 | Ø³Ø§Ø®ØªÙ‡ Ø´Ø¯Ù‡ Ø¨Ø§ â¤ï¸ | 
                 <span class="hidden md:inline">PHP <?= PHP_VERSION ?> | <?= date('Y-m-d') ?></span>
             </p>
         </footer>
@@ -303,12 +303,12 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
     
 </div>
 
-<!-- ═══ Global JavaScript ═══ -->
+<!-- â•â•â• Global JavaScript â•â•â• -->
 <script>
 // CSRF Token
 const CSRF_TOKEN = '<?= htmlspecialchars($csrfToken) ?>';
 
-// ═══ Sidebar Toggle ═══
+// â•â•â• Sidebar Toggle â•â•â•
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('sidebarOverlay');
@@ -317,7 +317,7 @@ function toggleSidebar() {
     overlay.classList.toggle('open');
 }
 
-// ═══ Toast Notifications ═══
+// â•â•â• Toast Notifications â•â•â•
 function showToast(message, type = 'info', duration = 3000) {
     const container = document.getElementById('toastContainer');
     
@@ -353,14 +353,14 @@ function showToast(message, type = 'info', duration = 3000) {
     }, duration);
 }
 
-// ═══ Confirm Action ═══
+// â•â•â• Confirm Action â•â•â•
 function confirmAction(message, callback) {
     if (confirm(message)) {
         callback();
     }
 }
 
-// ═══ AJAX Helper ═══
+// â•â•â• AJAX Helper â•â•â•
 async function apiRequest(url, options = {}) {
     const defaults = {
         headers: {
@@ -378,7 +378,7 @@ async function apiRequest(url, options = {}) {
         const data = await response.json();
         
         if (!response.ok) {
-            throw new Error(data.error?.message || 'خطا در درخواست');
+            throw new Error(data.error?.message || 'Ø®Ø·Ø§ Ø¯Ø± Ø¯Ø±Ø®ÙˆØ§Ø³Øª');
         }
         
         return data;
@@ -389,7 +389,7 @@ async function apiRequest(url, options = {}) {
     }
 }
 
-// ═══ Form Helper ═══
+// â•â•â• Form Helper â•â•â•
 function setupForm(form) {
     form.addEventListener('submit', function(e) {
         const submitBtn = form.querySelector('button[type="submit"]');
@@ -398,7 +398,7 @@ function setupForm(form) {
             submitBtn.classList.add('btn-loading');
             submitBtn.disabled = true;
             
-            // بازگردانی بعد از 5 ثانیه
+            // Ø¨Ø§Ø²Ú¯Ø±Ø¯Ø§Ù†ÛŒ Ø¨Ø¹Ø¯ Ø§Ø² 5 Ø«Ø§Ù†ÛŒÙ‡
             setTimeout(() => {
                 submitBtn.classList.remove('btn-loading');
                 submitBtn.disabled = false;
@@ -407,7 +407,7 @@ function setupForm(form) {
     });
 }
 
-// ═══ Auto-setup all forms ═══
+// â•â•â• Auto-setup all forms â•â•â•
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('form').forEach(setupForm);
     
@@ -420,48 +420,48 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 5000);
 });
 
-// ═══ Copy to Clipboard ═══
-function copyToClipboard(text, message = 'کپی شد!') {
+// â•â•â• Copy to Clipboard â•â•â•
+function copyToClipboard(text, message = 'Ú©Ù¾ÛŒ Ø´Ø¯!') {
     navigator.clipboard.writeText(text).then(() => {
         showToast(message, 'success');
     }).catch(() => {
-        showToast('خطا در کپی', 'error');
+        showToast('Ø®Ø·Ø§ Ø¯Ø± Ú©Ù¾ÛŒ', 'error');
     });
 }
 
-// ═══ Format Number ═══
+// â•â•â• Format Number â•â•â•
 function formatNumber(num) {
     return new Intl.NumberFormat('fa-IR').format(num);
 }
 
-// ═══ Format Currency ═══
+// â•â•â• Format Currency â•â•â•
 function formatCurrency(amount) {
-    return formatNumber(amount) + ' تومان';
+    return formatNumber(amount) + ' ØªÙˆÙ…Ø§Ù†';
 }
 
-// ═══ Time Ago ═══
+// â•â•â• Time Ago â•â•â•
 function timeAgo(dateString) {
     const date = new Date(dateString);
     const seconds = Math.floor((new Date() - date) / 1000);
     
     const intervals = [
-        { label: 'سال', seconds: 31536000 },
-        { label: 'ماه', seconds: 2592000 },
-        { label: 'هفته', seconds: 604800 },
-        { label: 'روز', seconds: 86400 },
-        { label: 'ساعت', seconds: 3600 },
-        { label: 'دقیقه', seconds: 60 },
-        { label: 'ثانیه', seconds: 1 }
+        { label: 'Ø³Ø§Ù„', seconds: 31536000 },
+        { label: 'Ù…Ø§Ù‡', seconds: 2592000 },
+        { label: 'Ù‡ÙØªÙ‡', seconds: 604800 },
+        { label: 'Ø±ÙˆØ²', seconds: 86400 },
+        { label: 'Ø³Ø§Ø¹Øª', seconds: 3600 },
+        { label: 'Ø¯Ù‚ÛŒÙ‚Ù‡', seconds: 60 },
+        { label: 'Ø«Ø§Ù†ÛŒÙ‡', seconds: 1 }
     ];
     
     for (const interval of intervals) {
         const count = Math.floor(seconds / interval.seconds);
         if (count >= 1) {
-            return `${count} ${interval.label} پیش`;
+            return `${count} ${interval.label} Ù¾ÛŒØ´`;
         }
     }
     
-    return 'همین الان';
+    return 'Ù‡Ù…ÛŒÙ† Ø§Ù„Ø§Ù†';
 }
 
 <?= $extraJs ?>

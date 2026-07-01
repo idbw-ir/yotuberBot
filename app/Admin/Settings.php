@@ -1,15 +1,15 @@
-<?php
+﻿<?php
 /**
  * ============================================
- * کلاس مدیریت تنظیمات (Settings)
+ * Ú©Ù„Ø§Ø³ Ù…Ø¯ÛŒØ±ÛŒØª ØªÙ†Ø¸ÛŒÙ…Ø§Øª (Settings)
  * ============================================
- * خواندن/نوشتن تنظیمات از دیتابیس
- * دسته‌بندی تنظیمات (عمومی، تلگرام، AI، امنیتی)
- * اعتبارسنجی هوشمند بر اساس نوع
- * کش تنظیمات برای Performance
- * Backup/Restore تنظیمات
- * لاگ تغییرات
- * تنظیمات پیش‌فرض
+ * Ø®ÙˆØ§Ù†Ø¯Ù†/Ù†ÙˆØ´ØªÙ† ØªÙ†Ø¸ÛŒÙ…Ø§Øª Ø§Ø² Ø¯ÛŒØªØ§Ø¨ÛŒØ³
+ * Ø¯Ø³ØªÙ‡â€ŒØ¨Ù†Ø¯ÛŒ ØªÙ†Ø¸ÛŒÙ…Ø§Øª (Ø¹Ù…ÙˆÙ…ÛŒØŒ ØªÙ„Ú¯Ø±Ø§Ù…ØŒ AIØŒ Ø§Ù…Ù†ÛŒØªÛŒ)
+ * Ø§Ø¹ØªØ¨Ø§Ø±Ø³Ù†Ø¬ÛŒ Ù‡ÙˆØ´Ù…Ù†Ø¯ Ø¨Ø± Ø§Ø³Ø§Ø³ Ù†ÙˆØ¹
+ * Ú©Ø´ ØªÙ†Ø¸ÛŒÙ…Ø§Øª Ø¨Ø±Ø§ÛŒ Performance
+ * Backup/Restore ØªÙ†Ø¸ÛŒÙ…Ø§Øª
+ * Ù„Ø§Ú¯ ØªØºÛŒÛŒØ±Ø§Øª
+ * ØªÙ†Ø¸ÛŒÙ…Ø§Øª Ù¾ÛŒØ´â€ŒÙØ±Ø¶
  */
 
 namespace App\Admin;
@@ -24,12 +24,12 @@ class Settings {
     private $db;
     private $cache;
     private $logger;
-    private $cacheTtl = 3600; // 1 ساعت
+    private $cacheTtl = 3600; // 1 Ø³Ø§Ø¹Øª
     private $localCache = [];
     
-    // ──────────────────────────────────────
+    // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     // Constructor (Private - Singleton)
-    // ──────────────────────────────────────
+    // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     private function __construct() {
         $this->db = Database::getInstance();
         $this->cache = Cache::getInstance();
@@ -43,20 +43,20 @@ class Settings {
         return self::$instance;
     }
     
-    // ══════════════════════════════════════
-    // دریافت تنظیمات
-    // ══════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    // Ø¯Ø±ÛŒØ§ÙØª ØªÙ†Ø¸ÛŒÙ…Ø§Øª
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
     
     /**
-     * دریافت یک تنظیم
+     * Ø¯Ø±ÛŒØ§ÙØª ÛŒÚ© ØªÙ†Ø¸ÛŒÙ…
      */
     public function get($key, $default = null) {
-        // بررسی Local Cache
+        // Ø¨Ø±Ø±Ø³ÛŒ Local Cache
         if (isset($this->localCache[$key])) {
             return $this->localCache[$key];
         }
         
-        // بررسی Database Cache
+        // Ø¨Ø±Ø±Ø³ÛŒ Database Cache
         $cacheKey = "setting_{$key}";
         $value = $this->cache->get($cacheKey);
         
@@ -65,14 +65,14 @@ class Settings {
             return $value;
         }
         
-        // دریافت از دیتابیس
+        // Ø¯Ø±ÛŒØ§ÙØª Ø§Ø² Ø¯ÛŒØªØ§Ø¨ÛŒØ³
         $row = $this->db->fetch(
             "SELECT value, type FROM settings WHERE key_name = ?",
             [$key]
         );
         
         if (!$row) {
-            // بررسی در تنظیمات پیش‌فرض
+            // Ø¨Ø±Ø±Ø³ÛŒ Ø¯Ø± ØªÙ†Ø¸ÛŒÙ…Ø§Øª Ù¾ÛŒØ´â€ŒÙØ±Ø¶
             $defaults = $this->getDefaults();
             if (isset($defaults[$key])) {
                 $value = $defaults[$key]['default'];
@@ -83,10 +83,10 @@ class Settings {
             return $default;
         }
         
-        // تبدیل نوع
+        // ØªØ¨Ø¯ÛŒÙ„ Ù†ÙˆØ¹
         $value = $this->castValue($row['value'], $row['type'] ?? 'string');
         
-        // ذخیره در کش
+        // Ø°Ø®ÛŒØ±Ù‡ Ø¯Ø± Ú©Ø´
         $this->cache->set($cacheKey, $value, $this->cacheTtl);
         $this->localCache[$key] = $value;
         
@@ -94,7 +94,7 @@ class Settings {
     }
     
     /**
-     * دریافت چند تنظیم
+     * Ø¯Ø±ÛŒØ§ÙØª Ú†Ù†Ø¯ ØªÙ†Ø¸ÛŒÙ…
      */
     public function getMany(array $keys) {
         $result = [];
@@ -105,7 +105,7 @@ class Settings {
     }
     
     /**
-     * دریافت تمام تنظیمات یک دسته
+     * Ø¯Ø±ÛŒØ§ÙØª ØªÙ…Ø§Ù… ØªÙ†Ø¸ÛŒÙ…Ø§Øª ÛŒÚ© Ø¯Ø³ØªÙ‡
      */
     public function getByCategory($category) {
         $cacheKey = "settings_category_{$category}";
@@ -130,7 +130,7 @@ class Settings {
     }
     
     /**
-     * دریافت تمام تنظیمات
+     * Ø¯Ø±ÛŒØ§ÙØª ØªÙ…Ø§Ù… ØªÙ†Ø¸ÛŒÙ…Ø§Øª
      */
     public function getAll() {
         $cacheKey = 'settings_all';
@@ -155,7 +155,7 @@ class Settings {
     }
     
     /**
-     * دریافت تنظیمات گروه‌بندی شده
+     * Ø¯Ø±ÛŒØ§ÙØª ØªÙ†Ø¸ÛŒÙ…Ø§Øª Ú¯Ø±ÙˆÙ‡â€ŒØ¨Ù†Ø¯ÛŒ Ø´Ø¯Ù‡
      */
     public function getGrouped() {
         $all = $this->getAll();
@@ -169,21 +169,21 @@ class Settings {
         return $grouped;
     }
     
-    // ══════════════════════════════════════
-    // تنظیم مقادیر
-    // ══════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    // ØªÙ†Ø¸ÛŒÙ… Ù…Ù‚Ø§Ø¯ÛŒØ±
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
     
     /**
-     * تنظیم یک مقدار
+     * ØªÙ†Ø¸ÛŒÙ… ÛŒÚ© Ù…Ù‚Ø¯Ø§Ø±
      */
     public function set($key, $value, $options = []) {
-        // دریافت اطلاعات فعلی
+        // Ø¯Ø±ÛŒØ§ÙØª Ø§Ø·Ù„Ø§Ø¹Ø§Øª ÙØ¹Ù„ÛŒ
         $current = $this->db->fetch(
             "SELECT * FROM settings WHERE key_name = ?",
             [$key]
         );
         
-        // اعتبارسنجی
+        // Ø§Ø¹ØªØ¨Ø§Ø±Ø³Ù†Ø¬ÛŒ
         $type = $options['type'] ?? ($current['type'] ?? 'string');
         $validation = $this->validateValue($key, $value, $type, $options);
         
@@ -194,20 +194,20 @@ class Settings {
             ];
         }
         
-        // تبدیل مقدار به string برای ذخیره
+        // ØªØ¨Ø¯ÛŒÙ„ Ù…Ù‚Ø¯Ø§Ø± Ø¨Ù‡ string Ø¨Ø±Ø§ÛŒ Ø°Ø®ÛŒØ±Ù‡
         $storedValue = $this->serializeValue($value, $type);
         
-        // ذخیره مقدار قبلی برای لاگ
+        // Ø°Ø®ÛŒØ±Ù‡ Ù…Ù‚Ø¯Ø§Ø± Ù‚Ø¨Ù„ÛŒ Ø¨Ø±Ø§ÛŒ Ù„Ø§Ú¯
         $oldValue = $current ? $this->castValue($current['value'], $current['type']) : null;
         
         if ($current) {
-            // بروزرسانی
+            // Ø¨Ø±ÙˆØ²Ø±Ø³Ø§Ù†ÛŒ
             $this->db->update('settings', [
                 'value' => $storedValue,
                 'updated_at' => date('Y-m-d H:i:s')
             ], 'key_name = ?', [$key]);
         } else {
-            // ایجاد جدید
+            // Ø§ÛŒØ¬Ø§Ø¯ Ø¬Ø¯ÛŒØ¯
             $this->db->insert('settings', [
                 'key_name' => $key,
                 'value' => $storedValue,
@@ -219,18 +219,18 @@ class Settings {
             ]);
         }
         
-        // پاک کردن کش
+        // Ù¾Ø§Ú© Ú©Ø±Ø¯Ù† Ú©Ø´
         $this->clearKeyCache($key);
         $this->localCache[$key] = $value;
         
-        // لاگ تغییر
+        // Ù„Ø§Ú¯ ØªØºÛŒÛŒØ±
         $this->logChange($key, $oldValue, $value);
         
         return ['success' => true];
     }
     
     /**
-     * تنظیم چند مقدار همزمان
+     * ØªÙ†Ø¸ÛŒÙ… Ú†Ù†Ø¯ Ù…Ù‚Ø¯Ø§Ø± Ù‡Ù…Ø²Ù…Ø§Ù†
      */
     public function setMany(array $data) {
         $results = [];
@@ -272,81 +272,81 @@ class Settings {
         }
     }
     
-    // ══════════════════════════════════════
-    // اعتبارسنجی
-    // ══════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    // Ø§Ø¹ØªØ¨Ø§Ø±Ø³Ù†Ø¬ÛŒ
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
     
     /**
-     * اعتبارسنجی مقدار بر اساس نوع
+     * Ø§Ø¹ØªØ¨Ø§Ø±Ø³Ù†Ø¬ÛŒ Ù…Ù‚Ø¯Ø§Ø± Ø¨Ø± Ø§Ø³Ø§Ø³ Ù†ÙˆØ¹
      */
     private function validateValue($key, $value, $type, $options = []) {
         switch ($type) {
             case 'string':
                 if (!is_string($value) && !is_numeric($value)) {
-                    return ['valid' => false, 'error' => 'مقدار باید متنی باشد'];
+                    return ['valid' => false, 'error' => 'Ù…Ù‚Ø¯Ø§Ø± Ø¨Ø§ÛŒØ¯ Ù…ØªÙ†ÛŒ Ø¨Ø§Ø´Ø¯'];
                 }
                 
                 $min = $options['min_length'] ?? null;
                 $max = $options['max_length'] ?? null;
                 
                 if ($min && mb_strlen($value) < $min) {
-                    return ['valid' => false, 'error' => "حداقل {$min} کاراکتر لازم است"];
+                    return ['valid' => false, 'error' => "Ø­Ø¯Ø§Ù‚Ù„ {$min} Ú©Ø§Ø±Ø§Ú©ØªØ± Ù„Ø§Ø²Ù… Ø§Ø³Øª"];
                 }
                 if ($max && mb_strlen($value) > $max) {
-                    return ['valid' => false, 'error' => "حداکثر {$max} کاراکتر مجاز است"];
+                    return ['valid' => false, 'error' => "Ø­Ø¯Ø§Ú©Ø«Ø± {$max} Ú©Ø§Ø±Ø§Ú©ØªØ± Ù…Ø¬Ø§Ø² Ø§Ø³Øª"];
                 }
                 break;
                 
             case 'integer':
                 if (!is_numeric($value) || (int)$value != $value) {
-                    return ['valid' => false, 'error' => 'مقدار باید عدد صحیح باشد'];
+                    return ['valid' => false, 'error' => 'Ù…Ù‚Ø¯Ø§Ø± Ø¨Ø§ÛŒØ¯ Ø¹Ø¯Ø¯ ØµØ­ÛŒØ­ Ø¨Ø§Ø´Ø¯'];
                 }
                 
                 $min = $options['min'] ?? null;
                 $max = $options['max'] ?? null;
                 
                 if ($min !== null && $value < $min) {
-                    return ['valid' => false, 'error' => "حداقل مقدار: {$min}"];
+                    return ['valid' => false, 'error' => "Ø­Ø¯Ø§Ù‚Ù„ Ù…Ù‚Ø¯Ø§Ø±: {$min}"];
                 }
                 if ($max !== null && $value > $max) {
-                    return ['valid' => false, 'error' => "حداکثر مقدار: {$max}"];
+                    return ['valid' => false, 'error' => "Ø­Ø¯Ø§Ú©Ø«Ø± Ù…Ù‚Ø¯Ø§Ø±: {$max}"];
                 }
                 break;
                 
             case 'float':
             case 'number':
                 if (!is_numeric($value)) {
-                    return ['valid' => false, 'error' => 'مقدار باید عدد باشد'];
+                    return ['valid' => false, 'error' => 'Ù…Ù‚Ø¯Ø§Ø± Ø¨Ø§ÛŒØ¯ Ø¹Ø¯Ø¯ Ø¨Ø§Ø´Ø¯'];
                 }
                 break;
                 
             case 'boolean':
                 if (!in_array($value, [true, false, 0, 1, '0', '1', 'true', 'false'], true)) {
-                    return ['valid' => false, 'error' => 'مقدار باید boolean باشد'];
+                    return ['valid' => false, 'error' => 'Ù…Ù‚Ø¯Ø§Ø± Ø¨Ø§ÛŒØ¯ boolean Ø¨Ø§Ø´Ø¯'];
                 }
                 break;
                 
             case 'email':
                 if (!Security::isValidEmail($value)) {
-                    return ['valid' => false, 'error' => 'ایمیل معتبر نیست'];
+                    return ['valid' => false, 'error' => 'Ø§ÛŒÙ…ÛŒÙ„ Ù…Ø¹ØªØ¨Ø± Ù†ÛŒØ³Øª'];
                 }
                 break;
                 
             case 'url':
                 if (!empty($value) && !Security::isValidUrl($value)) {
-                    return ['valid' => false, 'error' => 'URL معتبر نیست'];
+                    return ['valid' => false, 'error' => 'URL Ù…Ø¹ØªØ¨Ø± Ù†ÛŒØ³Øª'];
                 }
                 break;
                 
             case 'telegram_token':
                 if (!empty($value) && !Security::isValidTelegramToken($value)) {
-                    return ['valid' => false, 'error' => 'توکن تلگرام معتبر نیست'];
+                    return ['valid' => false, 'error' => 'ØªÙˆÚ©Ù† ØªÙ„Ú¯Ø±Ø§Ù… Ù…Ø¹ØªØ¨Ø± Ù†ÛŒØ³Øª'];
                 }
                 break;
                 
             case 'telegram_id':
                 if (!empty($value) && !Security::isValidTelegramId($value)) {
-                    return ['valid' => false, 'error' => 'آیدی تلگرام معتبر نیست'];
+                    return ['valid' => false, 'error' => 'Ø¢ÛŒØ¯ÛŒ ØªÙ„Ú¯Ø±Ø§Ù… Ù…Ø¹ØªØ¨Ø± Ù†ÛŒØ³Øª'];
                 }
                 break;
                 
@@ -354,25 +354,25 @@ class Settings {
                 if (is_string($value)) {
                     json_decode($value);
                     if (json_last_error() !== JSON_ERROR_NONE) {
-                        return ['valid' => false, 'error' => 'JSON معتبر نیست'];
+                        return ['valid' => false, 'error' => 'JSON Ù…Ø¹ØªØ¨Ø± Ù†ÛŒØ³Øª'];
                     }
                 }
                 break;
                 
             case 'color':
                 if (!preg_match('/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/', $value)) {
-                    return ['valid' => false, 'error' => 'رنگ معتبر نیست (مثال: #FF5733)'];
+                    return ['valid' => false, 'error' => 'Ø±Ù†Ú¯ Ù…Ø¹ØªØ¨Ø± Ù†ÛŒØ³Øª (Ù…Ø«Ø§Ù„: #FF5733)'];
                 }
                 break;
                 
             case 'array':
                 if (!is_array($value)) {
-                    return ['valid' => false, 'error' => 'مقدار باید آرایه باشد'];
+                    return ['valid' => false, 'error' => 'Ù…Ù‚Ø¯Ø§Ø± Ø¨Ø§ÛŒØ¯ Ø¢Ø±Ø§ÛŒÙ‡ Ø¨Ø§Ø´Ø¯'];
                 }
                 break;
         }
         
-        // اعتبارسنجی سفارشی
+        // Ø§Ø¹ØªØ¨Ø§Ø±Ø³Ù†Ø¬ÛŒ Ø³ÙØ§Ø±Ø´ÛŒ
         if (isset($options['validation_callback']) && is_callable($options['validation_callback'])) {
             $customResult = call_user_func($options['validation_callback'], $value, $key);
             if ($customResult !== true) {
@@ -383,12 +383,12 @@ class Settings {
         return ['valid' => true];
     }
     
-    // ══════════════════════════════════════
-    // تبدیل نوع
-    // ══════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    // ØªØ¨Ø¯ÛŒÙ„ Ù†ÙˆØ¹
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
     
     /**
-     * تبدیل مقدار ذخیره شده به نوع صحیح
+     * ØªØ¨Ø¯ÛŒÙ„ Ù…Ù‚Ø¯Ø§Ø± Ø°Ø®ÛŒØ±Ù‡ Ø´Ø¯Ù‡ Ø¨Ù‡ Ù†ÙˆØ¹ ØµØ­ÛŒØ­
      */
     private function castValue($value, $type) {
         switch ($type) {
@@ -417,7 +417,7 @@ class Settings {
     }
     
     /**
-     * تبدیل مقدار به string برای ذخیره
+     * ØªØ¨Ø¯ÛŒÙ„ Ù…Ù‚Ø¯Ø§Ø± Ø¨Ù‡ string Ø¨Ø±Ø§ÛŒ Ø°Ø®ÛŒØ±Ù‡
      */
     private function serializeValue($value, $type) {
         switch ($type) {
@@ -438,18 +438,18 @@ class Settings {
         }
     }
     
-    // ══════════════════════════════════════
-    // حذف تنظیم
-    // ══════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    // Ø­Ø°Ù ØªÙ†Ø¸ÛŒÙ…
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
     
     /**
-     * حذف یک تنظیم
+     * Ø­Ø°Ù ÛŒÚ© ØªÙ†Ø¸ÛŒÙ…
      */
     public function delete($key) {
         $setting = $this->db->fetch("SELECT * FROM settings WHERE key_name = ?", [$key]);
         
         if (!$setting) {
-            return ['success' => false, 'error' => 'تنظیم یافت نشد'];
+            return ['success' => false, 'error' => 'ØªÙ†Ø¸ÛŒÙ… ÛŒØ§ÙØª Ù†Ø´Ø¯'];
         }
         
         $this->db->delete('settings', 'key_name = ?', [$key]);
@@ -462,97 +462,97 @@ class Settings {
         return ['success' => true];
     }
     
-    // ══════════════════════════════════════
-    // تنظیمات پیش‌فرض
-    // ══════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    // ØªÙ†Ø¸ÛŒÙ…Ø§Øª Ù¾ÛŒØ´â€ŒÙØ±Ø¶
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
     
     /**
-     * دریافت تنظیمات پیش‌فرض
+     * Ø¯Ø±ÛŒØ§ÙØª ØªÙ†Ø¸ÛŒÙ…Ø§Øª Ù¾ÛŒØ´â€ŒÙØ±Ø¶
      */
     public function getDefaults() {
         return [
-            // عمومی
+            // Ø¹Ù…ÙˆÙ…ÛŒ
             'site_name' => [
-                'default' => 'ربات یوتیوبر',
+                'default' => 'Ø±Ø¨Ø§Øª ÛŒÙˆØªÛŒÙˆØ¨Ø±',
                 'type' => 'string',
                 'category' => 'general',
-                'description' => 'نام سایت'
+                'description' => 'Ù†Ø§Ù… Ø³Ø§ÛŒØª'
             ],
             'site_url' => [
                 'default' => '',
                 'type' => 'url',
                 'category' => 'general',
-                'description' => 'آدرس سایت'
+                'description' => 'Ø¢Ø¯Ø±Ø³ Ø³Ø§ÛŒØª'
             ],
             'timezone' => [
                 'default' => 'Asia/Tehran',
                 'type' => 'string',
                 'category' => 'general',
-                'description' => 'منطقه زمانی'
+                'description' => 'Ù…Ù†Ø·Ù‚Ù‡ Ø²Ù…Ø§Ù†ÛŒ'
             ],
             
-            // تلگرام
+            // ØªÙ„Ú¯Ø±Ø§Ù…
             'welcome_text' => [
-                'default' => "سلام {first_name} عزیز! 👋\n\nبه ربات ما خوش اومدی 🎬",
+                'default' => "Ø³Ù„Ø§Ù… {first_name} Ø¹Ø²ÛŒØ²! ðŸ‘‹\n\nØ¨Ù‡ Ø±Ø¨Ø§Øª Ù…Ø§ Ø®ÙˆØ´ Ø§ÙˆÙ…Ø¯ÛŒ ðŸŽ¬",
                 'type' => 'string',
                 'category' => 'telegram',
-                'description' => 'متن خوش‌آمدگویی'
+                'description' => 'Ù…ØªÙ† Ø®ÙˆØ´â€ŒØ¢Ù…Ø¯Ú¯ÙˆÛŒÛŒ'
             ],
             'welcome_photo' => [
                 'default' => '',
                 'type' => 'string',
                 'category' => 'telegram',
-                'description' => 'File ID عکس خوش‌آمدگویی'
+                'description' => 'File ID Ø¹Ú©Ø³ Ø®ÙˆØ´â€ŒØ¢Ù…Ø¯Ú¯ÙˆÛŒÛŒ'
             ],
             'donate_link' => [
                 'default' => '',
                 'type' => 'url',
                 'category' => 'telegram',
-                'description' => 'لینک درگاه حمایت مالی'
+                'description' => 'Ù„ÛŒÙ†Ú© Ø¯Ø±Ú¯Ø§Ù‡ Ø­Ù…Ø§ÛŒØª Ù…Ø§Ù„ÛŒ'
             ],
             'donate_text' => [
-                'default' => "💰 با حمایت مالی از ما، به تولید محتوای بهتر کمک می‌کنید!",
+                'default' => "ðŸ’° Ø¨Ø§ Ø­Ù…Ø§ÛŒØª Ù…Ø§Ù„ÛŒ Ø§Ø² Ù…Ø§ØŒ Ø¨Ù‡ ØªÙˆÙ„ÛŒØ¯ Ù…Ø­ØªÙˆØ§ÛŒ Ø¨Ù‡ØªØ± Ú©Ù…Ú© Ù…ÛŒâ€ŒÚ©Ù†ÛŒØ¯!",
                 'type' => 'string',
                 'category' => 'telegram',
-                'description' => 'متن صفحه حمایت'
+                'description' => 'Ù…ØªÙ† ØµÙØ­Ù‡ Ø­Ù…Ø§ÛŒØª'
             ],
             'youtube_url' => [
                 'default' => '',
                 'type' => 'url',
                 'category' => 'telegram',
-                'description' => 'لینک کانال یوتیوب'
+                'description' => 'Ù„ÛŒÙ†Ú© Ú©Ø§Ù†Ø§Ù„ ÛŒÙˆØªÛŒÙˆØ¨'
             ],
             
-            // هوش مصنوعی
+            // Ù‡ÙˆØ´ Ù…ØµÙ†ÙˆØ¹ÛŒ
             'ai_enabled' => [
                 'default' => false,
                 'type' => 'boolean',
                 'category' => 'ai',
-                'description' => 'فعال‌سازی هوش مصنوعی'
+                'description' => 'ÙØ¹Ø§Ù„â€ŒØ³Ø§Ø²ÛŒ Ù‡ÙˆØ´ Ù…ØµÙ†ÙˆØ¹ÛŒ'
             ],
             'ai_provider' => [
                 'default' => 'openai',
                 'type' => 'string',
                 'category' => 'ai',
-                'description' => 'ارائه‌دهنده AI'
+                'description' => 'Ø§Ø±Ø§Ø¦Ù‡â€ŒØ¯Ù‡Ù†Ø¯Ù‡ AI'
             ],
             'ai_api_key' => [
                 'default' => '',
                 'type' => 'string',
                 'category' => 'ai',
-                'description' => 'API Key هوش مصنوعی'
+                'description' => 'API Key Ù‡ÙˆØ´ Ù…ØµÙ†ÙˆØ¹ÛŒ'
             ],
             'ai_model' => [
                 'default' => 'gpt-4o-mini',
                 'type' => 'string',
                 'category' => 'ai',
-                'description' => 'مدل AI'
+                'description' => 'Ù…Ø¯Ù„ AI'
             ],
             'ai_system_prompt' => [
-                'default' => 'تو دستیار یک یوتیوبر فارسی‌زبان هستی. دوستانه و کوتاه جواب بده.',
+                'default' => 'ØªÙˆ Ø¯Ø³ØªÛŒØ§Ø± ÛŒÚ© ÛŒÙˆØªÛŒÙˆØ¨Ø± ÙØ§Ø±Ø³ÛŒâ€ŒØ²Ø¨Ø§Ù† Ù‡Ø³ØªÛŒ. Ø¯ÙˆØ³ØªØ§Ù†Ù‡ Ùˆ Ú©ÙˆØªØ§Ù‡ Ø¬ÙˆØ§Ø¨ Ø¨Ø¯Ù‡.',
                 'type' => 'string',
                 'category' => 'ai',
-                'description' => 'System Prompt برای AI'
+                'description' => 'System Prompt Ø¨Ø±Ø§ÛŒ AI'
             ],
             
             // VIP
@@ -560,53 +560,53 @@ class Settings {
                 'default' => 100000,
                 'type' => 'integer',
                 'category' => 'vip',
-                'description' => 'آستانه VIP (تومان)'
+                'description' => 'Ø¢Ø³ØªØ§Ù†Ù‡ VIP (ØªÙˆÙ…Ø§Ù†)'
             ],
             'vip_badge' => [
-                'default' => '👑',
+                'default' => 'ðŸ‘‘',
                 'type' => 'string',
                 'category' => 'vip',
-                'description' => 'نشان VIP'
+                'description' => 'Ù†Ø´Ø§Ù† VIP'
             ],
             
-            // امنیتی
+            // Ø§Ù…Ù†ÛŒØªÛŒ
             'admin_ip_whitelist' => [
                 'default' => [],
                 'type' => 'array',
                 'category' => 'security',
-                'description' => 'لیست IP های مجاز برای پنل ادمین'
+                'description' => 'Ù„ÛŒØ³Øª IP Ù‡Ø§ÛŒ Ù…Ø¬Ø§Ø² Ø¨Ø±Ø§ÛŒ Ù¾Ù†Ù„ Ø§Ø¯Ù…ÛŒÙ†'
             ],
             'login_max_attempts' => [
                 'default' => 5,
                 'type' => 'integer',
                 'category' => 'security',
-                'description' => 'حداکثر تلاش ناموفق برای ورود'
+                'description' => 'Ø­Ø¯Ø§Ú©Ø«Ø± ØªÙ„Ø§Ø´ Ù†Ø§Ù…ÙˆÙÙ‚ Ø¨Ø±Ø§ÛŒ ÙˆØ±ÙˆØ¯'
             ],
             'session_timeout' => [
                 'default' => 3600,
                 'type' => 'integer',
                 'category' => 'security',
-                'description' => 'زمان انقضای Session (ثانیه)'
+                'description' => 'Ø²Ù…Ø§Ù† Ø§Ù†Ù‚Ø¶Ø§ÛŒ Session (Ø«Ø§Ù†ÛŒÙ‡)'
             ],
             
-            // عملکرد
+            // Ø¹Ù…Ù„Ú©Ø±Ø¯
             'cache_ttl' => [
                 'default' => 3600,
                 'type' => 'integer',
                 'category' => 'performance',
-                'description' => 'TTL کش پیش‌فرض (ثانیه)'
+                'description' => 'TTL Ú©Ø´ Ù¾ÛŒØ´â€ŒÙØ±Ø¶ (Ø«Ø§Ù†ÛŒÙ‡)'
             ],
             'broadcast_delay' => [
                 'default' => 50,
                 'type' => 'integer',
                 'category' => 'performance',
-                'description' => 'تأخیر بین پیام‌های Broadcast (میلی‌ثانیه)'
+                'description' => 'ØªØ£Ø®ÛŒØ± Ø¨ÛŒÙ† Ù¾ÛŒØ§Ù…â€ŒÙ‡Ø§ÛŒ Broadcast (Ù…ÛŒÙ„ÛŒâ€ŒØ«Ø§Ù†ÛŒÙ‡)'
             ],
         ];
     }
     
     /**
-     * نصب تنظیمات پیش‌فرض
+     * Ù†ØµØ¨ ØªÙ†Ø¸ÛŒÙ…Ø§Øª Ù¾ÛŒØ´â€ŒÙØ±Ø¶
      */
     public function installDefaults() {
         $defaults = $this->getDefaults();
@@ -642,20 +642,20 @@ class Settings {
     }
     
     /**
-     * ریست یک تنظیم به پیش‌فرض
+     * Ø±ÛŒØ³Øª ÛŒÚ© ØªÙ†Ø¸ÛŒÙ… Ø¨Ù‡ Ù¾ÛŒØ´â€ŒÙØ±Ø¶
      */
     public function resetToDefault($key) {
         $defaults = $this->getDefaults();
         
         if (!isset($defaults[$key])) {
-            return ['success' => false, 'error' => 'تنظیم پیش‌فرضی برای این کلید وجود ندارد'];
+            return ['success' => false, 'error' => 'ØªÙ†Ø¸ÛŒÙ… Ù¾ÛŒØ´â€ŒÙØ±Ø¶ÛŒ Ø¨Ø±Ø§ÛŒ Ø§ÛŒÙ† Ú©Ù„ÛŒØ¯ ÙˆØ¬ÙˆØ¯ Ù†Ø¯Ø§Ø±Ø¯'];
         }
         
         return $this->set($key, $defaults[$key]['default']);
     }
     
     /**
-     * ریست همه تنظیمات به پیش‌فرض
+     * Ø±ÛŒØ³Øª Ù‡Ù…Ù‡ ØªÙ†Ø¸ÛŒÙ…Ø§Øª Ø¨Ù‡ Ù¾ÛŒØ´â€ŒÙØ±Ø¶
      */
     public function resetAllToDefault() {
         $defaults = $this->getDefaults();
@@ -674,18 +674,18 @@ class Settings {
         ];
     }
     
-    // ══════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
     // Backup / Restore
-    // ══════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
     
     /**
-     * Backup تنظیمات
+     * Backup ØªÙ†Ø¸ÛŒÙ…Ø§Øª
      */
     public function backup() {
         $settings = $this->db->fetchAll("SELECT * FROM settings ORDER BY category, key_name");
         
         $backup = [
-            'version' => '2.0.0',
+            'version' => '2.1.0',
             'created_at' => date('Y-m-d H:i:s'),
             'total_settings' => count($settings),
             'settings' => $settings
@@ -718,18 +718,18 @@ class Settings {
     }
     
     /**
-     * Restore تنظیمات از Backup
+     * Restore ØªÙ†Ø¸ÛŒÙ…Ø§Øª Ø§Ø² Backup
      */
     public function restore($filepath, $overwrite = false) {
         if (!file_exists($filepath)) {
-            return ['success' => false, 'error' => 'فایل Backup یافت نشد'];
+            return ['success' => false, 'error' => 'ÙØ§ÛŒÙ„ Backup ÛŒØ§ÙØª Ù†Ø´Ø¯'];
         }
         
         $content = file_get_contents($filepath);
         $backup = json_decode($content, true);
         
         if (!$backup || !isset($backup['settings'])) {
-            return ['success' => false, 'error' => 'فایل Backup معتبر نیست'];
+            return ['success' => false, 'error' => 'ÙØ§ÛŒÙ„ Backup Ù…Ø¹ØªØ¨Ø± Ù†ÛŒØ³Øª'];
         }
         
         $restored = 0;
@@ -796,7 +796,7 @@ class Settings {
     }
     
     /**
-     * لیست Backup های موجود
+     * Ù„ÛŒØ³Øª Backup Ù‡Ø§ÛŒ Ù…ÙˆØ¬ÙˆØ¯
      */
     public function listBackups() {
         $dir = dirname(__DIR__, 2) . '/storage/backups';
@@ -821,7 +821,7 @@ class Settings {
             ];
         }
         
-        // مرتب‌سازی بر اساس زمان (جدیدترین اول)
+        // Ù…Ø±ØªØ¨â€ŒØ³Ø§Ø²ÛŒ Ø¨Ø± Ø§Ø³Ø§Ø³ Ø²Ù…Ø§Ù† (Ø¬Ø¯ÛŒØ¯ØªØ±ÛŒÙ† Ø§ÙˆÙ„)
         usort($backups, function($a, $b) {
             return strtotime($b['created_at']) - strtotime($a['created_at']);
         });
@@ -829,15 +829,15 @@ class Settings {
         return $backups;
     }
     
-    // ══════════════════════════════════════
-    // لاگ تغییرات
-    // ══════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    // Ù„Ø§Ú¯ ØªØºÛŒÛŒØ±Ø§Øª
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
     
     /**
-     * ثبت لاگ تغییر تنظیم
+     * Ø«Ø¨Øª Ù„Ø§Ú¯ ØªØºÛŒÛŒØ± ØªÙ†Ø¸ÛŒÙ…
      */
     private function logChange($key, $oldValue, $newValue) {
-        // اطلاعات حساس رو مخفی کن
+        // Ø§Ø·Ù„Ø§Ø¹Ø§Øª Ø­Ø³Ø§Ø³ Ø±Ùˆ Ù…Ø®ÙÛŒ Ú©Ù†
         $sensitiveKeys = ['ai_api_key', 'bot_token', 'webhook_secret'];
         
         $loggedOld = in_array($key, $sensitiveKeys) ? '***' : $oldValue;
@@ -853,7 +853,7 @@ class Settings {
                 'ip_address' => Security::getClientIp()
             ]);
         } catch (\Exception $e) {
-            // اگر جدول لاگ وجود نداشت، نادیده بگیر
+            // Ø§Ú¯Ø± Ø¬Ø¯ÙˆÙ„ Ù„Ø§Ú¯ ÙˆØ¬ÙˆØ¯ Ù†Ø¯Ø§Ø´ØªØŒ Ù†Ø§Ø¯ÛŒØ¯Ù‡ Ø¨Ú¯ÛŒØ±
         }
         
         $this->logger->info('Setting changed', [
@@ -864,7 +864,7 @@ class Settings {
     }
     
     /**
-     * دریافت تاریخچه تغییرات
+     * Ø¯Ø±ÛŒØ§ÙØª ØªØ§Ø±ÛŒØ®Ú†Ù‡ ØªØºÛŒÛŒØ±Ø§Øª
      */
     public function getChangeLog($key = null, $limit = 50) {
         $where = ['1=1'];
@@ -894,17 +894,17 @@ class Settings {
         }
     }
     
-    // ══════════════════════════════════════
-    // مدیریت کش
-    // ══════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    // Ù…Ø¯ÛŒØ±ÛŒØª Ú©Ø´
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
     
     /**
-     * پاک کردن کش یک کلید
+     * Ù¾Ø§Ú© Ú©Ø±Ø¯Ù† Ú©Ø´ ÛŒÚ© Ú©Ù„ÛŒØ¯
      */
     private function clearKeyCache($key) {
         $this->cache->delete("setting_{$key}");
         
-        // پاک کردن کش دسته‌ها
+        // Ù¾Ø§Ú© Ú©Ø±Ø¯Ù† Ú©Ø´ Ø¯Ø³ØªÙ‡â€ŒÙ‡Ø§
         $categories = ['general', 'telegram', 'ai', 'vip', 'security', 'performance'];
         foreach ($categories as $cat) {
             $this->cache->delete("settings_category_{$cat}");
@@ -914,12 +914,12 @@ class Settings {
     }
     
     /**
-     * پاک کردن کل کش تنظیمات
+     * Ù¾Ø§Ú© Ú©Ø±Ø¯Ù† Ú©Ù„ Ú©Ø´ ØªÙ†Ø¸ÛŒÙ…Ø§Øª
      */
     public function clearCache() {
         $this->localCache = [];
         
-        // پاک کردن همه کش‌های مربوط به تنظیمات
+        // Ù¾Ø§Ú© Ú©Ø±Ø¯Ù† Ù‡Ù…Ù‡ Ú©Ø´â€ŒÙ‡Ø§ÛŒ Ù…Ø±Ø¨ÙˆØ· Ø¨Ù‡ ØªÙ†Ø¸ÛŒÙ…Ø§Øª
         $this->cache->clear();
         
         $this->logger->info('Settings cache cleared');
@@ -927,12 +927,12 @@ class Settings {
         return true;
     }
     
-    // ══════════════════════════════════════
-    // متدهای کمکی
-    // ══════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    // Ù…ØªØ¯Ù‡Ø§ÛŒ Ú©Ù…Ú©ÛŒ
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
     
     /**
-     * فرمت اندازه فایل
+     * ÙØ±Ù…Øª Ø§Ù†Ø¯Ø§Ø²Ù‡ ÙØ§ÛŒÙ„
      */
     private function formatSize($bytes) {
         $units = ['B', 'KB', 'MB', 'GB'];
@@ -945,30 +945,30 @@ class Settings {
     }
     
     /**
-     * دریافت لیست دسته‌ها
+     * Ø¯Ø±ÛŒØ§ÙØª Ù„ÛŒØ³Øª Ø¯Ø³ØªÙ‡â€ŒÙ‡Ø§
      */
     public function getCategories() {
         return [
-            'general' => ['name' => 'عمومی', 'icon' => '⚙️'],
-            'telegram' => ['name' => 'تلگرام', 'icon' => '🤖'],
-            'ai' => ['name' => 'هوش مصنوعی', 'icon' => '🧠'],
-            'vip' => ['name' => 'باشگاه VIP', 'icon' => '👑'],
-            'security' => ['name' => 'امنیتی', 'icon' => '🔒'],
-            'performance' => ['name' => 'عملکرد', 'icon' => '⚡'],
-            'appearance' => ['name' => 'ظاهر', 'icon' => '🎨'],
-            'notifications' => ['name' => 'اعلان‌ها', 'icon' => '🔔']
+            'general' => ['name' => 'Ø¹Ù…ÙˆÙ…ÛŒ', 'icon' => 'âš™ï¸'],
+            'telegram' => ['name' => 'ØªÙ„Ú¯Ø±Ø§Ù…', 'icon' => 'ðŸ¤–'],
+            'ai' => ['name' => 'Ù‡ÙˆØ´ Ù…ØµÙ†ÙˆØ¹ÛŒ', 'icon' => 'ðŸ§ '],
+            'vip' => ['name' => 'Ø¨Ø§Ø´Ú¯Ø§Ù‡ VIP', 'icon' => 'ðŸ‘‘'],
+            'security' => ['name' => 'Ø§Ù…Ù†ÛŒØªÛŒ', 'icon' => 'ðŸ”’'],
+            'performance' => ['name' => 'Ø¹Ù…Ù„Ú©Ø±Ø¯', 'icon' => 'âš¡'],
+            'appearance' => ['name' => 'Ø¸Ø§Ù‡Ø±', 'icon' => 'ðŸŽ¨'],
+            'notifications' => ['name' => 'Ø§Ø¹Ù„Ø§Ù†â€ŒÙ‡Ø§', 'icon' => 'ðŸ””']
         ];
     }
     
     /**
-     * بررسی وجود یک تنظیم
+     * Ø¨Ø±Ø±Ø³ÛŒ ÙˆØ¬ÙˆØ¯ ÛŒÚ© ØªÙ†Ø¸ÛŒÙ…
      */
     public function has($key) {
         return $this->get($key) !== null;
     }
     
     /**
-     * دریافت تنظیم با fallback به config.php
+     * Ø¯Ø±ÛŒØ§ÙØª ØªÙ†Ø¸ÛŒÙ… Ø¨Ø§ fallback Ø¨Ù‡ config.php
      */
     public function getOrConfig($key, $configKey = null) {
         $value = $this->get($key);
@@ -977,7 +977,7 @@ class Settings {
             return $value;
         }
         
-        // fallback به config.php
+        // fallback Ø¨Ù‡ config.php
         if ($configKey) {
             return \App\Core\Config::getInstance()->get($configKey);
         }
@@ -986,9 +986,9 @@ class Settings {
     }
 }
 
-// ──────────────────────────────────────
-// تابع کمکی global
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ØªØ§Ø¨Ø¹ Ú©Ù…Ú©ÛŒ global
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 if (!function_exists('setting')) {
     function setting($key, $default = null) {
         return \App\Admin\Settings::getInstance()->get($key, $default);

@@ -1,52 +1,52 @@
-# ============================================
+﻿# ============================================
 # Admin Panel Security & Configuration
 # ============================================
-# نسخه: 2.0.0
+# Ù†Ø³Ø®Ù‡: 2.1.0
 # 
-# این فایل تنظیمات امنیتی و مسیریابی
-# پنل مدیریت رو کنترل می‌کنه
+# Ø§ÛŒÙ† ÙØ§ÛŒÙ„ ØªÙ†Ø¸ÛŒÙ…Ø§Øª Ø§Ù…Ù†ÛŒØªÛŒ Ùˆ Ù…Ø³ÛŒØ±ÛŒØ§Ø¨ÛŒ
+# Ù¾Ù†Ù„ Ù…Ø¯ÛŒØ±ÛŒØª Ø±Ùˆ Ú©Ù†ØªØ±Ù„ Ù…ÛŒâ€ŒÚ©Ù†Ù‡
 
-# ──────────────────────────────────────
-# 1. فعال‌سازی Rewrite Engine
-# ──────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# 1. ÙØ¹Ø§Ù„â€ŒØ³Ø§Ø²ÛŒ Rewrite Engine
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteBase /admin/
     
-    # جلوگیری از دسترسی به فایل‌های خاص
+    # Ø¬Ù„ÙˆÚ¯ÛŒØ±ÛŒ Ø§Ø² Ø¯Ø³ØªØ±Ø³ÛŒ Ø¨Ù‡ ÙØ§ÛŒÙ„â€ŒÙ‡Ø§ÛŒ Ø®Ø§Øµ
     RewriteRule ^(.*)\.log$ - [F,L]
     RewriteRule ^(.*)\.sql$ - [F,L]
     RewriteRule ^(.*)\.bak$ - [F,L]
     RewriteRule ^(.*)\.backup$ - [F,L]
     
-    # مسیریابی URL های زیبا
-    # /admin/users/123 → /admin/users.php?id=123
+    # Ù…Ø³ÛŒØ±ÛŒØ§Ø¨ÛŒ URL Ù‡Ø§ÛŒ Ø²ÛŒØ¨Ø§
+    # /admin/users/123 â†’ /admin/users.php?id=123
     RewriteRule ^users/([0-9]+)/?$ users.php?id=$1 [QSA,L]
     RewriteRule ^users/page/([0-9]+)/?$ users.php?page=$1 [QSA,L]
     
-    # /admin/messages/user/123 → /admin/chat.php?id=123
+    # /admin/messages/user/123 â†’ /admin/chat.php?id=123
     RewriteRule ^messages/user/([0-9]+)/?$ chat.php?id=$1 [QSA,L]
     
-    # /admin/donations/status/success → /admin/donations.php?status=success
+    # /admin/donations/status/success â†’ /admin/donations.php?status=success
     RewriteRule ^donations/status/([a-z]+)/?$ donations.php?status=$1 [QSA,L]
     
-    # /admin/keywords/page/2 → /admin/keywords.php?page=2
+    # /admin/keywords/page/2 â†’ /admin/keywords.php?page=2
     RewriteRule ^keywords/page/([0-9]+)/?$ keywords.php?page=$1 [QSA,L]
 </IfModule>
 
-# ──────────────────────────────────────
-# 2. جلوگیری از Directory Listing
-# ──────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# 2. Ø¬Ù„ÙˆÚ¯ÛŒØ±ÛŒ Ø§Ø² Directory Listing
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 Options -Indexes
 Options -ExecCGI
 
-# ──────────────────────────────────────
-# 3. محافظت از فایل‌های حساس
-# ──────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# 3. Ù…Ø­Ø§ÙØ¸Øª Ø§Ø² ÙØ§ÛŒÙ„â€ŒÙ‡Ø§ÛŒ Ø­Ø³Ø§Ø³
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-# جلوگیری از دسترسی به فایل‌های خاص
+# Ø¬Ù„ÙˆÚ¯ÛŒØ±ÛŒ Ø§Ø² Ø¯Ø³ØªØ±Ø³ÛŒ Ø¨Ù‡ ÙØ§ÛŒÙ„â€ŒÙ‡Ø§ÛŒ Ø®Ø§Øµ
 <FilesMatch "^(config|database|\.env|\.git|composer\.(json|lock))$">
     <IfModule mod_authz_core.c>
         Require all denied
@@ -57,7 +57,7 @@ Options -ExecCGI
     </IfModule>
 </FilesMatch>
 
-# جلوگیری از دسترسی به فایل‌های Backup
+# Ø¬Ù„ÙˆÚ¯ÛŒØ±ÛŒ Ø§Ø² Ø¯Ø³ØªØ±Ø³ÛŒ Ø¨Ù‡ ÙØ§ÛŒÙ„â€ŒÙ‡Ø§ÛŒ Backup
 <FilesMatch "\.(bak|backup|sql|log|old|orig|save|tmp)$">
     <IfModule mod_authz_core.c>
         Require all denied
@@ -68,18 +68,18 @@ Options -ExecCGI
     </IfModule>
 </FilesMatch>
 
-# ──────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # 4. Security Headers
-# ──────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 <IfModule mod_headers.c>
-    # جلوگیری از Clickjacking
+    # Ø¬Ù„ÙˆÚ¯ÛŒØ±ÛŒ Ø§Ø² Clickjacking
     Header always set X-Frame-Options "DENY"
     
-    # محافظت XSS
+    # Ù…Ø­Ø§ÙØ¸Øª XSS
     Header always set X-XSS-Protection "1; mode=block"
     
-    # جلوگیری از MIME Sniffing
+    # Ø¬Ù„ÙˆÚ¯ÛŒØ±ÛŒ Ø§Ø² MIME Sniffing
     Header always set X-Content-Type-Options "nosniff"
     
     # Referrer Policy
@@ -88,16 +88,16 @@ Options -ExecCGI
     # Permissions Policy
     Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
     
-    # HTTPS فقط (اگر HTTPS فعاله)
+    # HTTPS ÙÙ‚Ø· (Ø§Ú¯Ø± HTTPS ÙØ¹Ø§Ù„Ù‡)
     <IfModule mod_ssl.c>
         Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
     </IfModule>
     
-    # مخفی کردن نسخه Apache
+    # Ù…Ø®ÙÛŒ Ú©Ø±Ø¯Ù† Ù†Ø³Ø®Ù‡ Apache
     Header always unset X-Powered-By
     Header always unset Server
     
-    # Cache Control برای صفحات Admin
+    # Cache Control Ø¨Ø±Ø§ÛŒ ØµÙØ­Ø§Øª Admin
     <FilesMatch "\.(html|htm|php)$">
         Header always set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
         Header always set Pragma "no-cache"
@@ -105,25 +105,25 @@ Options -ExecCGI
     </FilesMatch>
 </IfModule>
 
-# ──────────────────────────────────────
-# 5. تنظیمات PHP
-# ──────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# 5. ØªÙ†Ø¸ÛŒÙ…Ø§Øª PHP
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 <IfModule mod_php.c>
-    # غیرفعال کردن نمایش خطا
+    # ØºÛŒØ±ÙØ¹Ø§Ù„ Ú©Ø±Ø¯Ù† Ù†Ù…Ø§ÛŒØ´ Ø®Ø·Ø§
     php_flag display_errors Off
     php_flag display_startup_errors Off
     
-    # فعال کردن لاگ خطا
+    # ÙØ¹Ø§Ù„ Ú©Ø±Ø¯Ù† Ù„Ø§Ú¯ Ø®Ø·Ø§
     php_flag log_errors On
     php_value error_log ../storage/logs/php_errors.log
     
-    # تنظیمات امنیتی
+    # ØªÙ†Ø¸ÛŒÙ…Ø§Øª Ø§Ù…Ù†ÛŒØªÛŒ
     php_flag expose_php Off
     php_flag allow_url_fopen On
     php_flag allow_url_include Off
     
-    # محدودیت‌ها
+    # Ù…Ø­Ø¯ÙˆØ¯ÛŒØªâ€ŒÙ‡Ø§
     php_value upload_max_filesize 20M
     php_value post_max_size 25M
     php_value max_execution_time 300
@@ -139,12 +139,12 @@ Options -ExecCGI
     php_value session.gc_maxlifetime 3600
 </IfModule>
 
-# ──────────────────────────────────────
-# 6. فشرده‌سازی Gzip
-# ──────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# 6. ÙØ´Ø±Ø¯Ù‡â€ŒØ³Ø§Ø²ÛŒ Gzip
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 <IfModule mod_deflate.c>
-    # فعال‌سازی فشرده‌سازی
+    # ÙØ¹Ø§Ù„â€ŒØ³Ø§Ø²ÛŒ ÙØ´Ø±Ø¯Ù‡â€ŒØ³Ø§Ø²ÛŒ
     AddOutputFilterByType DEFLATE text/html
     AddOutputFilterByType DEFLATE text/css
     AddOutputFilterByType DEFLATE text/javascript
@@ -157,18 +157,18 @@ Options -ExecCGI
     AddOutputFilterByType DEFLATE application/rss+xml
     AddOutputFilterByType DEFLATE image/svg+xml
     
-    # استثناها
+    # Ø§Ø³ØªØ«Ù†Ø§Ù‡Ø§
     SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png|pdf|zip|rar)$ no-gzip dont-vary
 </IfModule>
 
-# ──────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # 7. Cache Control
-# ──────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 <IfModule mod_expires.c>
     ExpiresActive On
     
-    # فایل‌های استاتیک
+    # ÙØ§ÛŒÙ„â€ŒÙ‡Ø§ÛŒ Ø§Ø³ØªØ§ØªÛŒÚ©
     ExpiresByType image/jpeg "access plus 1 month"
     ExpiresByType image/jpg "access plus 1 month"
     ExpiresByType image/png "access plus 1 month"
@@ -185,16 +185,16 @@ Options -ExecCGI
     ExpiresByType application/font-woff "access plus 1 month"
     ExpiresByType application/font-woff2 "access plus 1 month"
     
-    # صفحات HTML و PHP (بدون کش)
+    # ØµÙØ­Ø§Øª HTML Ùˆ PHP (Ø¨Ø¯ÙˆÙ† Ú©Ø´)
     ExpiresByType text/html "access plus 0 seconds"
     ExpiresByType application/xhtml+xml "access plus 0 seconds"
 </IfModule>
 
-# ──────────────────────────────────────
-# 8. محافظت در برابر حملات رایج
-# ──────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# 8. Ù…Ø­Ø§ÙØ¸Øª Ø¯Ø± Ø¨Ø±Ø§Ø¨Ø± Ø­Ù…Ù„Ø§Øª Ø±Ø§ÛŒØ¬
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-# جلوگیری از SQL Injection در URL
+# Ø¬Ù„ÙˆÚ¯ÛŒØ±ÛŒ Ø§Ø² SQL Injection Ø¯Ø± URL
 <IfModule mod_rewrite.c>
     RewriteCond %{QUERY_STRING} (\<|%3C).*script.*(\>|%3E) [NC,OR]
     RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
@@ -202,7 +202,7 @@ Options -ExecCGI
     RewriteRule ^(.*)$ - [F,L]
 </IfModule>
 
-# جلوگیری از Directory Traversal
+# Ø¬Ù„ÙˆÚ¯ÛŒØ±ÛŒ Ø§Ø² Directory Traversal
 <IfModule mod_rewrite.c>
     RewriteCond %{REQUEST_URI} \.\./ [OR]
     RewriteCond %{REQUEST_URI} \.\.%2f [OR]
@@ -211,7 +211,7 @@ Options -ExecCGI
     RewriteRule ^(.*)$ - [F,L]
 </IfModule>
 
-# جلوگیری از User-Agent های مشکوک
+# Ø¬Ù„ÙˆÚ¯ÛŒØ±ÛŒ Ø§Ø² User-Agent Ù‡Ø§ÛŒ Ù…Ø´Ú©ÙˆÚ©
 <IfModule mod_rewrite.c>
     RewriteCond %{HTTP_USER_AGENT} ^$ [OR]
     RewriteCond %{HTTP_USER_AGENT} ^(java|curl|wget|python|nikto|sqlmap|libwww|lwp-trivial) [NC,OR]
@@ -219,11 +219,11 @@ Options -ExecCGI
     RewriteRule ^(.*)$ - [F,L]
 </IfModule>
 
-# ──────────────────────────────────────
-# 9. محدود کردن دسترسی بر اساس IP (اختیاری)
-# ──────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# 9. Ù…Ø­Ø¯ÙˆØ¯ Ú©Ø±Ø¯Ù† Ø¯Ø³ØªØ±Ø³ÛŒ Ø¨Ø± Ø§Ø³Ø§Ø³ IP (Ø§Ø®ØªÛŒØ§Ø±ÛŒ)
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-# برای فعال‌سازی، کامنت‌ها رو حذف کنید و IP خودتون رو اضافه کنید
+# Ø¨Ø±Ø§ÛŒ ÙØ¹Ø§Ù„â€ŒØ³Ø§Ø²ÛŒØŒ Ú©Ø§Ù…Ù†Øªâ€ŒÙ‡Ø§ Ø±Ùˆ Ø­Ø°Ù Ú©Ù†ÛŒØ¯ Ùˆ IP Ø®ÙˆØ¯ØªÙˆÙ† Ø±Ùˆ Ø§Ø¶Ø§ÙÙ‡ Ú©Ù†ÛŒØ¯
 # <IfModule mod_authz_core.c>
 #     <RequireAll>
 #         Require ip 192.168.1.1
@@ -232,11 +232,11 @@ Options -ExecCGI
 #     </RequireAll>
 # </IfModule>
 
-# ──────────────────────────────────────
-# 10. Rate Limiting (با mod_evasive)
-# ──────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# 10. Rate Limiting (Ø¨Ø§ mod_evasive)
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-# اگر mod_evasive نصب باشه
+# Ø§Ú¯Ø± mod_evasive Ù†ØµØ¨ Ø¨Ø§Ø´Ù‡
 <IfModule mod_evasive20.c>
     DOSHashTableSize 3097
     DOSPageCount 20
@@ -248,16 +248,16 @@ Options -ExecCGI
     DOSSystemCommand "sudo /usr/bin/logger 'mod_evasive blocked IP: %s'"
 </IfModule>
 
-# ──────────────────────────────────────
-# 11. محافظت از فایل‌های خاص
-# ──────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# 11. Ù…Ø­Ø§ÙØ¸Øª Ø§Ø² ÙØ§ÛŒÙ„â€ŒÙ‡Ø§ÛŒ Ø®Ø§Øµ
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-# جلوگیری از اجرای PHP در پوشه uploads
+# Ø¬Ù„ÙˆÚ¯ÛŒØ±ÛŒ Ø§Ø² Ø§Ø¬Ø±Ø§ÛŒ PHP Ø¯Ø± Ù¾ÙˆØ´Ù‡ uploads
 <IfModule mod_rewrite.c>
     RewriteRule ^uploads/.*\.php$ - [F,L]
 </IfModule>
 
-# جلوگیری از دسترسی به فایل‌های مخفی
+# Ø¬Ù„ÙˆÚ¯ÛŒØ±ÛŒ Ø§Ø² Ø¯Ø³ØªØ±Ø³ÛŒ Ø¨Ù‡ ÙØ§ÛŒÙ„â€ŒÙ‡Ø§ÛŒ Ù…Ø®ÙÛŒ
 <FilesMatch "^\.">
     <IfModule mod_authz_core.c>
         Require all denied
@@ -268,11 +268,11 @@ Options -ExecCGI
     </IfModule>
 </FilesMatch>
 
-# ──────────────────────────────────────
-# 12. تنظیمات CORS (اختیاری)
-# ──────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# 12. ØªÙ†Ø¸ÛŒÙ…Ø§Øª CORS (Ø§Ø®ØªÛŒØ§Ø±ÛŒ)
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-# اگر نیاز به CORS دارید
+# Ø§Ú¯Ø± Ù†ÛŒØ§Ø² Ø¨Ù‡ CORS Ø¯Ø§Ø±ÛŒØ¯
 # <IfModule mod_headers.c>
 #     Header set Access-Control-Allow-Origin "https://yourdomain.com"
 #     Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"
@@ -280,17 +280,17 @@ Options -ExecCGI
 #     Header set Access-Control-Allow-Credentials "true"
 # </IfModule>
 
-# ──────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # 13. Error Documents
-# ──────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 ErrorDocument 403 /admin/errors/403.php
 ErrorDocument 404 /admin/errors/404.php
 ErrorDocument 500 /admin/errors/500.php
 
-# ──────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # 14. MIME Types
-# ──────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 <IfModule mod_mime.c>
     AddType application/javascript .js
@@ -302,33 +302,33 @@ ErrorDocument 500 /admin/errors/500.php
     AddType image/x-icon .ico
 </IfModule>
 
-# ──────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # 15. Performance Optimization
-# ──────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-# غیرفعال کردن ETag (برای Performance بهتر)
+# ØºÛŒØ±ÙØ¹Ø§Ù„ Ú©Ø±Ø¯Ù† ETag (Ø¨Ø±Ø§ÛŒ Performance Ø¨Ù‡ØªØ±)
 <IfModule mod_headers.c>
     Header unset ETag
 </IfModule>
 FileETag None
 
-# فعال‌سازی Keep-Alive
+# ÙØ¹Ø§Ù„â€ŒØ³Ø§Ø²ÛŒ Keep-Alive
 <IfModule mod_headers.c>
     Header set Connection keep-alive
 </IfModule>
 
-# ──────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # 16. Logging
-# ──────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-# لاگ دسترسی و خطا
-# (این تنظیمات معمولاً در فایل اصلی Apache هستن)
+# Ù„Ø§Ú¯ Ø¯Ø³ØªØ±Ø³ÛŒ Ùˆ Ø®Ø·Ø§
+# (Ø§ÛŒÙ† ØªÙ†Ø¸ÛŒÙ…Ø§Øª Ù…Ø¹Ù…ÙˆÙ„Ø§Ù‹ Ø¯Ø± ÙØ§ÛŒÙ„ Ø§ØµÙ„ÛŒ Apache Ù‡Ø³ØªÙ†)
 # CustomLog /var/log/apache2/admin_access.log combined
 # ErrorLog /var/log/apache2/admin_error.log
 
-# ──────────────────────────────────────
-# 17. جلوگیری از Hotlinking (اختیاری)
-# ──────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# 17. Ø¬Ù„ÙˆÚ¯ÛŒØ±ÛŒ Ø§Ø² Hotlinking (Ø§Ø®ØªÛŒØ§Ø±ÛŒ)
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 # <IfModule mod_rewrite.c>
 #     RewriteEngine On
@@ -337,11 +337,11 @@ FileETag None
 #     RewriteRule \.(jpg|jpeg|png|gif|svg)$ - [F,L]
 # </IfModule>
 
-# ──────────────────────────────────────
-# 18. تنظیمات نهایی
-# ──────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# 18. ØªÙ†Ø¸ÛŒÙ…Ø§Øª Ù†Ù‡Ø§ÛŒÛŒ
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-# جلوگیری از دسترسی به این فایل
+# Ø¬Ù„ÙˆÚ¯ÛŒØ±ÛŒ Ø§Ø² Ø¯Ø³ØªØ±Ø³ÛŒ Ø¨Ù‡ Ø§ÛŒÙ† ÙØ§ÛŒÙ„
 <Files ".htaccess">
     <IfModule mod_authz_core.c>
         Require all denied
@@ -352,4 +352,4 @@ FileETag None
     </IfModule>
 </Files>
 
-# پایان فایل
+# Ù¾Ø§ÛŒØ§Ù† ÙØ§ÛŒÙ„

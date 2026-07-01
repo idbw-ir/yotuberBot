@@ -1,19 +1,19 @@
-<?php
+﻿<?php
 /**
  * ============================================
- * Admin Profile - پروفایل ادمین
+ * Admin Profile - Ù¾Ø±ÙˆÙØ§ÛŒÙ„ Ø§Ø¯Ù…ÛŒÙ†
  * ============================================
- * نسخه: 2.0.0
+ * Ù†Ø³Ø®Ù‡: 2.1.0
  * 
- * مدیریت اطلاعات شخصی، تغییر رمز عبور
- * مشاهده Activity Log و Session های فعال
+ * Ù…Ø¯ÛŒØ±ÛŒØª Ø§Ø·Ù„Ø§Ø¹Ø§Øª Ø´Ø®ØµÛŒØŒ ØªØºÛŒÛŒØ± Ø±Ù…Ø² Ø¹Ø¨ÙˆØ±
+ * Ù…Ø´Ø§Ù‡Ø¯Ù‡ Activity Log Ùˆ Session Ù‡Ø§ÛŒ ÙØ¹Ø§Ù„
  */
 
-// متغیرهای مورد نیاز از Controller:
-// - $admin (اطلاعات ادمین فعلی)
-// - $activityLog (لاگ فعالیت‌ها)
-// - $activeSessions (Session های فعال)
-// - $stats (آمار فعالیت)
+// Ù…ØªØºÛŒØ±Ù‡Ø§ÛŒ Ù…ÙˆØ±Ø¯ Ù†ÛŒØ§Ø² Ø§Ø² Controller:
+// - $admin (Ø§Ø·Ù„Ø§Ø¹Ø§Øª Ø§Ø¯Ù…ÛŒÙ† ÙØ¹Ù„ÛŒ)
+// - $activityLog (Ù„Ø§Ú¯ ÙØ¹Ø§Ù„ÛŒØªâ€ŒÙ‡Ø§)
+// - $activeSessions (Session Ù‡Ø§ÛŒ ÙØ¹Ø§Ù„)
+// - $stats (Ø¢Ù…Ø§Ø± ÙØ¹Ø§Ù„ÛŒØª)
 
 $admin = $admin ?? [];
 $activityLog = $activityLog ?? [];
@@ -23,11 +23,11 @@ $stats = $stats ?? ['total_logins' => 0, 'total_changes' => 0, 'days_active' => 
 // CSRF Token
 $csrfToken = $_SESSION['_csrf_token'] ?? '';
 
-// تب فعال
+// ØªØ¨ ÙØ¹Ø§Ù„
 $activeTab = $_GET['tab'] ?? 'info';
 ?>
 
-<!-- ═══ کارت اطلاعات ادمین ═══ -->
+<!-- â•â•â• Ú©Ø§Ø±Øª Ø§Ø·Ù„Ø§Ø¹Ø§Øª Ø§Ø¯Ù…ÛŒÙ† â•â•â• -->
 <div class="glass rounded-2xl p-6 mb-6">
     <div class="flex items-center gap-6">
         
@@ -41,7 +41,7 @@ $activeTab = $_GET['tab'] ?? 'info';
         
         <!-- Info -->
         <div class="flex-1">
-            <h2 class="text-white text-2xl font-bold mb-1"><?= htmlspecialchars($admin['name'] ?? 'ادمین') ?></h2>
+            <h2 class="text-white text-2xl font-bold mb-1"><?= htmlspecialchars($admin['name'] ?? 'Ø§Ø¯Ù…ÛŒÙ†') ?></h2>
             <p class="text-white/60 text-sm mb-2">@<?= htmlspecialchars($admin['username'] ?? 'admin') ?></p>
             <div class="flex items-center gap-3">
                 <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-purple-500/20 text-purple-300">
@@ -49,7 +49,7 @@ $activeTab = $_GET['tab'] ?? 'info';
                     <span><?= htmlspecialchars($admin['role'] ?? 'admin') ?></span>
                 </span>
                 <span class="text-white/40 text-xs">
-                    عضو از: <?= htmlspecialchars($admin['created_at'] ?? 'نامشخص') ?>
+                    Ø¹Ø¶Ùˆ Ø§Ø²: <?= htmlspecialchars($admin['created_at'] ?? 'Ù†Ø§Ù…Ø´Ø®Øµ') ?>
                 </span>
             </div>
         </div>
@@ -58,22 +58,22 @@ $activeTab = $_GET['tab'] ?? 'info';
         <div class="hidden md:flex gap-6">
             <div class="text-center">
                 <div class="text-2xl font-bold text-white"><?= number_format($stats['total_logins'] ?? 0) ?></div>
-                <div class="text-white/50 text-xs">ورود</div>
+                <div class="text-white/50 text-xs">ÙˆØ±ÙˆØ¯</div>
             </div>
             <div class="text-center">
                 <div class="text-2xl font-bold text-white"><?= number_format($stats['total_changes'] ?? 0) ?></div>
-                <div class="text-white/50 text-xs">تغییرات</div>
+                <div class="text-white/50 text-xs">ØªØºÛŒÛŒØ±Ø§Øª</div>
             </div>
             <div class="text-center">
                 <div class="text-2xl font-bold text-white"><?= number_format($stats['days_active'] ?? 0) ?></div>
-                <div class="text-white/50 text-xs">روز فعال</div>
+                <div class="text-white/50 text-xs">Ø±ÙˆØ² ÙØ¹Ø§Ù„</div>
             </div>
         </div>
         
     </div>
 </div>
 
-<!-- ═══ تب‌ها ═══ -->
+<!-- â•â•â• ØªØ¨â€ŒÙ‡Ø§ â•â•â• -->
 <div class="glass rounded-2xl p-2 mb-6">
     <div class="flex gap-2 overflow-x-auto">
         <a 
@@ -82,7 +82,7 @@ $activeTab = $_GET['tab'] ?? 'info';
                 <?= $activeTab === 'info' ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white' : 'bg-white/5 text-white/70 hover:bg-white/10' ?>"
         >
             <i class="fas fa-user"></i>
-            <span class="text-sm font-medium">اطلاعات شخصی</span>
+            <span class="text-sm font-medium">Ø§Ø·Ù„Ø§Ø¹Ø§Øª Ø´Ø®ØµÛŒ</span>
         </a>
         
         <a 
@@ -91,7 +91,7 @@ $activeTab = $_GET['tab'] ?? 'info';
                 <?= $activeTab === 'password' ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white' : 'bg-white/5 text-white/70 hover:bg-white/10' ?>"
         >
             <i class="fas fa-lock"></i>
-            <span class="text-sm font-medium">تغییر رمز عبور</span>
+            <span class="text-sm font-medium">ØªØºÛŒÛŒØ± Ø±Ù…Ø² Ø¹Ø¨ÙˆØ±</span>
         </a>
         
         <a 
@@ -100,7 +100,7 @@ $activeTab = $_GET['tab'] ?? 'info';
                 <?= $activeTab === 'sessions' ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white' : 'bg-white/5 text-white/70 hover:bg-white/10' ?>"
         >
             <i class="fas fa-desktop"></i>
-            <span class="text-sm font-medium">Session ها</span>
+            <span class="text-sm font-medium">Session Ù‡Ø§</span>
         </a>
         
         <a 
@@ -114,13 +114,13 @@ $activeTab = $_GET['tab'] ?? 'info';
     </div>
 </div>
 
-<!-- ═══ محتوای تب‌ها ═══ -->
+<!-- â•â•â• Ù…Ø­ØªÙˆØ§ÛŒ ØªØ¨â€ŒÙ‡Ø§ â•â•â• -->
 <?php if ($activeTab === 'password'): ?>
-<!-- ═══ Change Password Tab ═══ -->
+<!-- â•â•â• Change Password Tab â•â•â• -->
 <div class="glass rounded-2xl p-6">
     <h3 class="text-white font-bold text-xl mb-6 flex items-center gap-2">
         <i class="fas fa-lock"></i>
-        <span>تغییر رمز عبور</span>
+        <span>ØªØºÛŒÛŒØ± Ø±Ù…Ø² Ø¹Ø¨ÙˆØ±</span>
     </h3>
     
     <form id="passwordForm" class="space-y-5 max-w-xl">
@@ -129,7 +129,7 @@ $activeTab = $_GET['tab'] ?? 'info';
         <!-- Current Password -->
         <div>
             <label class="block text-white/70 text-sm mb-2">
-                رمز عبور فعلی <span class="text-red-400">*</span>
+                Ø±Ù…Ø² Ø¹Ø¨ÙˆØ± ÙØ¹Ù„ÛŒ <span class="text-red-400">*</span>
             </label>
             <div class="relative">
                 <input 
@@ -138,7 +138,7 @@ $activeTab = $_GET['tab'] ?? 'info';
                     required
                     autocomplete="current-password"
                     class="w-full bg-white/10 border border-white/20 rounded-lg py-2.5 px-4 pr-11 pl-11 text-white placeholder-white/40 focus:border-purple-500 transition"
-                    placeholder="رمز عبور فعلی"
+                    placeholder="Ø±Ù…Ø² Ø¹Ø¨ÙˆØ± ÙØ¹Ù„ÛŒ"
                 >
                 <span class="absolute right-3 top-1/2 -translate-y-1/2 text-white/40">
                     <i class="fas fa-lock"></i>
@@ -156,7 +156,7 @@ $activeTab = $_GET['tab'] ?? 'info';
         <!-- New Password -->
         <div>
             <label class="block text-white/70 text-sm mb-2">
-                رمز عبور جدید <span class="text-red-400">*</span>
+                Ø±Ù…Ø² Ø¹Ø¨ÙˆØ± Ø¬Ø¯ÛŒØ¯ <span class="text-red-400">*</span>
             </label>
             <div class="relative">
                 <input 
@@ -167,7 +167,7 @@ $activeTab = $_GET['tab'] ?? 'info';
                     minlength="8"
                     autocomplete="new-password"
                     class="w-full bg-white/10 border border-white/20 rounded-lg py-2.5 px-4 pr-11 pl-11 text-white placeholder-white/40 focus:border-purple-500 transition"
-                    placeholder="حداقل 8 کاراکتر"
+                    placeholder="Ø­Ø¯Ø§Ù‚Ù„ 8 Ú©Ø§Ø±Ø§Ú©ØªØ±"
                     oninput="checkPasswordStrength(this.value)"
                 >
                 <span class="absolute right-3 top-1/2 -translate-y-1/2 text-white/40">
@@ -190,14 +190,14 @@ $activeTab = $_GET['tab'] ?? 'info';
                     <div class="h-1 flex-1 rounded bg-white/10" id="strength3"></div>
                     <div class="h-1 flex-1 rounded bg-white/10" id="strength4"></div>
                 </div>
-                <div class="text-xs text-white/60" id="strengthText">ضعیف</div>
+                <div class="text-xs text-white/60" id="strengthText">Ø¶Ø¹ÛŒÙ</div>
             </div>
         </div>
         
         <!-- Confirm Password -->
         <div>
             <label class="block text-white/70 text-sm mb-2">
-                تکرار رمز عبور جدید <span class="text-red-400">*</span>
+                ØªÚ©Ø±Ø§Ø± Ø±Ù…Ø² Ø¹Ø¨ÙˆØ± Ø¬Ø¯ÛŒØ¯ <span class="text-red-400">*</span>
             </label>
             <div class="relative">
                 <input 
@@ -208,7 +208,7 @@ $activeTab = $_GET['tab'] ?? 'info';
                     minlength="8"
                     autocomplete="new-password"
                     class="w-full bg-white/10 border border-white/20 rounded-lg py-2.5 px-4 pr-11 pl-11 text-white placeholder-white/40 focus:border-purple-500 transition"
-                    placeholder="تکرار رمز عبور جدید"
+                    placeholder="ØªÚ©Ø±Ø§Ø± Ø±Ù…Ø² Ø¹Ø¨ÙˆØ± Ø¬Ø¯ÛŒØ¯"
                     oninput="checkPasswordMatch()"
                 >
                 <span class="absolute right-3 top-1/2 -translate-y-1/2 text-white/40">
@@ -229,24 +229,24 @@ $activeTab = $_GET['tab'] ?? 'info';
         <div class="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
             <div class="text-blue-300 text-sm font-medium mb-2">
                 <i class="fas fa-info-circle"></i>
-                <span>الزامات رمز عبور:</span>
+                <span>Ø§Ù„Ø²Ø§Ù…Ø§Øª Ø±Ù…Ø² Ø¹Ø¨ÙˆØ±:</span>
             </div>
             <ul class="text-white/60 text-xs space-y-1">
                 <li id="req-length" class="flex items-center gap-2">
                     <i class="fas fa-circle text-white/30 text-[6px]"></i>
-                    <span>حداقل 8 کاراکتر</span>
+                    <span>Ø­Ø¯Ø§Ù‚Ù„ 8 Ú©Ø§Ø±Ø§Ú©ØªØ±</span>
                 </li>
                 <li id="req-upper" class="flex items-center gap-2">
                     <i class="fas fa-circle text-white/30 text-[6px]"></i>
-                    <span>حداقل یک حرف بزرگ</span>
+                    <span>Ø­Ø¯Ø§Ù‚Ù„ ÛŒÚ© Ø­Ø±Ù Ø¨Ø²Ø±Ú¯</span>
                 </li>
                 <li id="req-lower" class="flex items-center gap-2">
                     <i class="fas fa-circle text-white/30 text-[6px]"></i>
-                    <span>حداقل یک حرف کوچک</span>
+                    <span>Ø­Ø¯Ø§Ù‚Ù„ ÛŒÚ© Ø­Ø±Ù Ú©ÙˆÚ†Ú©</span>
                 </li>
                 <li id="req-number" class="flex items-center gap-2">
                     <i class="fas fa-circle text-white/30 text-[6px]"></i>
-                    <span>حداقل یک عدد</span>
+                    <span>Ø­Ø¯Ø§Ù‚Ù„ ÛŒÚ© Ø¹Ø¯Ø¯</span>
                 </li>
             </ul>
         </div>
@@ -257,33 +257,33 @@ $activeTab = $_GET['tab'] ?? 'info';
             class="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-6 py-3 rounded-lg hover:opacity-90 transition flex items-center gap-2 font-bold"
         >
             <i class="fas fa-save"></i>
-            <span>تغییر رمز عبور</span>
+            <span>ØªØºÛŒÛŒØ± Ø±Ù…Ø² Ø¹Ø¨ÙˆØ±</span>
         </button>
         
     </form>
 </div>
 
 <?php elseif ($activeTab === 'sessions'): ?>
-<!-- ═══ Active Sessions Tab ═══ -->
+<!-- â•â•â• Active Sessions Tab â•â•â• -->
 <div class="glass rounded-2xl p-6">
     <div class="flex items-center justify-between mb-6">
         <h3 class="text-white font-bold text-xl flex items-center gap-2">
             <i class="fas fa-desktop"></i>
-            <span>Session های فعال</span>
+            <span>Session Ù‡Ø§ÛŒ ÙØ¹Ø§Ù„</span>
         </h3>
         <button 
             onclick="logoutAllSessions()"
             class="bg-red-500/20 border border-red-500/50 text-red-300 px-4 py-2 rounded-lg hover:bg-red-500/30 transition text-sm flex items-center gap-2"
         >
             <i class="fas fa-sign-out-alt"></i>
-            <span>خروج از همه</span>
+            <span>Ø®Ø±ÙˆØ¬ Ø§Ø² Ù‡Ù…Ù‡</span>
         </button>
     </div>
     
     <?php if (empty($activeSessions)): ?>
     <div class="text-center py-12">
-        <div class="text-5xl mb-3">🔒</div>
-        <p class="text-white/50 text-sm">هیچ Session فعالی یافت نشد</p>
+        <div class="text-5xl mb-3">ðŸ”’</div>
+        <p class="text-white/50 text-sm">Ù‡ÛŒÚ† Session ÙØ¹Ø§Ù„ÛŒ ÛŒØ§ÙØª Ù†Ø´Ø¯</p>
     </div>
     <?php else: ?>
     <div class="space-y-3">
@@ -300,22 +300,22 @@ $activeTab = $_GET['tab'] ?? 'info';
                 </div>
                 <div>
                     <div class="text-white font-medium">
-                        <?= htmlspecialchars($session['device'] ?? 'دستگاه ناشناخته') ?>
+                        <?= htmlspecialchars($session['device'] ?? 'Ø¯Ø³ØªÚ¯Ø§Ù‡ Ù†Ø§Ø´Ù†Ø§Ø®ØªÙ‡') ?>
                         <?php if (!empty($session['is_current'])): ?>
                         <span class="text-xs bg-green-500/20 text-green-300 px-2 py-0.5 rounded-full mr-2">
-                            فعلی
+                            ÙØ¹Ù„ÛŒ
                         </span>
                         <?php endif; ?>
                     </div>
                     <div class="text-white/50 text-xs mt-1">
                         <i class="fas fa-map-marker-alt"></i>
-                        <span><?= htmlspecialchars($session['location'] ?? 'نامشخص') ?></span>
-                        <span class="mx-2">•</span>
+                        <span><?= htmlspecialchars($session['location'] ?? 'Ù†Ø§Ù…Ø´Ø®Øµ') ?></span>
+                        <span class="mx-2">â€¢</span>
                         <i class="fas fa-clock"></i>
-                        <span><?= htmlspecialchars($session['last_activity'] ?? 'نامشخص') ?></span>
+                        <span><?= htmlspecialchars($session['last_activity'] ?? 'Ù†Ø§Ù…Ø´Ø®Øµ') ?></span>
                     </div>
                     <div class="text-white/40 text-xs mt-1 font-mono">
-                        IP: <?= htmlspecialchars($session['ip_address'] ?? 'نامشخص') ?>
+                        IP: <?= htmlspecialchars($session['ip_address'] ?? 'Ù†Ø§Ù…Ø´Ø®Øµ') ?>
                     </div>
                 </div>
             </div>
@@ -326,7 +326,7 @@ $activeTab = $_GET['tab'] ?? 'info';
                 class="bg-red-500/20 hover:bg-red-500/30 text-red-300 px-4 py-2 rounded-lg transition text-sm"
             >
                 <i class="fas fa-times"></i>
-                <span>پایان</span>
+                <span>Ù¾Ø§ÛŒØ§Ù†</span>
             </button>
             <?php endif; ?>
         </div>
@@ -336,7 +336,7 @@ $activeTab = $_GET['tab'] ?? 'info';
 </div>
 
 <?php elseif ($activeTab === 'activity'): ?>
-<!-- ═══ Activity Log Tab ═══ -->
+<!-- â•â•â• Activity Log Tab â•â•â• -->
 <div class="glass rounded-2xl p-6">
     <div class="flex items-center justify-between mb-6">
         <h3 class="text-white font-bold text-xl flex items-center gap-2">
@@ -348,14 +348,14 @@ $activeTab = $_GET['tab'] ?? 'info';
             class="bg-red-500/20 border border-red-500/50 text-red-300 px-4 py-2 rounded-lg hover:bg-red-500/30 transition text-sm flex items-center gap-2"
         >
             <i class="fas fa-trash"></i>
-            <span>پاک کردن</span>
+            <span>Ù¾Ø§Ú© Ú©Ø±Ø¯Ù†</span>
         </button>
     </div>
     
     <?php if (empty($activityLog)): ?>
     <div class="text-center py-12">
-        <div class="text-5xl mb-3">📝</div>
-        <p class="text-white/50 text-sm">هیچ فعالیتی ثبت نشده</p>
+        <div class="text-5xl mb-3">ðŸ“</div>
+        <p class="text-white/50 text-sm">Ù‡ÛŒÚ† ÙØ¹Ø§Ù„ÛŒØªÛŒ Ø«Ø¨Øª Ù†Ø´Ø¯Ù‡</p>
     </div>
     <?php else: ?>
     <div class="space-y-3 max-h-[600px] overflow-y-auto">
@@ -366,16 +366,16 @@ $activeTab = $_GET['tab'] ?? 'info';
                     <span class="text-lg">
                         <?php
                         $action = $log['action'] ?? '';
-                        if (strpos($action, 'login') !== false) echo '🔐';
-                        elseif (strpos($action, 'logout') !== false) echo '🚪';
-                        elseif (strpos($action, 'change') !== false) echo '🔧';
-                        elseif (strpos($action, 'delete') !== false) echo '🗑️';
-                        elseif (strpos($action, 'create') !== false) echo '➕';
-                        else echo '📝';
+                        if (strpos($action, 'login') !== false) echo 'ðŸ”';
+                        elseif (strpos($action, 'logout') !== false) echo 'ðŸšª';
+                        elseif (strpos($action, 'change') !== false) echo 'ðŸ”§';
+                        elseif (strpos($action, 'delete') !== false) echo 'ðŸ—‘ï¸';
+                        elseif (strpos($action, 'create') !== false) echo 'âž•';
+                        else echo 'ðŸ“';
                         ?>
                     </span>
                     <span class="text-white font-medium text-sm">
-                        <?= htmlspecialchars($log['action'] ?? 'نامشخص') ?>
+                        <?= htmlspecialchars($log['action'] ?? 'Ù†Ø§Ù…Ø´Ø®Øµ') ?>
                     </span>
                 </div>
                 <div class="text-white/40 text-xs">
@@ -392,11 +392,11 @@ $activeTab = $_GET['tab'] ?? 'info';
             <div class="text-white/40 text-xs flex items-center gap-3">
                 <span>
                     <i class="fas fa-map-marker-alt"></i>
-                    <?= htmlspecialchars($log['ip_address'] ?? 'نامشخص') ?>
+                    <?= htmlspecialchars($log['ip_address'] ?? 'Ù†Ø§Ù…Ø´Ø®Øµ') ?>
                 </span>
                 <span>
                     <i class="fas fa-laptop"></i>
-                    <?= htmlspecialchars($log['user_agent'] ?? 'نامشخص') ?>
+                    <?= htmlspecialchars($log['user_agent'] ?? 'Ù†Ø§Ù…Ø´Ø®Øµ') ?>
                 </span>
             </div>
         </div>
@@ -406,11 +406,11 @@ $activeTab = $_GET['tab'] ?? 'info';
 </div>
 
 <?php else: ?>
-<!-- ═══ Personal Info Tab ═══ -->
+<!-- â•â•â• Personal Info Tab â•â•â• -->
 <div class="glass rounded-2xl p-6">
     <h3 class="text-white font-bold text-xl mb-6 flex items-center gap-2">
         <i class="fas fa-user"></i>
-        <span>اطلاعات شخصی</span>
+        <span>Ø§Ø·Ù„Ø§Ø¹Ø§Øª Ø´Ø®ØµÛŒ</span>
     </h3>
     
     <form id="profileForm" class="space-y-5 max-w-xl">
@@ -419,7 +419,7 @@ $activeTab = $_GET['tab'] ?? 'info';
         <!-- Name -->
         <div>
             <label class="block text-white/70 text-sm mb-2">
-                نام و نام خانوادگی <span class="text-red-400">*</span>
+                Ù†Ø§Ù… Ùˆ Ù†Ø§Ù… Ø®Ø§Ù†ÙˆØ§Ø¯Ú¯ÛŒ <span class="text-red-400">*</span>
             </label>
             <input 
                 type="text" 
@@ -427,14 +427,14 @@ $activeTab = $_GET['tab'] ?? 'info';
                 value="<?= htmlspecialchars($admin['name'] ?? '') ?>"
                 required
                 class="w-full bg-white/10 border border-white/20 rounded-lg py-2.5 px-4 text-white placeholder-white/40 focus:border-purple-500 transition"
-                placeholder="نام خود را وارد کنید"
+                placeholder="Ù†Ø§Ù… Ø®ÙˆØ¯ Ø±Ø§ ÙˆØ§Ø±Ø¯ Ú©Ù†ÛŒØ¯"
             >
         </div>
         
         <!-- Username -->
         <div>
             <label class="block text-white/70 text-sm mb-2">
-                نام کاربری <span class="text-red-400">*</span>
+                Ù†Ø§Ù… Ú©Ø§Ø±Ø¨Ø±ÛŒ <span class="text-red-400">*</span>
             </label>
             <input 
                 type="text" 
@@ -445,13 +445,13 @@ $activeTab = $_GET['tab'] ?? 'info';
                 class="w-full bg-white/5 border border-white/10 rounded-lg py-2.5 px-4 text-white/50 cursor-not-allowed"
                 dir="ltr"
             >
-            <p class="text-white/40 text-xs mt-1">نام کاربری قابل تغییر نیست</p>
+            <p class="text-white/40 text-xs mt-1">Ù†Ø§Ù… Ú©Ø§Ø±Ø¨Ø±ÛŒ Ù‚Ø§Ø¨Ù„ ØªØºÛŒÛŒØ± Ù†ÛŒØ³Øª</p>
         </div>
         
         <!-- Email -->
         <div>
             <label class="block text-white/70 text-sm mb-2">
-                ایمیل
+                Ø§ÛŒÙ…ÛŒÙ„
             </label>
             <input 
                 type="email" 
@@ -466,7 +466,7 @@ $activeTab = $_GET['tab'] ?? 'info';
         <!-- Phone -->
         <div>
             <label class="block text-white/70 text-sm mb-2">
-                شماره تماس
+                Ø´Ù…Ø§Ø±Ù‡ ØªÙ…Ø§Ø³
             </label>
             <input 
                 type="tel" 
@@ -481,30 +481,30 @@ $activeTab = $_GET['tab'] ?? 'info';
         <!-- Bio -->
         <div>
             <label class="block text-white/70 text-sm mb-2">
-                بیوگرافی
+                Ø¨ÛŒÙˆÚ¯Ø±Ø§ÙÛŒ
             </label>
             <textarea 
                 name="bio"
                 rows="3"
                 class="w-full bg-white/10 border border-white/20 rounded-lg py-2.5 px-4 text-white placeholder-white/40 focus:border-purple-500 transition resize-none"
-                placeholder="چند خط درباره خودتان بنویسید..."
+                placeholder="Ú†Ù†Ø¯ Ø®Ø· Ø¯Ø±Ø¨Ø§Ø±Ù‡ Ø®ÙˆØ¯ØªØ§Ù† Ø¨Ù†ÙˆÛŒØ³ÛŒØ¯..."
             ><?= htmlspecialchars($admin['bio'] ?? '') ?></textarea>
         </div>
         
         <!-- Timezone -->
         <div>
             <label class="block text-white/70 text-sm mb-2">
-                منطقه زمانی
+                Ù…Ù†Ø·Ù‚Ù‡ Ø²Ù…Ø§Ù†ÛŒ
             </label>
             <select 
                 name="timezone"
                 class="w-full bg-white/10 border border-white/20 rounded-lg py-2.5 px-4 text-white focus:border-purple-500 transition"
             >
                 <option value="Asia/Tehran" <?= ($admin['timezone'] ?? '') === 'Asia/Tehran' ? 'selected' : '' ?>>
-                    Asia/Tehran (تهران)
+                    Asia/Tehran (ØªÙ‡Ø±Ø§Ù†)
                 </option>
                 <option value="Asia/Dubai" <?= ($admin['timezone'] ?? '') === 'Asia/Dubai' ? 'selected' : '' ?>>
-                    Asia/Dubai (دبی)
+                    Asia/Dubai (Ø¯Ø¨ÛŒ)
                 </option>
                 <option value="UTC" <?= ($admin['timezone'] ?? '') === 'UTC' ? 'selected' : '' ?>>
                     UTC
@@ -518,16 +518,16 @@ $activeTab = $_GET['tab'] ?? 'info';
             class="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-6 py-3 rounded-lg hover:opacity-90 transition flex items-center gap-2 font-bold"
         >
             <i class="fas fa-save"></i>
-            <span>ذخیره تغییرات</span>
+            <span>Ø°Ø®ÛŒØ±Ù‡ ØªØºÛŒÛŒØ±Ø§Øª</span>
         </button>
         
     </form>
 </div>
 <?php endif; ?>
 
-<!-- ═══ JavaScript ═══ -->
+<!-- â•â•â• JavaScript â•â•â• -->
 <script>
-// ═══ Toggle Password Visibility ═══
+// â•â•â• Toggle Password Visibility â•â•â•
 function togglePasswordVisibility(button) {
     const input = button.parentElement.querySelector('input');
     const icon = button.querySelector('i');
@@ -543,7 +543,7 @@ function togglePasswordVisibility(button) {
     }
 }
 
-// ═══ Check Password Strength ═══
+// â•â•â• Check Password Strength â•â•â•
 function checkPasswordStrength(password) {
     const strengthDiv = document.getElementById('passwordStrength');
     const strengthText = document.getElementById('strengthText');
@@ -575,7 +575,7 @@ function checkPasswordStrength(password) {
     
     // Update bars
     const colors = ['bg-red-500', 'bg-orange-500', 'bg-yellow-500', 'bg-green-500'];
-    const texts = ['خیلی ضعیف', 'ضعیف', 'متوسط', 'قوی', 'خیلی قوی'];
+    const texts = ['Ø®ÛŒÙ„ÛŒ Ø¶Ø¹ÛŒÙ', 'Ø¶Ø¹ÛŒÙ', 'Ù…ØªÙˆØ³Ø·', 'Ù‚ÙˆÛŒ', 'Ø®ÛŒÙ„ÛŒ Ù‚ÙˆÛŒ'];
     
     bars.forEach((bar, index) => {
         bar.className = 'h-1 flex-1 rounded';
@@ -593,7 +593,7 @@ function checkPasswordStrength(password) {
     updateRequirements(password);
 }
 
-// ═══ Update Password Requirements ═══
+// â•â•â• Update Password Requirements â•â•â•
 function updateRequirements(password) {
     const requirements = {
         'req-length': password.length >= 8,
@@ -620,7 +620,7 @@ function updateRequirements(password) {
     }
 }
 
-// ═══ Check Password Match ═══
+// â•â•â• Check Password Match â•â•â•
 function checkPasswordMatch() {
     const newPassword = document.getElementById('newPassword').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
@@ -634,13 +634,13 @@ function checkPasswordMatch() {
     matchDiv.classList.remove('hidden');
     
     if (newPassword === confirmPassword) {
-        matchDiv.innerHTML = '<i class="fas fa-check-circle text-green-400"></i><span class="text-green-400">رمزهای عبور مطابقت دارند</span>';
+        matchDiv.innerHTML = '<i class="fas fa-check-circle text-green-400"></i><span class="text-green-400">Ø±Ù…Ø²Ù‡Ø§ÛŒ Ø¹Ø¨ÙˆØ± Ù…Ø·Ø§Ø¨Ù‚Øª Ø¯Ø§Ø±Ù†Ø¯</span>';
     } else {
-        matchDiv.innerHTML = '<i class="fas fa-times-circle text-red-400"></i><span class="text-red-400">رمزهای عبور مطابقت ندارند</span>';
+        matchDiv.innerHTML = '<i class="fas fa-times-circle text-red-400"></i><span class="text-red-400">Ø±Ù…Ø²Ù‡Ø§ÛŒ Ø¹Ø¨ÙˆØ± Ù…Ø·Ø§Ø¨Ù‚Øª Ù†Ø¯Ø§Ø±Ù†Ø¯</span>';
     }
 }
 
-// ═══ Save Profile ═══
+// â•â•â• Save Profile â•â•â•
 document.getElementById('profileForm')?.addEventListener('submit', async function(e) {
     e.preventDefault();
     
@@ -660,17 +660,17 @@ document.getElementById('profileForm')?.addEventListener('submit', async functio
         const result = await response.json();
         
         if (result.success) {
-            showToast('اطلاعات با موفقیت بروزرسانی شد', 'success');
+            showToast('Ø§Ø·Ù„Ø§Ø¹Ø§Øª Ø¨Ø§ Ù…ÙˆÙÙ‚ÛŒØª Ø¨Ø±ÙˆØ²Ø±Ø³Ø§Ù†ÛŒ Ø´Ø¯', 'success');
             setTimeout(() => location.reload(), 1000);
         } else {
-            showToast(result.error || 'خطا در بروزرسانی', 'error');
+            showToast(result.error || 'Ø®Ø·Ø§ Ø¯Ø± Ø¨Ø±ÙˆØ²Ø±Ø³Ø§Ù†ÛŒ', 'error');
         }
     } catch (error) {
-        showToast('خطا در ارتباط با سرور', 'error');
+        showToast('Ø®Ø·Ø§ Ø¯Ø± Ø§Ø±ØªØ¨Ø§Ø· Ø¨Ø§ Ø³Ø±ÙˆØ±', 'error');
     }
 });
 
-// ═══ Change Password ═══
+// â•â•â• Change Password â•â•â•
 document.getElementById('passwordForm')?.addEventListener('submit', async function(e) {
     e.preventDefault();
     
@@ -679,12 +679,12 @@ document.getElementById('passwordForm')?.addEventListener('submit', async functi
     
     // Validation
     if (data.new_password !== data.confirm_password) {
-        showToast('رمزهای عبور مطابقت ندارند', 'error');
+        showToast('Ø±Ù…Ø²Ù‡Ø§ÛŒ Ø¹Ø¨ÙˆØ± Ù…Ø·Ø§Ø¨Ù‚Øª Ù†Ø¯Ø§Ø±Ù†Ø¯', 'error');
         return;
     }
     
     if (data.new_password.length < 8) {
-        showToast('رمز عبور باید حداقل 8 کاراکتر باشد', 'error');
+        showToast('Ø±Ù…Ø² Ø¹Ø¨ÙˆØ± Ø¨Ø§ÛŒØ¯ Ø­Ø¯Ø§Ù‚Ù„ 8 Ú©Ø§Ø±Ø§Ú©ØªØ± Ø¨Ø§Ø´Ø¯', 'error');
         return;
     }
     
@@ -701,21 +701,21 @@ document.getElementById('passwordForm')?.addEventListener('submit', async functi
         const result = await response.json();
         
         if (result.success) {
-            showToast('رمز عبور با موفقیت تغییر کرد', 'success');
+            showToast('Ø±Ù…Ø² Ø¹Ø¨ÙˆØ± Ø¨Ø§ Ù…ÙˆÙÙ‚ÛŒØª ØªØºÛŒÛŒØ± Ú©Ø±Ø¯', 'success');
             setTimeout(() => {
                 window.location.href = '/admin/login.php?success=password_changed';
             }, 2000);
         } else {
-            showToast(result.error || 'خطا در تغییر رمز', 'error');
+            showToast(result.error || 'Ø®Ø·Ø§ Ø¯Ø± ØªØºÛŒÛŒØ± Ø±Ù…Ø²', 'error');
         }
     } catch (error) {
-        showToast('خطا در ارتباط با سرور', 'error');
+        showToast('Ø®Ø·Ø§ Ø¯Ø± Ø§Ø±ØªØ¨Ø§Ø· Ø¨Ø§ Ø³Ø±ÙˆØ±', 'error');
     }
 });
 
-// ═══ Terminate Session ═══
+// â•â•â• Terminate Session â•â•â•
 async function terminateSession(sessionId) {
-    if (!confirm('آیا مطمئن هستید که می‌خواهید این Session را پایان دهید؟')) {
+    if (!confirm('Ø¢ÛŒØ§ Ù…Ø·Ù…Ø¦Ù† Ù‡Ø³ØªÛŒØ¯ Ú©Ù‡ Ù…ÛŒâ€ŒØ®ÙˆØ§Ù‡ÛŒØ¯ Ø§ÛŒÙ† Session Ø±Ø§ Ù¾Ø§ÛŒØ§Ù† Ø¯Ù‡ÛŒØ¯ØŸ')) {
         return;
     }
     
@@ -732,19 +732,19 @@ async function terminateSession(sessionId) {
         const result = await response.json();
         
         if (result.success) {
-            showToast('Session پایان یافت', 'success');
+            showToast('Session Ù¾Ø§ÛŒØ§Ù† ÛŒØ§ÙØª', 'success');
             setTimeout(() => location.reload(), 1000);
         } else {
-            showToast(result.error || 'خطا', 'error');
+            showToast(result.error || 'Ø®Ø·Ø§', 'error');
         }
     } catch (error) {
-        showToast('خطا در ارتباط با سرور', 'error');
+        showToast('Ø®Ø·Ø§ Ø¯Ø± Ø§Ø±ØªØ¨Ø§Ø· Ø¨Ø§ Ø³Ø±ÙˆØ±', 'error');
     }
 }
 
-// ═══ Logout All Sessions ═══
+// â•â•â• Logout All Sessions â•â•â•
 async function logoutAllSessions() {
-    if (!confirm('آیا مطمئن هستید که می‌خواهید از همه Session ها خارج شوید؟\n\nشما باید دوباره وارد شوید!')) {
+    if (!confirm('Ø¢ÛŒØ§ Ù…Ø·Ù…Ø¦Ù† Ù‡Ø³ØªÛŒØ¯ Ú©Ù‡ Ù…ÛŒâ€ŒØ®ÙˆØ§Ù‡ÛŒØ¯ Ø§Ø² Ù‡Ù…Ù‡ Session Ù‡Ø§ Ø®Ø§Ø±Ø¬ Ø´ÙˆÛŒØ¯ØŸ\n\nØ´Ù…Ø§ Ø¨Ø§ÛŒØ¯ Ø¯ÙˆØ¨Ø§Ø±Ù‡ ÙˆØ§Ø±Ø¯ Ø´ÙˆÛŒØ¯!')) {
         return;
     }
     
@@ -760,21 +760,21 @@ async function logoutAllSessions() {
         const result = await response.json();
         
         if (result.success) {
-            showToast('از همه Session ها خارج شدید', 'success');
+            showToast('Ø§Ø² Ù‡Ù…Ù‡ Session Ù‡Ø§ Ø®Ø§Ø±Ø¬ Ø´Ø¯ÛŒØ¯', 'success');
             setTimeout(() => {
                 window.location.href = '/admin/login.php';
             }, 2000);
         } else {
-            showToast(result.error || 'خطا', 'error');
+            showToast(result.error || 'Ø®Ø·Ø§', 'error');
         }
     } catch (error) {
-        showToast('خطا در ارتباط با سرور', 'error');
+        showToast('Ø®Ø·Ø§ Ø¯Ø± Ø§Ø±ØªØ¨Ø§Ø· Ø¨Ø§ Ø³Ø±ÙˆØ±', 'error');
     }
 }
 
-// ═══ Clear Activity Log ═══
+// â•â•â• Clear Activity Log â•â•â•
 async function clearActivityLog() {
-    if (!confirm('آیا مطمئن هستید که می‌خواهید تمام Activity Log را پاک کنید؟\n\nاین عمل غیرقابل بازگشت است!')) {
+    if (!confirm('Ø¢ÛŒØ§ Ù…Ø·Ù…Ø¦Ù† Ù‡Ø³ØªÛŒØ¯ Ú©Ù‡ Ù…ÛŒâ€ŒØ®ÙˆØ§Ù‡ÛŒØ¯ ØªÙ…Ø§Ù… Activity Log Ø±Ø§ Ù¾Ø§Ú© Ú©Ù†ÛŒØ¯ØŸ\n\nØ§ÛŒÙ† Ø¹Ù…Ù„ ØºÛŒØ±Ù‚Ø§Ø¨Ù„ Ø¨Ø§Ø²Ú¯Ø´Øª Ø§Ø³Øª!')) {
         return;
     }
     
@@ -790,13 +790,13 @@ async function clearActivityLog() {
         const result = await response.json();
         
         if (result.success) {
-            showToast('Activity Log پاک شد', 'success');
+            showToast('Activity Log Ù¾Ø§Ú© Ø´Ø¯', 'success');
             setTimeout(() => location.reload(), 1000);
         } else {
-            showToast(result.error || 'خطا', 'error');
+            showToast(result.error || 'Ø®Ø·Ø§', 'error');
         }
     } catch (error) {
-        showToast('خطا در ارتباط با سرور', 'error');
+        showToast('Ø®Ø·Ø§ Ø¯Ø± Ø§Ø±ØªØ¨Ø§Ø· Ø¨Ø§ Ø³Ø±ÙˆØ±', 'error');
     }
 }
 </script>

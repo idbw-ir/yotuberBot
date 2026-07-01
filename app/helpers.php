@@ -1,14 +1,14 @@
-<?php
+﻿<?php
 /**
  * ============================================
- * Helper Functions - توابع کمکی Global
+ * Helper Functions - ØªÙˆØ§Ø¨Ø¹ Ú©Ù…Ú©ÛŒ Global
  * ============================================
- * نسخه: 2.0.0
+ * Ù†Ø³Ø®Ù‡: 2.1.0
  * 
- * مجموعه‌ای از توابع کمکی پرکاربرد که
- * در تمام پروژه قابل استفاده هستن
+ * Ù…Ø¬Ù…ÙˆØ¹Ù‡â€ŒØ§ÛŒ Ø§Ø² ØªÙˆØ§Ø¨Ø¹ Ú©Ù…Ú©ÛŒ Ù¾Ø±Ú©Ø§Ø±Ø¨Ø±Ø¯ Ú©Ù‡
+ * Ø¯Ø± ØªÙ…Ø§Ù… Ù¾Ø±ÙˆÚ˜Ù‡ Ù‚Ø§Ø¨Ù„ Ø§Ø³ØªÙØ§Ø¯Ù‡ Ù‡Ø³ØªÙ†
  * 
- * دسته‌بندی:
+ * Ø¯Ø³ØªÙ‡â€ŒØ¨Ù†Ø¯ÛŒ:
  * - String Helpers
  * - Array Helpers
  * - Date/Time Helpers
@@ -21,13 +21,13 @@
  * - Telegram Helpers
  */
 
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // 1. String Helpers
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 if (!function_exists('str_limit')) {
     /**
-     * محدود کردن طول رشته
+     * Ù…Ø­Ø¯ÙˆØ¯ Ú©Ø±Ø¯Ù† Ø·ÙˆÙ„ Ø±Ø´ØªÙ‡
      */
     function str_limit($value, $limit = 100, $end = '...') {
         if (mb_strlen($value) <= $limit) {
@@ -39,20 +39,20 @@ if (!function_exists('str_limit')) {
 
 if (!function_exists('str_slug')) {
     /**
-     * تبدیل رشته به slug
+     * ØªØ¨Ø¯ÛŒÙ„ Ø±Ø´ØªÙ‡ Ø¨Ù‡ slug
      */
     function str_slug($title, $separator = '-') {
         $title = mb_strtolower($title);
         
-        // تبدیل حروف فارسی به انگلیسی (اختیاری)
-        $persian = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+        // ØªØ¨Ø¯ÛŒÙ„ Ø­Ø±ÙˆÙ ÙØ§Ø±Ø³ÛŒ Ø¨Ù‡ Ø§Ù†Ú¯Ù„ÛŒØ³ÛŒ (Ø§Ø®ØªÛŒØ§Ø±ÛŒ)
+        $persian = ['Û°','Û±','Û²','Û³','Û´','Ûµ','Û¶','Û·','Û¸','Û¹'];
         $english = ['0','1','2','3','4','5','6','7','8','9'];
         $title = str_replace($persian, $english, $title);
         
-        // حذف کاراکترهای غیر مجاز
+        // Ø­Ø°Ù Ú©Ø§Ø±Ø§Ú©ØªØ±Ù‡Ø§ÛŒ ØºÛŒØ± Ù…Ø¬Ø§Ø²
         $title = preg_replace('/[^\p{L}\p{N}\s-]/u', '', $title);
         
-        // جایگزینی فاصله با separator
+        // Ø¬Ø§ÛŒÚ¯Ø²ÛŒÙ†ÛŒ ÙØ§ØµÙ„Ù‡ Ø¨Ø§ separator
         $title = preg_replace('/[\s-]+/', $separator, $title);
         
         return trim($title, $separator);
@@ -61,7 +61,7 @@ if (!function_exists('str_slug')) {
 
 if (!function_exists('str_random')) {
     /**
-     * تولید رشته تصادفی
+     * ØªÙˆÙ„ÛŒØ¯ Ø±Ø´ØªÙ‡ ØªØµØ§Ø¯ÙÛŒ
      */
     function str_random($length = 16) {
         $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -78,7 +78,7 @@ if (!function_exists('str_random')) {
 
 if (!function_exists('str_contains_any')) {
     /**
-     * بررسی وجود یکی از کلمات در رشته
+     * Ø¨Ø±Ø±Ø³ÛŒ ÙˆØ¬ÙˆØ¯ ÛŒÚ©ÛŒ Ø§Ø² Ú©Ù„Ù…Ø§Øª Ø¯Ø± Ø±Ø´ØªÙ‡
      */
     function str_contains_any($haystack, array $needles) {
         foreach ($needles as $needle) {
@@ -92,7 +92,7 @@ if (!function_exists('str_contains_any')) {
 
 if (!function_exists('str_starts_with')) {
     /**
-     * بررسی شروع رشته با یک مقدار
+     * Ø¨Ø±Ø±Ø³ÛŒ Ø´Ø±ÙˆØ¹ Ø±Ø´ØªÙ‡ Ø¨Ø§ ÛŒÚ© Ù…Ù‚Ø¯Ø§Ø±
      */
     function str_starts_with($haystack, $needle) {
         return mb_strpos($haystack, $needle) === 0;
@@ -101,7 +101,7 @@ if (!function_exists('str_starts_with')) {
 
 if (!function_exists('str_ends_with')) {
     /**
-     * بررسی پایان رشته با یک مقدار
+     * Ø¨Ø±Ø±Ø³ÛŒ Ù¾Ø§ÛŒØ§Ù† Ø±Ø´ØªÙ‡ Ø¨Ø§ ÛŒÚ© Ù…Ù‚Ø¯Ø§Ø±
      */
     function str_ends_with($haystack, $needle) {
         $length = mb_strlen($needle);
@@ -114,7 +114,7 @@ if (!function_exists('str_ends_with')) {
 
 if (!function_exists('str_pad_left')) {
     /**
-     * افزودن کاراکتر به سمت چپ
+     * Ø§ÙØ²ÙˆØ¯Ù† Ú©Ø§Ø±Ø§Ú©ØªØ± Ø¨Ù‡ Ø³Ù…Øª Ú†Ù¾
      */
     function str_pad_left($input, $padLength, $padString = '0') {
         return str_pad($input, $padLength, $padString, STR_PAD_LEFT);
@@ -123,7 +123,7 @@ if (!function_exists('str_pad_left')) {
 
 if (!function_exists('str_word_count_fa')) {
     /**
-     * شمارش کلمات فارسی
+     * Ø´Ù…Ø§Ø±Ø´ Ú©Ù„Ù…Ø§Øª ÙØ§Ø±Ø³ÛŒ
      */
     function str_word_count_fa($text) {
         $text = trim($text);
@@ -136,7 +136,7 @@ if (!function_exists('str_word_count_fa')) {
 
 if (!function_exists('clean_html')) {
     /**
-     * پاکسازی HTML (حذف تگ‌ها)
+     * Ù¾Ø§Ú©Ø³Ø§Ø²ÛŒ HTML (Ø­Ø°Ù ØªÚ¯â€ŒÙ‡Ø§)
      */
     function clean_html($html, $allowedTags = '') {
         return strip_tags($html, $allowedTags);
@@ -145,7 +145,7 @@ if (!function_exists('clean_html')) {
 
 if (!function_exists('nl2p')) {
     /**
-     * تبدیل خطوط جدید به پاراگراف HTML
+     * ØªØ¨Ø¯ÛŒÙ„ Ø®Ø·ÙˆØ· Ø¬Ø¯ÛŒØ¯ Ø¨Ù‡ Ù¾Ø§Ø±Ø§Ú¯Ø±Ø§Ù HTML
      */
     function nl2p($text) {
         $paragraphs = preg_split('/\n\s*\n/', $text);
@@ -162,13 +162,13 @@ if (!function_exists('nl2p')) {
     }
 }
 
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // 2. Array Helpers
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 if (!function_exists('array_get')) {
     /**
-     * دریافت مقدار از آرایه تو در تو با Dot Notation
+     * Ø¯Ø±ÛŒØ§ÙØª Ù…Ù‚Ø¯Ø§Ø± Ø§Ø² Ø¢Ø±Ø§ÛŒÙ‡ ØªÙˆ Ø¯Ø± ØªÙˆ Ø¨Ø§ Dot Notation
      */
     function array_get($array, $key, $default = null) {
         if (is_null($key)) {
@@ -192,7 +192,7 @@ if (!function_exists('array_get')) {
 
 if (!function_exists('array_set')) {
     /**
-     * تنظیم مقدار در آرایه تو در تو با Dot Notation
+     * ØªÙ†Ø¸ÛŒÙ… Ù…Ù‚Ø¯Ø§Ø± Ø¯Ø± Ø¢Ø±Ø§ÛŒÙ‡ ØªÙˆ Ø¯Ø± ØªÙˆ Ø¨Ø§ Dot Notation
      */
     function array_set(&$array, $key, $value) {
         $keys = explode('.', $key);
@@ -215,7 +215,7 @@ if (!function_exists('array_set')) {
 
 if (!function_exists('array_has')) {
     /**
-     * بررسی وجود کلید در آرایه تو در تو
+     * Ø¨Ø±Ø±Ø³ÛŒ ÙˆØ¬ÙˆØ¯ Ú©Ù„ÛŒØ¯ Ø¯Ø± Ø¢Ø±Ø§ÛŒÙ‡ ØªÙˆ Ø¯Ø± ØªÙˆ
      */
     function array_has($array, $key) {
         if (empty($array) || is_null($key)) {
@@ -239,7 +239,7 @@ if (!function_exists('array_has')) {
 
 if (!function_exists('array_forget')) {
     /**
-     * حذف کلید از آرایه تو در تو
+     * Ø­Ø°Ù Ú©Ù„ÛŒØ¯ Ø§Ø² Ø¢Ø±Ø§ÛŒÙ‡ ØªÙˆ Ø¯Ø± ØªÙˆ
      */
     function array_forget(&$array, $key) {
         $keys = explode('.', $key);
@@ -260,7 +260,7 @@ if (!function_exists('array_forget')) {
 
 if (!function_exists('array_only')) {
     /**
-     * دریافت فقط کلیدهای مشخص از آرایه
+     * Ø¯Ø±ÛŒØ§ÙØª ÙÙ‚Ø· Ú©Ù„ÛŒØ¯Ù‡Ø§ÛŒ Ù…Ø´Ø®Øµ Ø§Ø² Ø¢Ø±Ø§ÛŒÙ‡
      */
     function array_only($array, array $keys) {
         return array_intersect_key($array, array_flip($keys));
@@ -269,7 +269,7 @@ if (!function_exists('array_only')) {
 
 if (!function_exists('array_except')) {
     /**
-     * حذف کلیدهای مشخص از آرایه
+     * Ø­Ø°Ù Ú©Ù„ÛŒØ¯Ù‡Ø§ÛŒ Ù…Ø´Ø®Øµ Ø§Ø² Ø¢Ø±Ø§ÛŒÙ‡
      */
     function array_except($array, array $keys) {
         return array_diff_key($array, array_flip($keys));
@@ -278,7 +278,7 @@ if (!function_exists('array_except')) {
 
 if (!function_exists('array_flatten')) {
     /**
-     * تخت کردن آرایه چند بعدی
+     * ØªØ®Øª Ú©Ø±Ø¯Ù† Ø¢Ø±Ø§ÛŒÙ‡ Ú†Ù†Ø¯ Ø¨Ø¹Ø¯ÛŒ
      */
     function array_flatten($array, $depth = INF) {
         $result = [];
@@ -299,7 +299,7 @@ if (!function_exists('array_flatten')) {
 
 if (!function_exists('array_pluck')) {
     /**
-     * استخراج یک کلید خاص از آرایه چند بعدی
+     * Ø§Ø³ØªØ®Ø±Ø§Ø¬ ÛŒÚ© Ú©Ù„ÛŒØ¯ Ø®Ø§Øµ Ø§Ø² Ø¢Ø±Ø§ÛŒÙ‡ Ú†Ù†Ø¯ Ø¨Ø¹Ø¯ÛŒ
      */
     function array_pluck($array, $value, $key = null) {
         $results = [];
@@ -321,7 +321,7 @@ if (!function_exists('array_pluck')) {
 
 if (!function_exists('array_group_by')) {
     /**
-     * گروه‌بندی آرایه بر اساس یک کلید
+     * Ú¯Ø±ÙˆÙ‡â€ŒØ¨Ù†Ø¯ÛŒ Ø¢Ø±Ø§ÛŒÙ‡ Ø¨Ø± Ø§Ø³Ø§Ø³ ÛŒÚ© Ú©Ù„ÛŒØ¯
      */
     function array_group_by($array, $key) {
         $result = [];
@@ -337,7 +337,7 @@ if (!function_exists('array_group_by')) {
 
 if (!function_exists('array_sort_by')) {
     /**
-     * مرتب‌سازی آرایه بر اساس یک کلید
+     * Ù…Ø±ØªØ¨â€ŒØ³Ø§Ø²ÛŒ Ø¢Ø±Ø§ÛŒÙ‡ Ø¨Ø± Ø§Ø³Ø§Ø³ ÛŒÚ© Ú©Ù„ÛŒØ¯
      */
     function array_sort_by($array, $key, $direction = 'asc') {
         usort($array, function($a, $b) use ($key, $direction) {
@@ -353,13 +353,13 @@ if (!function_exists('array_sort_by')) {
     }
 }
 
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // 3. Date/Time Helpers
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 if (!function_exists('now')) {
     /**
-     * زمان فعلی
+     * Ø²Ù…Ø§Ù† ÙØ¹Ù„ÛŒ
      */
     function now() {
         return new DateTime();
@@ -368,7 +368,7 @@ if (!function_exists('now')) {
 
 if (!function_exists('today')) {
     /**
-     * تاریخ امروز
+     * ØªØ§Ø±ÛŒØ® Ø§Ù…Ø±ÙˆØ²
      */
     function today() {
         return date('Y-m-d');
@@ -377,7 +377,7 @@ if (!function_exists('today')) {
 
 if (!function_exists('carbon')) {
     /**
-     * ساخت DateTime از رشته
+     * Ø³Ø§Ø®Øª DateTime Ø§Ø² Ø±Ø´ØªÙ‡
      */
     function carbon($date = null) {
         if (is_null($date)) {
@@ -394,7 +394,7 @@ if (!function_exists('carbon')) {
 
 if (!function_exists('format_date')) {
     /**
-     * فرمت تاریخ به فارسی
+     * ÙØ±Ù…Øª ØªØ§Ø±ÛŒØ® Ø¨Ù‡ ÙØ§Ø±Ø³ÛŒ
      */
     function format_date($date, $format = 'Y/m/d') {
         $timestamp = is_numeric($date) ? $date : strtotime($date);
@@ -404,7 +404,7 @@ if (!function_exists('format_date')) {
 
 if (!function_exists('format_datetime')) {
     /**
-     * فرمت تاریخ و ساعت به فارسی
+     * ÙØ±Ù…Øª ØªØ§Ø±ÛŒØ® Ùˆ Ø³Ø§Ø¹Øª Ø¨Ù‡ ÙØ§Ø±Ø³ÛŒ
      */
     function format_datetime($date, $format = 'Y/m/d H:i:s') {
         return format_date($date, $format);
@@ -413,39 +413,39 @@ if (!function_exists('format_datetime')) {
 
 if (!function_exists('time_ago')) {
     /**
-     * تبدیل زمان به "x دقیقه پیش"
+     * ØªØ¨Ø¯ÛŒÙ„ Ø²Ù…Ø§Ù† Ø¨Ù‡ "x Ø¯Ù‚ÛŒÙ‚Ù‡ Ù¾ÛŒØ´"
      */
     function time_ago($datetime) {
         $time = is_numeric($datetime) ? $datetime : strtotime($datetime);
         $diff = time() - $time;
         
         if ($diff < 60) {
-            return 'لحظاتی پیش';
+            return 'Ù„Ø­Ø¸Ø§ØªÛŒ Ù¾ÛŒØ´';
         } elseif ($diff < 3600) {
             $minutes = floor($diff / 60);
-            return "{$minutes} دقیقه پیش";
+            return "{$minutes} Ø¯Ù‚ÛŒÙ‚Ù‡ Ù¾ÛŒØ´";
         } elseif ($diff < 86400) {
             $hours = floor($diff / 3600);
-            return "{$hours} ساعت پیش";
+            return "{$hours} Ø³Ø§Ø¹Øª Ù¾ÛŒØ´";
         } elseif ($diff < 604800) {
             $days = floor($diff / 86400);
-            return "{$days} روز پیش";
+            return "{$days} Ø±ÙˆØ² Ù¾ÛŒØ´";
         } elseif ($diff < 2592000) {
             $weeks = floor($diff / 604800);
-            return "{$weeks} هفته پیش";
+            return "{$weeks} Ù‡ÙØªÙ‡ Ù¾ÛŒØ´";
         } elseif ($diff < 31536000) {
             $months = floor($diff / 2592000);
-            return "{$months} ماه پیش";
+            return "{$months} Ù…Ø§Ù‡ Ù¾ÛŒØ´";
         } else {
             $years = floor($diff / 31536000);
-            return "{$years} سال پیش";
+            return "{$years} Ø³Ø§Ù„ Ù¾ÛŒØ´";
         }
     }
 }
 
 if (!function_exists('days_ago')) {
     /**
-     * تعداد روزهای گذشته
+     * ØªØ¹Ø¯Ø§Ø¯ Ø±ÙˆØ²Ù‡Ø§ÛŒ Ú¯Ø°Ø´ØªÙ‡
      */
     function days_ago($date) {
         $time = is_numeric($date) ? $date : strtotime($date);
@@ -455,7 +455,7 @@ if (!function_exists('days_ago')) {
 
 if (!function_exists('is_today')) {
     /**
-     * بررسی اینکه تاریخ امروز است
+     * Ø¨Ø±Ø±Ø³ÛŒ Ø§ÛŒÙ†Ú©Ù‡ ØªØ§Ø±ÛŒØ® Ø§Ù…Ø±ÙˆØ² Ø§Ø³Øª
      */
     function is_today($date) {
         return date('Y-m-d', strtotime($date)) === date('Y-m-d');
@@ -464,7 +464,7 @@ if (!function_exists('is_today')) {
 
 if (!function_exists('is_yesterday')) {
     /**
-     * بررسی اینکه تاریخ دیروز است
+     * Ø¨Ø±Ø±Ø³ÛŒ Ø§ÛŒÙ†Ú©Ù‡ ØªØ§Ø±ÛŒØ® Ø¯ÛŒØ±ÙˆØ² Ø§Ø³Øª
      */
     function is_yesterday($date) {
         return date('Y-m-d', strtotime($date)) === date('Y-m-d', strtotime('-1 day'));
@@ -473,7 +473,7 @@ if (!function_exists('is_yesterday')) {
 
 if (!function_exists('is_past')) {
     /**
-     * بررسی گذشته بودن تاریخ
+     * Ø¨Ø±Ø±Ø³ÛŒ Ú¯Ø°Ø´ØªÙ‡ Ø¨ÙˆØ¯Ù† ØªØ§Ø±ÛŒØ®
      */
     function is_past($date) {
         return strtotime($date) < time();
@@ -482,7 +482,7 @@ if (!function_exists('is_past')) {
 
 if (!function_exists('is_future')) {
     /**
-     * بررسی آینده بودن تاریخ
+     * Ø¨Ø±Ø±Ø³ÛŒ Ø¢ÛŒÙ†Ø¯Ù‡ Ø¨ÙˆØ¯Ù† ØªØ§Ø±ÛŒØ®
      */
     function is_future($date) {
         return strtotime($date) > time();
@@ -491,7 +491,7 @@ if (!function_exists('is_future')) {
 
 if (!function_exists('diff_for_humans')) {
     /**
-     * تفاوت زمانی به زبان انسانی
+     * ØªÙØ§ÙˆØª Ø²Ù…Ø§Ù†ÛŒ Ø¨Ù‡ Ø²Ø¨Ø§Ù† Ø§Ù†Ø³Ø§Ù†ÛŒ
      */
     function diff_for_humans($date1, $date2 = null) {
         $time1 = is_numeric($date1) ? $date1 : strtotime($date1);
@@ -500,28 +500,28 @@ if (!function_exists('diff_for_humans')) {
         $diff = abs($time2 - $time1);
         
         if ($diff < 60) {
-            return "{$diff} ثانیه";
+            return "{$diff} Ø«Ø§Ù†ÛŒÙ‡";
         } elseif ($diff < 3600) {
-            return floor($diff / 60) . " دقیقه";
+            return floor($diff / 60) . " Ø¯Ù‚ÛŒÙ‚Ù‡";
         } elseif ($diff < 86400) {
-            return floor($diff / 3600) . " ساعت";
+            return floor($diff / 3600) . " Ø³Ø§Ø¹Øª";
         } elseif ($diff < 2592000) {
-            return floor($diff / 86400) . " روز";
+            return floor($diff / 86400) . " Ø±ÙˆØ²";
         } elseif ($diff < 31536000) {
-            return floor($diff / 2592000) . " ماه";
+            return floor($diff / 2592000) . " Ù…Ø§Ù‡";
         } else {
-            return floor($diff / 31536000) . " سال";
+            return floor($diff / 31536000) . " Ø³Ø§Ù„";
         }
     }
 }
 
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // 4. File Helpers
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 if (!function_exists('file_exists_safe')) {
     /**
-     * بررسی وجود فایل با مدیریت خطا
+     * Ø¨Ø±Ø±Ø³ÛŒ ÙˆØ¬ÙˆØ¯ ÙØ§ÛŒÙ„ Ø¨Ø§ Ù…Ø¯ÛŒØ±ÛŒØª Ø®Ø·Ø§
      */
     function file_exists_safe($path) {
         try {
@@ -534,7 +534,7 @@ if (!function_exists('file_exists_safe')) {
 
 if (!function_exists('file_size')) {
     /**
-     * فرمت اندازه فایل
+     * ÙØ±Ù…Øª Ø§Ù†Ø¯Ø§Ø²Ù‡ ÙØ§ÛŒÙ„
      */
     function file_size($bytes, $precision = 2) {
         $units = ['B', 'KB', 'MB', 'GB', 'TB'];
@@ -551,7 +551,7 @@ if (!function_exists('file_size')) {
 
 if (!function_exists('file_extension')) {
     /**
-     * دریافت پسوند فایل
+     * Ø¯Ø±ÛŒØ§ÙØª Ù¾Ø³ÙˆÙ†Ø¯ ÙØ§ÛŒÙ„
      */
     function file_extension($filename) {
         return strtolower(pathinfo($filename, PATHINFO_EXTENSION));
@@ -560,7 +560,7 @@ if (!function_exists('file_extension')) {
 
 if (!function_exists('file_name')) {
     /**
-     * دریافت نام فایل بدون پسوند
+     * Ø¯Ø±ÛŒØ§ÙØª Ù†Ø§Ù… ÙØ§ÛŒÙ„ Ø¨Ø¯ÙˆÙ† Ù¾Ø³ÙˆÙ†Ø¯
      */
     function file_name($filename) {
         return pathinfo($filename, PATHINFO_FILENAME);
@@ -569,7 +569,7 @@ if (!function_exists('file_name')) {
 
 if (!function_exists('file_mime')) {
     /**
-     * دریافت MIME type فایل
+     * Ø¯Ø±ÛŒØ§ÙØª MIME type ÙØ§ÛŒÙ„
      */
     function file_mime($filepath) {
         if (!file_exists($filepath)) {
@@ -586,7 +586,7 @@ if (!function_exists('file_mime')) {
 
 if (!function_exists('ensure_directory')) {
     /**
-     * اطمینان از وجود پوشه
+     * Ø§Ø·Ù…ÛŒÙ†Ø§Ù† Ø§Ø² ÙˆØ¬ÙˆØ¯ Ù¾ÙˆØ´Ù‡
      */
     function ensure_directory($path, $permissions = 0775) {
         if (!is_dir($path)) {
@@ -598,7 +598,7 @@ if (!function_exists('ensure_directory')) {
 
 if (!function_exists('write_file')) {
     /**
-     * نوشتن در فایل
+     * Ù†ÙˆØ´ØªÙ† Ø¯Ø± ÙØ§ÛŒÙ„
      */
     function write_file($path, $content, $append = false) {
         ensure_directory(dirname($path));
@@ -611,7 +611,7 @@ if (!function_exists('write_file')) {
 
 if (!function_exists('read_file')) {
     /**
-     * خواندن محتوای فایل
+     * Ø®ÙˆØ§Ù†Ø¯Ù† Ù…Ø­ØªÙˆØ§ÛŒ ÙØ§ÛŒÙ„
      */
     function read_file($path, $default = null) {
         if (!file_exists($path)) {
@@ -624,7 +624,7 @@ if (!function_exists('read_file')) {
 
 if (!function_exists('delete_file')) {
     /**
-     * حذف فایل
+     * Ø­Ø°Ù ÙØ§ÛŒÙ„
      */
     function delete_file($path) {
         if (file_exists($path)) {
@@ -636,7 +636,7 @@ if (!function_exists('delete_file')) {
 
 if (!function_exists('copy_file')) {
     /**
-     * کپی فایل
+     * Ú©Ù¾ÛŒ ÙØ§ÛŒÙ„
      */
     function copy_file($source, $destination) {
         ensure_directory(dirname($destination));
@@ -646,7 +646,7 @@ if (!function_exists('copy_file')) {
 
 if (!function_exists('move_file')) {
     /**
-     * جابجایی فایل
+     * Ø¬Ø§Ø¨Ø¬Ø§ÛŒÛŒ ÙØ§ÛŒÙ„
      */
     function move_file($source, $destination) {
         ensure_directory(dirname($destination));
@@ -654,13 +654,13 @@ if (!function_exists('move_file')) {
     }
 }
 
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // 5. URL Helpers
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 if (!function_exists('asset')) {
     /**
-     * دریافت URL فایل asset
+     * Ø¯Ø±ÛŒØ§ÙØª URL ÙØ§ÛŒÙ„ asset
      */
     function asset($path) {
         $baseUrl = config('app.url', '');
@@ -670,7 +670,7 @@ if (!function_exists('asset')) {
 
 if (!function_exists('public_path')) {
     /**
-     * دریافت مسیر فایل عمومی
+     * Ø¯Ø±ÛŒØ§ÙØª Ù…Ø³ÛŒØ± ÙØ§ÛŒÙ„ Ø¹Ù…ÙˆÙ…ÛŒ
      */
     function public_path($path = '') {
         return PUBLIC_PATH . ($path ? '/' . ltrim($path, '/') : '');
@@ -679,7 +679,7 @@ if (!function_exists('public_path')) {
 
 if (!function_exists('current_url')) {
     /**
-     * دریافت URL فعلی
+     * Ø¯Ø±ÛŒØ§ÙØª URL ÙØ¹Ù„ÛŒ
      */
     function current_url() {
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
@@ -692,7 +692,7 @@ if (!function_exists('current_url')) {
 
 if (!function_exists('previous_url')) {
     /**
-     * دریافت URL قبلی
+     * Ø¯Ø±ÛŒØ§ÙØª URL Ù‚Ø¨Ù„ÛŒ
      */
     function previous_url($default = '/') {
         return $_SERVER['HTTP_REFERER'] ?? $default;
@@ -701,7 +701,7 @@ if (!function_exists('previous_url')) {
 
 if (!function_exists('query_string')) {
     /**
-     * ساخت Query String
+     * Ø³Ø§Ø®Øª Query String
      */
     function query_string(array $params) {
         return http_build_query($params);
@@ -710,7 +710,7 @@ if (!function_exists('query_string')) {
 
 if (!function_exists('merge_query')) {
     /**
-     * ادغام پارامترهای URL
+     * Ø§Ø¯ØºØ§Ù… Ù¾Ø§Ø±Ø§Ù…ØªØ±Ù‡Ø§ÛŒ URL
      */
     function merge_query(array $params) {
         $current = $_GET ?? [];
@@ -720,20 +720,20 @@ if (!function_exists('merge_query')) {
 
 if (!function_exists('is_url')) {
     /**
-     * بررسی URL معتبر
+     * Ø¨Ø±Ø±Ø³ÛŒ URL Ù…Ø¹ØªØ¨Ø±
      */
     function is_url($url) {
         return filter_var($url, FILTER_VALIDATE_URL) !== false;
     }
 }
 
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // 6. HTML Helpers
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 if (!function_exists('link_to')) {
     /**
-     * ساخت لینک HTML
+     * Ø³Ø§Ø®Øª Ù„ÛŒÙ†Ú© HTML
      */
     function link_to($url, $text, $attributes = []) {
         $attrs = '';
@@ -747,7 +747,7 @@ if (!function_exists('link_to')) {
 
 if (!function_exists('csrf_field')) {
     /**
-     * ساخت hidden input برای CSRF
+     * Ø³Ø§Ø®Øª hidden input Ø¨Ø±Ø§ÛŒ CSRF
      */
     function csrf_field() {
         $session = \App\Core\Session::getInstance();
@@ -758,7 +758,7 @@ if (!function_exists('csrf_field')) {
 
 if (!function_exists('method_field')) {
     /**
-     * ساخت hidden input برای HTTP Method
+     * Ø³Ø§Ø®Øª hidden input Ø¨Ø±Ø§ÛŒ HTTP Method
      */
     function method_field($method) {
         return '<input type="hidden" name="_method" value="' . strtoupper($method) . '">';
@@ -767,7 +767,7 @@ if (!function_exists('method_field')) {
 
 if (!function_exists('old')) {
     /**
-     * دریافت مقدار قبلی input
+     * Ø¯Ø±ÛŒØ§ÙØª Ù…Ù‚Ø¯Ø§Ø± Ù‚Ø¨Ù„ÛŒ input
      */
     function old($key, $default = '') {
         $session = \App\Core\Session::getInstance();
@@ -779,7 +779,7 @@ if (!function_exists('old')) {
 
 if (!function_exists('active_class')) {
     /**
-     * دریافت کلاس active برای منو
+     * Ø¯Ø±ÛŒØ§ÙØª Ú©Ù„Ø§Ø³ active Ø¨Ø±Ø§ÛŒ Ù…Ù†Ùˆ
      */
     function active_class($paths, $class = 'active') {
         $currentPath = $_SERVER['REQUEST_URI'] ?? '/';
@@ -799,7 +799,7 @@ if (!function_exists('active_class')) {
 
 if (!function_exists('pagination')) {
     /**
-     * ساخت HTML Pagination
+     * Ø³Ø§Ø®Øª HTML Pagination
      */
     function pagination($pagination, $baseUrl = '') {
         if ($pagination['total_pages'] <= 1) {
@@ -810,7 +810,7 @@ if (!function_exists('pagination')) {
         
         // Previous
         if ($pagination['current_page'] > 1) {
-            $html .= '<a href="' . $baseUrl . '?page=' . ($pagination['current_page'] - 1) . '" class="pagination-link">قبلی</a>';
+            $html .= '<a href="' . $baseUrl . '?page=' . ($pagination['current_page'] - 1) . '" class="pagination-link">Ù‚Ø¨Ù„ÛŒ</a>';
         }
         
         // Pages
@@ -821,7 +821,7 @@ if (!function_exists('pagination')) {
         
         // Next
         if ($pagination['current_page'] < $pagination['total_pages']) {
-            $html .= '<a href="' . $baseUrl . '?page=' . ($pagination['current_page'] + 1) . '" class="pagination-link">بعدی</a>';
+            $html .= '<a href="' . $baseUrl . '?page=' . ($pagination['current_page'] + 1) . '" class="pagination-link">Ø¨Ø¹Ø¯ÛŒ</a>';
         }
         
         $html .= '</div>';
@@ -830,13 +830,13 @@ if (!function_exists('pagination')) {
     }
 }
 
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // 7. Number Helpers
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 if (!function_exists('format_number')) {
     /**
-     * فرمت عدد با جداکننده
+     * ÙØ±Ù…Øª Ø¹Ø¯Ø¯ Ø¨Ø§ Ø¬Ø¯Ø§Ú©Ù†Ù†Ø¯Ù‡
      */
     function format_number($number, $decimals = 0) {
         return number_format((float)$number, $decimals, '.', ',');
@@ -845,29 +845,29 @@ if (!function_exists('format_number')) {
 
 if (!function_exists('format_money')) {
     /**
-     * فرمت پول (تومان)
+     * ÙØ±Ù…Øª Ù¾ÙˆÙ„ (ØªÙˆÙ…Ø§Ù†)
      */
-    function format_money($amount, $currency = 'تومان') {
+    function format_money($amount, $currency = 'ØªÙˆÙ…Ø§Ù†') {
         return format_number($amount) . ' ' . $currency;
     }
 }
 
 if (!function_exists('format_toman')) {
     /**
-     * فرمت تومان
+     * ÙØ±Ù…Øª ØªÙˆÙ…Ø§Ù†
      */
     function format_toman($amount) {
-        return format_money($amount, 'تومان');
+        return format_money($amount, 'ØªÙˆÙ…Ø§Ù†');
     }
 }
 
 if (!function_exists('to_english_numbers')) {
     /**
-     * تبدیل اعداد فارسی به انگلیسی
+     * ØªØ¨Ø¯ÛŒÙ„ Ø§Ø¹Ø¯Ø§Ø¯ ÙØ§Ø±Ø³ÛŒ Ø¨Ù‡ Ø§Ù†Ú¯Ù„ÛŒØ³ÛŒ
      */
     function to_english_numbers($string) {
-        $persian = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
-        $arabic = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+        $persian = ['Û°','Û±','Û²','Û³','Û´','Ûµ','Û¶','Û·','Û¸','Û¹'];
+        $arabic = ['Ù ','Ù¡','Ù¢','Ù£','Ù¤','Ù¥','Ù¦','Ù§','Ù¨','Ù©'];
         $english = ['0','1','2','3','4','5','6','7','8','9'];
         
         $string = str_replace($persian, $english, $string);
@@ -877,11 +877,11 @@ if (!function_exists('to_english_numbers')) {
 
 if (!function_exists('to_persian_numbers')) {
     /**
-     * تبدیل اعداد انگلیسی به فارسی
+     * ØªØ¨Ø¯ÛŒÙ„ Ø§Ø¹Ø¯Ø§Ø¯ Ø§Ù†Ú¯Ù„ÛŒØ³ÛŒ Ø¨Ù‡ ÙØ§Ø±Ø³ÛŒ
      */
     function to_persian_numbers($string) {
         $english = ['0','1','2','3','4','5','6','7','8','9'];
-        $persian = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+        $persian = ['Û°','Û±','Û²','Û³','Û´','Ûµ','Û¶','Û·','Û¸','Û¹'];
         
         return str_replace($english, $persian, $string);
     }
@@ -889,7 +889,7 @@ if (!function_exists('to_persian_numbers')) {
 
 if (!function_exists('percentage')) {
     /**
-     * محاسبه درصد
+     * Ù…Ø­Ø§Ø³Ø¨Ù‡ Ø¯Ø±ØµØ¯
      */
     function percentage($part, $total, $decimals = 2) {
         if ($total == 0) return 0;
@@ -899,20 +899,20 @@ if (!function_exists('percentage')) {
 
 if (!function_exists('clamp')) {
     /**
-     * محدود کردن عدد بین حداقل و حداکثر
+     * Ù…Ø­Ø¯ÙˆØ¯ Ú©Ø±Ø¯Ù† Ø¹Ø¯Ø¯ Ø¨ÛŒÙ† Ø­Ø¯Ø§Ù‚Ù„ Ùˆ Ø­Ø¯Ø§Ú©Ø«Ø±
      */
     function clamp($value, $min, $max) {
         return max($min, min($max, $value));
     }
 }
 
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // 8. Debug Helpers
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 if (!function_exists('pre')) {
     /**
-     * نمایش در تگ pre
+     * Ù†Ù…Ø§ÛŒØ´ Ø¯Ø± ØªÚ¯ pre
      */
     function pre($data) {
         echo '<pre style="background:#1f2937;color:#fff;padding:15px;border-radius:8px;direction:ltr;text-align:left;overflow-x:auto;">';
@@ -923,7 +923,7 @@ if (!function_exists('pre')) {
 
 if (!function_exists('log_debug')) {
     /**
-     * لاگ پیام Debug
+     * Ù„Ø§Ú¯ Ù¾ÛŒØ§Ù… Debug
      */
     function log_debug($message, array $context = []) {
         try {
@@ -937,7 +937,7 @@ if (!function_exists('log_debug')) {
 
 if (!function_exists('log_info')) {
     /**
-     * لاگ پیام Info
+     * Ù„Ø§Ú¯ Ù¾ÛŒØ§Ù… Info
      */
     function log_info($message, array $context = []) {
         try {
@@ -951,7 +951,7 @@ if (!function_exists('log_info')) {
 
 if (!function_exists('log_error')) {
     /**
-     * لاگ پیام Error
+     * Ù„Ø§Ú¯ Ù¾ÛŒØ§Ù… Error
      */
     function log_error($message, array $context = []) {
         try {
@@ -965,7 +965,7 @@ if (!function_exists('log_error')) {
 
 if (!function_exists('benchmark')) {
     /**
-     * اندازه‌گیری زمان اجرای کد
+     * Ø§Ù†Ø¯Ø§Ø²Ù‡â€ŒÚ¯ÛŒØ±ÛŒ Ø²Ù…Ø§Ù† Ø§Ø¬Ø±Ø§ÛŒ Ú©Ø¯
      */
     function benchmark($name, callable $callback) {
         $start = microtime(true);
@@ -982,7 +982,7 @@ if (!function_exists('benchmark')) {
 
 if (!function_exists('memory_usage')) {
     /**
-     * دریافت میزان استفاده حافظه
+     * Ø¯Ø±ÛŒØ§ÙØª Ù…ÛŒØ²Ø§Ù† Ø§Ø³ØªÙØ§Ø¯Ù‡ Ø­Ø§ÙØ¸Ù‡
      */
     function memory_usage($format = true) {
         $bytes = memory_get_usage(true);
@@ -1002,13 +1002,13 @@ if (!function_exists('memory_usage')) {
     }
 }
 
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // 9. Validation Helpers
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 if (!function_exists('is_email')) {
     /**
-     * بررسی ایمیل معتبر
+     * Ø¨Ø±Ø±Ø³ÛŒ Ø§ÛŒÙ…ÛŒÙ„ Ù…Ø¹ØªØ¨Ø±
      */
     function is_email($email) {
         return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
@@ -1017,7 +1017,7 @@ if (!function_exists('is_email')) {
 
 if (!function_exists('is_numeric_value')) {
     /**
-     * بررسی عدد بودن
+     * Ø¨Ø±Ø±Ø³ÛŒ Ø¹Ø¯Ø¯ Ø¨ÙˆØ¯Ù†
      */
     function is_numeric_value($value) {
         return is_numeric($value);
@@ -1026,7 +1026,7 @@ if (!function_exists('is_numeric_value')) {
 
 if (!function_exists('is_json')) {
     /**
-     * بررسی JSON معتبر
+     * Ø¨Ø±Ø±Ø³ÛŒ JSON Ù…Ø¹ØªØ¨Ø±
      */
     function is_json($string) {
         if (!is_string($string)) return false;
@@ -1037,7 +1037,7 @@ if (!function_exists('is_json')) {
 
 if (!function_exists('is_serialized')) {
     /**
-     * بررسی serialized بودن
+     * Ø¨Ø±Ø±Ø³ÛŒ serialized Ø¨ÙˆØ¯Ù†
      */
     function is_serialized($data) {
         if (!is_string($data)) return false;
@@ -1050,7 +1050,7 @@ if (!function_exists('is_serialized')) {
 
 if (!function_exists('is_empty_value')) {
     /**
-     * بررسی خالی بودن مقدار
+     * Ø¨Ø±Ø±Ø³ÛŒ Ø®Ø§Ù„ÛŒ Ø¨ÙˆØ¯Ù† Ù…Ù‚Ø¯Ø§Ø±
      */
     function is_empty_value($value) {
         if (is_null($value)) return true;
@@ -1060,13 +1060,13 @@ if (!function_exists('is_empty_value')) {
     }
 }
 
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // 10. Telegram Helpers
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 if (!function_exists('is_telegram_id')) {
     /**
-     * بررسی آیدی تلگرام معتبر
+     * Ø¨Ø±Ø±Ø³ÛŒ Ø¢ÛŒØ¯ÛŒ ØªÙ„Ú¯Ø±Ø§Ù… Ù…Ø¹ØªØ¨Ø±
      */
     function is_telegram_id($id) {
         return is_numeric($id) && $id >= 10000 && $id <= 9999999999;
@@ -1075,7 +1075,7 @@ if (!function_exists('is_telegram_id')) {
 
 if (!function_exists('is_bot_token')) {
     /**
-     * بررسی توکن ربات تلگرام
+     * Ø¨Ø±Ø±Ø³ÛŒ ØªÙˆÚ©Ù† Ø±Ø¨Ø§Øª ØªÙ„Ú¯Ø±Ø§Ù…
      */
     function is_bot_token($token) {
         return preg_match('/^[0-9]{8,10}:[a-zA-Z0-9_-]{35}$/', $token) === 1;
@@ -1084,7 +1084,7 @@ if (!function_exists('is_bot_token')) {
 
 if (!function_exists('telegram_link')) {
     /**
-     * ساخت لینک تلگرام
+     * Ø³Ø§Ø®Øª Ù„ÛŒÙ†Ú© ØªÙ„Ú¯Ø±Ø§Ù…
      */
     function telegram_link($username) {
         $username = ltrim($username, '@');
@@ -1094,10 +1094,10 @@ if (!function_exists('telegram_link')) {
 
 if (!function_exists('format_telegram_html')) {
     /**
-     * فرمت متن برای HTML تلگرام
+     * ÙØ±Ù…Øª Ù…ØªÙ† Ø¨Ø±Ø§ÛŒ HTML ØªÙ„Ú¯Ø±Ø§Ù…
      */
     function format_telegram_html($text) {
-        // تبدیل newline به <br>
+        // ØªØ¨Ø¯ÛŒÙ„ newline Ø¨Ù‡ <br>
         $text = nl2br($text);
         
         // Bold
@@ -1115,7 +1115,7 @@ if (!function_exists('format_telegram_html')) {
 
 if (!function_exists('escape_telegram_html')) {
     /**
-     * Escape برای HTML تلگرام
+     * Escape Ø¨Ø±Ø§ÛŒ HTML ØªÙ„Ú¯Ø±Ø§Ù…
      */
     function escape_telegram_html($text) {
         return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
@@ -1124,7 +1124,7 @@ if (!function_exists('escape_telegram_html')) {
 
 if (!function_exists('get_user_mention')) {
     /**
-     * ساخت mention کاربر
+     * Ø³Ø§Ø®Øª mention Ú©Ø§Ø±Ø¨Ø±
      */
     function get_user_mention($userId, $name = null) {
         if ($name) {
@@ -1134,13 +1134,13 @@ if (!function_exists('get_user_mention')) {
     }
 }
 
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // 11. Misc Helpers
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 if (!function_exists('env')) {
     /**
-     * دریافت متغیر محیطی
+     * Ø¯Ø±ÛŒØ§ÙØª Ù…ØªØºÛŒØ± Ù…Ø­ÛŒØ·ÛŒ
      */
     function env($key, $default = null) {
         $value = getenv($key);
@@ -1170,7 +1170,7 @@ if (!function_exists('env')) {
 
 if (!function_exists('retry')) {
     /**
-     * تلاش مجدد در صورت خطا
+     * ØªÙ„Ø§Ø´ Ù…Ø¬Ø¯Ø¯ Ø¯Ø± ØµÙˆØ±Øª Ø®Ø·Ø§
      */
     function retry($times, callable $callback, $sleep = 0) {
         $attempts = 0;
@@ -1194,7 +1194,7 @@ if (!function_exists('retry')) {
 
 if (!function_exists('tap')) {
     /**
-     * اجرای callback روی مقدار و برگرداندن مقدار
+     * Ø§Ø¬Ø±Ø§ÛŒ callback Ø±ÙˆÛŒ Ù…Ù‚Ø¯Ø§Ø± Ùˆ Ø¨Ø±Ú¯Ø±Ø¯Ø§Ù†Ø¯Ù† Ù…Ù‚Ø¯Ø§Ø±
      */
     function tap($value, callable $callback = null) {
         if ($callback) {
@@ -1206,7 +1206,7 @@ if (!function_exists('tap')) {
 
 if (!function_exists('value')) {
     /**
-     * دریافت مقدار (اگر callable باشد، اجرا می‌شود)
+     * Ø¯Ø±ÛŒØ§ÙØª Ù…Ù‚Ø¯Ø§Ø± (Ø§Ú¯Ø± callable Ø¨Ø§Ø´Ø¯ØŒ Ø§Ø¬Ø±Ø§ Ù…ÛŒâ€ŒØ´ÙˆØ¯)
      */
     function value($value, ...$args) {
         return $value instanceof Closure ? $value(...$args) : $value;
@@ -1215,7 +1215,7 @@ if (!function_exists('value')) {
 
 if (!function_exists('class_basename')) {
     /**
-     * دریافت نام کلاس بدون namespace
+     * Ø¯Ø±ÛŒØ§ÙØª Ù†Ø§Ù… Ú©Ù„Ø§Ø³ Ø¨Ø¯ÙˆÙ† namespace
      */
     function class_basename($class) {
         $class = is_object($class) ? get_class($class) : $class;
@@ -1225,7 +1225,7 @@ if (!function_exists('class_basename')) {
 
 if (!function_exists('humanize')) {
     /**
-     * تبدیل snake_case به Human Readable
+     * ØªØ¨Ø¯ÛŒÙ„ snake_case Ø¨Ù‡ Human Readable
      */
     function humanize($value) {
         return ucwords(str_replace(['_', '-'], ' ', $value));
@@ -1234,7 +1234,7 @@ if (!function_exists('humanize')) {
 
 if (!function_exists('title_case')) {
     /**
-     * تبدیل به Title Case
+     * ØªØ¨Ø¯ÛŒÙ„ Ø¨Ù‡ Title Case
      */
     function title_case($value) {
         return mb_convert_case($value, MB_CASE_TITLE, 'UTF-8');
@@ -1243,7 +1243,7 @@ if (!function_exists('title_case')) {
 
 if (!function_exists('camel_case')) {
     /**
-     * تبدیل به camelCase
+     * ØªØ¨Ø¯ÛŒÙ„ Ø¨Ù‡ camelCase
      */
     function camel_case($value) {
         $value = ucwords(str_replace(['_', '-'], ' ', $value));
@@ -1254,7 +1254,7 @@ if (!function_exists('camel_case')) {
 
 if (!function_exists('snake_case')) {
     /**
-     * تبدیل به snake_case
+     * ØªØ¨Ø¯ÛŒÙ„ Ø¨Ù‡ snake_case
      */
     function snake_case($value, $delimiter = '_') {
         $value = preg_replace('/\s+/u', '', ucwords($value));
@@ -1265,20 +1265,20 @@ if (!function_exists('snake_case')) {
 
 if (!function_exists('kebab_case')) {
     /**
-     * تبدیل به kebab-case
+     * ØªØ¨Ø¯ÛŒÙ„ Ø¨Ù‡ kebab-case
      */
     function kebab_case($value) {
         return snake_case($value, '-');
     }
 }
 
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // 12. Cache Helpers
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 if (!function_exists('cache_get')) {
     /**
-     * دریافت از کش
+     * Ø¯Ø±ÛŒØ§ÙØª Ø§Ø² Ú©Ø´
      */
     function cache_get($key, $default = null) {
         return \App\Core\Cache::getInstance()->get($key, $default);
@@ -1287,7 +1287,7 @@ if (!function_exists('cache_get')) {
 
 if (!function_exists('cache_set')) {
     /**
-     * ذخیره در کش
+     * Ø°Ø®ÛŒØ±Ù‡ Ø¯Ø± Ú©Ø´
      */
     function cache_set($key, $value, $ttl = 3600) {
         return \App\Core\Cache::getInstance()->set($key, $value, $ttl);
@@ -1296,7 +1296,7 @@ if (!function_exists('cache_set')) {
 
 if (!function_exists('cache_remember')) {
     /**
-     * دریافت از کش یا ساخت و ذخیره
+     * Ø¯Ø±ÛŒØ§ÙØª Ø§Ø² Ú©Ø´ ÛŒØ§ Ø³Ø§Ø®Øª Ùˆ Ø°Ø®ÛŒØ±Ù‡
      */
     function cache_remember($key, $ttl, callable $callback) {
         return \App\Core\Cache::getInstance()->remember($key, $ttl, $callback);
@@ -1305,20 +1305,20 @@ if (!function_exists('cache_remember')) {
 
 if (!function_exists('cache_forget')) {
     /**
-     * حذف از کش
+     * Ø­Ø°Ù Ø§Ø² Ú©Ø´
      */
     function cache_forget($key) {
         return \App\Core\Cache::getInstance()->delete($key);
     }
 }
 
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // 13. Session Helpers
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 if (!function_exists('session_get')) {
     /**
-     * دریافت از Session
+     * Ø¯Ø±ÛŒØ§ÙØª Ø§Ø² Session
      */
     function session_get($key, $default = null) {
         return \App\Core\Session::getInstance()->get($key, $default);
@@ -1327,7 +1327,7 @@ if (!function_exists('session_get')) {
 
 if (!function_exists('session_set')) {
     /**
-     * ذخیره در Session
+     * Ø°Ø®ÛŒØ±Ù‡ Ø¯Ø± Session
      */
     function session_set($key, $value) {
         return \App\Core\Session::getInstance()->set($key, $value);
@@ -1336,7 +1336,7 @@ if (!function_exists('session_set')) {
 
 if (!function_exists('session_has')) {
     /**
-     * بررسی وجود در Session
+     * Ø¨Ø±Ø±Ø³ÛŒ ÙˆØ¬ÙˆØ¯ Ø¯Ø± Session
      */
     function session_has($key) {
         return \App\Core\Session::getInstance()->has($key);
@@ -1345,33 +1345,33 @@ if (!function_exists('session_has')) {
 
 if (!function_exists('session_forget')) {
     /**
-     * حذف از Session
+     * Ø­Ø°Ù Ø§Ø² Session
      */
     function session_forget($key) {
         return \App\Core\Session::getInstance()->remove($key);
     }
 }
 
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // 14. Database Helpers
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 if (!function_exists('db')) {
     /**
-     * دریافت Database Instance
+     * Ø¯Ø±ÛŒØ§ÙØª Database Instance
      */
     function db() {
         return \App\Core\Database::getInstance();
     }
 }
 
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // 15. JSON Helpers
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 if (!function_exists('json_response')) {
     /**
-     * ارسال پاسخ JSON
+     * Ø§Ø±Ø³Ø§Ù„ Ù¾Ø§Ø³Ø® JSON
      */
     function json_response($data, $statusCode = 200) {
         http_response_code($statusCode);
@@ -1384,9 +1384,9 @@ if (!function_exists('json_response')) {
 
 if (!function_exists('json_success')) {
     /**
-     * پاسخ JSON موفق
+     * Ù¾Ø§Ø³Ø® JSON Ù…ÙˆÙÙ‚
      */
-    function json_success($data = [], $message = 'موفق') {
+    function json_success($data = [], $message = 'Ù…ÙˆÙÙ‚') {
         json_response([
             'success' => true,
             'message' => $message,
@@ -1397,9 +1397,9 @@ if (!function_exists('json_success')) {
 
 if (!function_exists('json_error')) {
     /**
-     * پاسخ JSON خطا
+     * Ù¾Ø§Ø³Ø® JSON Ø®Ø·Ø§
      */
-    function json_error($message = 'خطا', $statusCode = 400, $errors = []) {
+    function json_error($message = 'Ø®Ø·Ø§', $statusCode = 400, $errors = []) {
         json_response([
             'success' => false,
             'error' => [
@@ -1410,13 +1410,13 @@ if (!function_exists('json_error')) {
     }
 }
 
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // 16. View Helpers
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 if (!function_exists('view')) {
     /**
-     * بارگذاری View
+     * Ø¨Ø§Ø±Ú¯Ø°Ø§Ø±ÛŒ View
      */
     function view($path, $data = []) {
         extract($data);
@@ -1435,22 +1435,22 @@ if (!function_exists('view')) {
 
 if (!function_exists('render_view')) {
     /**
-     * رندر و نمایش View
+     * Ø±Ù†Ø¯Ø± Ùˆ Ù†Ù…Ø§ÛŒØ´ View
      */
     function render_view($path, $data = []) {
         echo view($path, $data);
     }
 }
 
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // 17. End of Helpers
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 /**
- * پایان فایل helpers.php
+ * Ù¾Ø§ÛŒØ§Ù† ÙØ§ÛŒÙ„ helpers.php
  * 
- * برای اضافه کردن تابع جدید:
- * 1. از if (!function_exists('...')) استفاده کنید
- * 2. مستندات کامل بنویسید
- * 3. مثال استفاده اضافه کنید
+ * Ø¨Ø±Ø§ÛŒ Ø§Ø¶Ø§ÙÙ‡ Ú©Ø±Ø¯Ù† ØªØ§Ø¨Ø¹ Ø¬Ø¯ÛŒØ¯:
+ * 1. Ø§Ø² if (!function_exists('...')) Ø§Ø³ØªÙØ§Ø¯Ù‡ Ú©Ù†ÛŒØ¯
+ * 2. Ù…Ø³ØªÙ†Ø¯Ø§Øª Ú©Ø§Ù…Ù„ Ø¨Ù†ÙˆÛŒØ³ÛŒØ¯
+ * 3. Ù…Ø«Ø§Ù„ Ø§Ø³ØªÙØ§Ø¯Ù‡ Ø§Ø¶Ø§ÙÙ‡ Ú©Ù†ÛŒØ¯
  */

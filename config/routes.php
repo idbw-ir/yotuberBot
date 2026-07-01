@@ -1,32 +1,32 @@
-<?php
+﻿<?php
 /**
  * ============================================
- * Routes Configuration - تنظیمات مسیرها
+ * Routes Configuration - ØªÙ†Ø¸ÛŒÙ…Ø§Øª Ù…Ø³ÛŒØ±Ù‡Ø§
  * ============================================
- * نسخه: 2.0.0
+ * Ù†Ø³Ø®Ù‡: 2.1.0
  * 
- * تعریف تمام Route های پروژه شامل:
- * - Public Routes (صفحات عمومی)
- * - Admin Routes (پنل مدیریت)
+ * ØªØ¹Ø±ÛŒÙ ØªÙ…Ø§Ù… Route Ù‡Ø§ÛŒ Ù¾Ø±ÙˆÚ˜Ù‡ Ø´Ø§Ù…Ù„:
+ * - Public Routes (ØµÙØ­Ø§Øª Ø¹Ù…ÙˆÙ…ÛŒ)
+ * - Admin Routes (Ù¾Ù†Ù„ Ù…Ø¯ÛŒØ±ÛŒØª)
  * - API Routes (API endpoints)
- * - Webhook Routes (تلگرام)
+ * - Webhook Routes (ØªÙ„Ú¯Ø±Ø§Ù…)
  */
 
-// دریافت Router Instance
+// Ø¯Ø±ÛŒØ§ÙØª Router Instance
 $router = \App\Core\Router::getInstance();
 
-// ──────────────────────────────────────
-// 1. تعریف Middleware ها
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// 1. ØªØ¹Ø±ÛŒÙ Middleware Ù‡Ø§
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 /**
- * Middleware احراز هویت ادمین
+ * Middleware Ø§Ø­Ø±Ø§Ø² Ù‡ÙˆÛŒØª Ø§Ø¯Ù…ÛŒÙ†
  */
 $router->middleware('auth', function() {
     $auth = \App\Admin\Auth::getInstance();
     
     if (!$auth->check()) {
-        // ذخیره URL فعلی برای بازگشت
+        // Ø°Ø®ÛŒØ±Ù‡ URL ÙØ¹Ù„ÛŒ Ø¨Ø±Ø§ÛŒ Ø¨Ø§Ø²Ú¯Ø´Øª
         $session = \App\Core\Session::getInstance();
         $session->set('intended_url', $_SERVER['REQUEST_URI']);
         
@@ -38,28 +38,28 @@ $router->middleware('auth', function() {
 });
 
 /**
- * Middleware بررسی ادمین بودن
+ * Middleware Ø¨Ø±Ø±Ø³ÛŒ Ø§Ø¯Ù…ÛŒÙ† Ø¨ÙˆØ¯Ù†
  */
 $router->middleware('admin', function() {
     $auth = \App\Admin\Auth::getInstance();
     
     if (!$auth->isAdmin()) {
         http_response_code(403);
-        die('شما دسترسی به این بخش را ندارید');
+        die('Ø´Ù…Ø§ Ø¯Ø³ØªØ±Ø³ÛŒ Ø¨Ù‡ Ø§ÛŒÙ† Ø¨Ø®Ø´ Ø±Ø§ Ù†Ø¯Ø§Ø±ÛŒØ¯');
     }
     
     return true;
 });
 
 /**
- * Middleware بررسی Super Admin
+ * Middleware Ø¨Ø±Ø±Ø³ÛŒ Super Admin
  */
 $router->middleware('super_admin', function() {
     $auth = \App\Admin\Auth::getInstance();
     
     if (!$auth->isSuperAdmin()) {
         http_response_code(403);
-        die('شما دسترسی به این بخش را ندارید');
+        die('Ø´Ù…Ø§ Ø¯Ø³ØªØ±Ø³ÛŒ Ø¨Ù‡ Ø§ÛŒÙ† Ø¨Ø®Ø´ Ø±Ø§ Ù†Ø¯Ø§Ø±ÛŒØ¯');
     }
     
     return true;
@@ -75,7 +75,7 @@ $router->middleware('csrf', function() {
         
         if (!$token || !$session->verifyCsrfToken($token)) {
             http_response_code(403);
-            die('خطای امنیتی: توکن CSRF نامعتبر است');
+            die('Ø®Ø·Ø§ÛŒ Ø§Ù…Ù†ÛŒØªÛŒ: ØªÙˆÚ©Ù† CSRF Ù†Ø§Ù…Ø¹ØªØ¨Ø± Ø§Ø³Øª');
         }
     }
     
@@ -107,7 +107,7 @@ $router->middleware('rate_limit', function() {
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode([
             'success' => false,
-            'error' => 'محدودیت نرخ درخواست. لطفاً بعداً تلاش کنید.',
+            'error' => 'Ù…Ø­Ø¯ÙˆØ¯ÛŒØª Ù†Ø±Ø® Ø¯Ø±Ø®ÙˆØ§Ø³Øª. Ù„Ø·ÙØ§Ù‹ Ø¨Ø¹Ø¯Ø§Ù‹ ØªÙ„Ø§Ø´ Ú©Ù†ÛŒØ¯.',
             'retry_after' => $result['reset_at'] - time()
         ], JSON_UNESCAPED_UNICODE);
         exit;
@@ -116,40 +116,40 @@ $router->middleware('rate_limit', function() {
     return true;
 });
 
-// ──────────────────────────────────────
-// 2. Public Routes (صفحات عمومی)
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// 2. Public Routes (ØµÙØ­Ø§Øª Ø¹Ù…ÙˆÙ…ÛŒ)
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-// صفحه اصلی
+// ØµÙØ­Ù‡ Ø§ØµÙ„ÛŒ
 $router->get('/', function() {
     require PUBLIC_PATH . '/pages/home.php';
 });
 
-// درباره ما
+// Ø¯Ø±Ø¨Ø§Ø±Ù‡ Ù…Ø§
 $router->get('/about', function() {
     require PUBLIC_PATH . '/pages/about.php';
 });
 
-// تماس با ما
+// ØªÙ…Ø§Ø³ Ø¨Ø§ Ù…Ø§
 $router->get('/contact', function() {
     require PUBLIC_PATH . '/pages/contact.php';
 });
 
-// قوانین و مقررات
+// Ù‚ÙˆØ§Ù†ÛŒÙ† Ùˆ Ù…Ù‚Ø±Ø±Ø§Øª
 $router->get('/terms', function() {
     require PUBLIC_PATH . '/pages/terms.php';
 });
 
-// حریم خصوصی
+// Ø­Ø±ÛŒÙ… Ø®ØµÙˆØµÛŒ
 $router->get('/privacy', function() {
     require PUBLIC_PATH . '/pages/privacy.php';
 });
 
-// ──────────────────────────────────────
-// 3. Webhook Routes (تلگرام)
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// 3. Webhook Routes (ØªÙ„Ú¯Ø±Ø§Ù…)
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-// Webhook تلگرام
+// Webhook ØªÙ„Ú¯Ø±Ø§Ù…
 $router->post('/webhook', function() {
     require PUBLIC_PATH . '/webhook.php';
 });
@@ -158,11 +158,11 @@ $router->post('/webhook.php', function() {
     require PUBLIC_PATH . '/webhook.php';
 });
 
-// ──────────────────────────────────────
-// 4. Admin Routes (پنل مدیریت)
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// 4. Admin Routes (Ù¾Ù†Ù„ Ù…Ø¯ÛŒØ±ÛŒØª)
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-// لاگین (بدون Middleware)
+// Ù„Ø§Ú¯ÛŒÙ† (Ø¨Ø¯ÙˆÙ† Middleware)
 $router->get('/admin/login', function() {
     require PUBLIC_PATH . '/admin/login.php';
 });
@@ -171,7 +171,7 @@ $router->post('/admin/login', function() {
     require PUBLIC_PATH . '/admin/login.php';
 }, ['csrf']);
 
-// خروج
+// Ø®Ø±ÙˆØ¬
 $router->get('/admin/logout', function() {
     require PUBLIC_PATH . '/admin/logout.php';
 });
@@ -180,7 +180,7 @@ $router->post('/admin/logout', function() {
     require PUBLIC_PATH . '/admin/logout.php';
 }, ['csrf']);
 
-// داشبورد
+// Ø¯Ø§Ø´Ø¨ÙˆØ±Ø¯
 $router->get('/admin', function() {
     require PUBLIC_PATH . '/admin/index.php';
 }, ['auth']);
@@ -189,7 +189,7 @@ $router->get('/admin/', function() {
     require PUBLIC_PATH . '/admin/index.php';
 }, ['auth']);
 
-// کاربران
+// Ú©Ø§Ø±Ø¨Ø±Ø§Ù†
 $router->get('/admin/users', function() {
     require PUBLIC_PATH . '/admin/users.php';
 }, ['auth']);
@@ -198,7 +198,7 @@ $router->get('/admin/users.php', function() {
     require PUBLIC_PATH . '/admin/users.php';
 }, ['auth']);
 
-// چت زنده
+// Ú†Øª Ø²Ù†Ø¯Ù‡
 $router->get('/admin/chat', function() {
     require PUBLIC_PATH . '/admin/chat.php';
 }, ['auth']);
@@ -207,7 +207,7 @@ $router->get('/admin/chat.php', function() {
     require PUBLIC_PATH . '/admin/chat.php';
 }, ['auth']);
 
-// پیام‌ها
+// Ù¾ÛŒØ§Ù…â€ŒÙ‡Ø§
 $router->get('/admin/messages', function() {
     require PUBLIC_PATH . '/admin/messages.php';
 }, ['auth']);
@@ -216,7 +216,7 @@ $router->get('/admin/messages.php', function() {
     require PUBLIC_PATH . '/admin/messages.php';
 }, ['auth']);
 
-// دونیت‌ها
+// Ø¯ÙˆÙ†ÛŒØªâ€ŒÙ‡Ø§
 $router->get('/admin/donations', function() {
     require PUBLIC_PATH . '/admin/donations.php';
 }, ['auth']);
@@ -225,7 +225,7 @@ $router->get('/admin/donations.php', function() {
     require PUBLIC_PATH . '/admin/donations.php';
 }, ['auth']);
 
-// کلمات کلیدی
+// Ú©Ù„Ù…Ø§Øª Ú©Ù„ÛŒØ¯ÛŒ
 $router->get('/admin/keywords', function() {
     require PUBLIC_PATH . '/admin/keywords.php';
 }, ['auth']);
@@ -234,7 +234,7 @@ $router->get('/admin/keywords.php', function() {
     require PUBLIC_PATH . '/admin/keywords.php';
 }, ['auth']);
 
-// ارسال دسته‌جمعی
+// Ø§Ø±Ø³Ø§Ù„ Ø¯Ø³ØªÙ‡â€ŒØ¬Ù…Ø¹ÛŒ
 $router->get('/admin/broadcast', function() {
     require PUBLIC_PATH . '/admin/broadcast.php';
 }, ['auth']);
@@ -243,7 +243,7 @@ $router->get('/admin/broadcast.php', function() {
     require PUBLIC_PATH . '/admin/broadcast.php';
 }, ['auth']);
 
-// آمار و گزارشات
+// Ø¢Ù…Ø§Ø± Ùˆ Ú¯Ø²Ø§Ø±Ø´Ø§Øª
 $router->get('/admin/statistics', function() {
     require PUBLIC_PATH . '/admin/statistics.php';
 }, ['auth']);
@@ -252,7 +252,7 @@ $router->get('/admin/statistics.php', function() {
     require PUBLIC_PATH . '/admin/statistics.php';
 }, ['auth']);
 
-// تنظیمات
+// ØªÙ†Ø¸ÛŒÙ…Ø§Øª
 $router->get('/admin/settings', function() {
     require PUBLIC_PATH . '/admin/settings.php';
 }, ['auth']);
@@ -261,7 +261,7 @@ $router->get('/admin/settings.php', function() {
     require PUBLIC_PATH . '/admin/settings.php';
 }, ['auth']);
 
-// پروفایل
+// Ù¾Ø±ÙˆÙØ§ÛŒÙ„
 $router->get('/admin/profile', function() {
     require PUBLIC_PATH . '/admin/profile.php';
 }, ['auth']);
@@ -270,9 +270,9 @@ $router->get('/admin/profile.php', function() {
     require PUBLIC_PATH . '/admin/profile.php';
 }, ['auth']);
 
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // 5. Admin API Routes
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 // Users API
 $router->get('/admin/api/users/{id}', function($id) {
@@ -625,11 +625,11 @@ $router->get('/admin/api/chart/messages', function() {
     $api->messages();
 }, ['auth']);
 
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // 6. Public API Routes
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-// Statistics API (با API Token)
+// Statistics API (Ø¨Ø§ API Token)
 $router->any('/api/statistics/{endpoint}', function($endpoint) {
     require BASE_PATH . '/app/Api/StatisticsApi.php';
     $api = new \App\Api\StatisticsApi();
@@ -643,34 +643,34 @@ $router->any('/api/donation/callback/{gateway}', function($gateway) {
     $callback->handle($gateway);
 });
 
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // 7. Payment Routes
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-// صفحه موفقیت پرداخت
+// ØµÙØ­Ù‡ Ù…ÙˆÙÙ‚ÛŒØª Ù¾Ø±Ø¯Ø§Ø®Øª
 $router->get('/payment/success', function() {
     require PUBLIC_PATH . '/payment/success.php';
 });
 
-// صفحه شکست پرداخت
+// ØµÙØ­Ù‡ Ø´Ú©Ø³Øª Ù¾Ø±Ø¯Ø§Ø®Øª
 $router->get('/payment/failed', function() {
     require PUBLIC_PATH . '/payment/failed.php';
 });
 
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // 8. Error Routes
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 // 404 Not Found (handled by Router)
 // 500 Error (handled by bootstrap.php)
 
-// ──────────────────────────────────────
-// 9. Helper Function برای تولید URL
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// 9. Helper Function Ø¨Ø±Ø§ÛŒ ØªÙˆÙ„ÛŒØ¯ URL
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 if (!function_exists('route')) {
     /**
-     * تولید URL برای Route
+     * ØªÙˆÙ„ÛŒØ¯ URL Ø¨Ø±Ø§ÛŒ Route
      */
     function route($path, $params = []) {
         $router = \App\Core\Router::getInstance();
@@ -678,11 +678,11 @@ if (!function_exists('route')) {
     }
 }
 
-// ──────────────────────────────────────
-// 10. پایان تعریف Route ها
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// 10. Ù¾Ø§ÛŒØ§Ù† ØªØ¹Ø±ÛŒÙ Route Ù‡Ø§
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-// لاگ تعداد Route ها (فقط در Debug Mode)
+// Ù„Ø§Ú¯ ØªØ¹Ø¯Ø§Ø¯ Route Ù‡Ø§ (ÙÙ‚Ø· Ø¯Ø± Debug Mode)
 if (config('app.debug') && php_sapi_name() !== 'cli') {
     try {
         $logger = \App\Core\Logger::getInstance();
@@ -690,6 +690,6 @@ if (config('app.debug') && php_sapi_name() !== 'cli') {
             'count' => 'Multiple routes registered'
         ]);
     } catch (Exception $e) {
-        // نادیده بگیر
+        // Ù†Ø§Ø¯ÛŒØ¯Ù‡ Ø¨Ú¯ÛŒØ±
     }
 }

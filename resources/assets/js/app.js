@@ -1,10 +1,10 @@
-/**
+﻿/**
  * ============================================
  * Youtuber Bot - Main JavaScript
  * ============================================
- * نسخه: 2.0.0
+ * Ù†Ø³Ø®Ù‡: 2.1.0
  * 
- * JavaScript های اصلی پروژه شامل:
+ * JavaScript Ù‡Ø§ÛŒ Ø§ØµÙ„ÛŒ Ù¾Ø±ÙˆÚ˜Ù‡ Ø´Ø§Ù…Ù„:
  * - AJAX Helper
  * - Toast Notifications
  * - Form Validation
@@ -12,15 +12,15 @@
  * - Helper Functions
  */
 
-// ═══════════════════════════════════════════
-// 1. راه‌اندازی اولیه
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// 1. Ø±Ø§Ù‡â€ŒØ§Ù†Ø¯Ø§Ø²ÛŒ Ø§ÙˆÙ„ÛŒÙ‡
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('%c🎬 Youtuber Bot Admin Panel', 'font-size: 20px; font-weight: bold; color: #8b5cf6;');
-    console.log('%cنسخه 2.0.0', 'font-size: 12px; color: #10b981;');
+    console.log('%cðŸŽ¬ Youtuber Bot Admin Panel', 'font-size: 20px; font-weight: bold; color: #8b5cf6;');
+    console.log('%cÙ†Ø³Ø®Ù‡ 2.1.0', 'font-size: 12px; color: #10b981;');
     
-    // راه‌اندازی کامپوننت‌ها
+    // Ø±Ø§Ù‡â€ŒØ§Ù†Ø¯Ø§Ø²ÛŒ Ú©Ø§Ù…Ù¾ÙˆÙ†Ù†Øªâ€ŒÙ‡Ø§
     initToasts();
     initForms();
     initModals();
@@ -30,24 +30,24 @@ document.addEventListener('DOMContentLoaded', function() {
     initLazyLoading();
     initTooltips();
     
-    // نمایش Flash Messages
+    // Ù†Ù…Ø§ÛŒØ´ Flash Messages
     showFlashMessages();
 });
 
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // 2. Global Variables
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 const CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]')?.content || '';
 const BASE_URL = window.location.origin;
 const API_URL = `${BASE_URL}/admin/api`;
 
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // 3. AJAX Helper
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 /**
- * ارسال درخواست AJAX
+ * Ø§Ø±Ø³Ø§Ù„ Ø¯Ø±Ø®ÙˆØ§Ø³Øª AJAX
  */
 async function apiRequest(endpoint, options = {}) {
     const url = endpoint.startsWith('http') ? endpoint : `${API_URL}${endpoint}`;
@@ -64,7 +64,7 @@ async function apiRequest(endpoint, options = {}) {
     
     const config = { ...defaults, ...options };
     
-    // اگر body object باشد، به JSON تبدیل کن
+    // Ø§Ú¯Ø± body object Ø¨Ø§Ø´Ø¯ØŒ Ø¨Ù‡ JSON ØªØ¨Ø¯ÛŒÙ„ Ú©Ù†
     if (config.body && typeof config.body === 'object' && !(config.body instanceof FormData)) {
         config.body = JSON.stringify(config.body);
     }
@@ -81,13 +81,13 @@ async function apiRequest(endpoint, options = {}) {
         
     } catch (error) {
         console.error('API Error:', error);
-        showToast(error.message || 'خطا در ارتباط با سرور', 'error');
+        showToast(error.message || 'Ø®Ø·Ø§ Ø¯Ø± Ø§Ø±ØªØ¨Ø§Ø· Ø¨Ø§ Ø³Ø±ÙˆØ±', 'error');
         throw error;
     }
 }
 
 /**
- * shorthand برای GET
+ * shorthand Ø¨Ø±Ø§ÛŒ GET
  */
 async function apiGet(endpoint, params = {}) {
     const queryString = new URLSearchParams(params).toString();
@@ -96,7 +96,7 @@ async function apiGet(endpoint, params = {}) {
 }
 
 /**
- * shorthand برای POST
+ * shorthand Ø¨Ø±Ø§ÛŒ POST
  */
 async function apiPost(endpoint, data = {}) {
     return apiRequest(endpoint, {
@@ -106,7 +106,7 @@ async function apiPost(endpoint, data = {}) {
 }
 
 /**
- * shorthand برای PUT
+ * shorthand Ø¨Ø±Ø§ÛŒ PUT
  */
 async function apiPut(endpoint, data = {}) {
     return apiRequest(endpoint, {
@@ -116,20 +116,20 @@ async function apiPut(endpoint, data = {}) {
 }
 
 /**
- * shorthand برای DELETE
+ * shorthand Ø¨Ø±Ø§ÛŒ DELETE
  */
 async function apiDelete(endpoint) {
     return apiRequest(endpoint, { method: 'DELETE' });
 }
 
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // 4. Toast Notifications
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 let toastContainer = null;
 
 function initToasts() {
-    // ساخت container اگر وجود نداره
+    // Ø³Ø§Ø®Øª container Ø§Ú¯Ø± ÙˆØ¬ÙˆØ¯ Ù†Ø¯Ø§Ø±Ù‡
     if (!document.getElementById('toastContainer')) {
         toastContainer = document.createElement('div');
         toastContainer.id = 'toastContainer';
@@ -141,7 +141,7 @@ function initToasts() {
 }
 
 /**
- * نمایش Toast Notification
+ * Ù†Ù…Ø§ÛŒØ´ Toast Notification
  */
 function showToast(message, type = 'info', duration = 3000) {
     if (!toastContainer) initToasts();
@@ -172,7 +172,7 @@ function showToast(message, type = 'info', duration = 3000) {
     
     toastContainer.appendChild(toast);
     
-    // حذف خودکار
+    // Ø­Ø°Ù Ø®ÙˆØ¯Ú©Ø§Ø±
     setTimeout(() => {
         if (toast.parentElement) {
             toast.style.animation = 'slideInRight 0.3s ease-out reverse';
@@ -183,9 +183,9 @@ function showToast(message, type = 'info', duration = 3000) {
     return toast;
 }
 
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // 5. Flash Messages
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 function showFlashMessages() {
     const flashMessages = document.querySelectorAll('.flash-message');
@@ -198,12 +198,12 @@ function showFlashMessages() {
     });
 }
 
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // 6. Form Management
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 function initForms() {
-    // جلوگیری از Double Submit
+    // Ø¬Ù„ÙˆÚ¯ÛŒØ±ÛŒ Ø§Ø² Double Submit
     document.querySelectorAll('form').forEach(form => {
         form.addEventListener('submit', function(e) {
             const submitBtn = form.querySelector('button[type="submit"]');
@@ -212,7 +212,7 @@ function initForms() {
                 submitBtn.classList.add('btn-loading');
                 submitBtn.disabled = true;
                 
-                // بازگردانی بعد از 5 ثانیه (در صورت خطا)
+                // Ø¨Ø§Ø²Ú¯Ø±Ø¯Ø§Ù†ÛŒ Ø¨Ø¹Ø¯ Ø§Ø² 5 Ø«Ø§Ù†ÛŒÙ‡ (Ø¯Ø± ØµÙˆØ±Øª Ø®Ø·Ø§)
                 setTimeout(() => {
                     if (submitBtn.classList.contains('btn-loading')) {
                         submitBtn.classList.remove('btn-loading');
@@ -238,7 +238,7 @@ function initForms() {
 }
 
 /**
- * اعتبارسنجی یک فیلد
+ * Ø§Ø¹ØªØ¨Ø§Ø±Ø³Ù†Ø¬ÛŒ ÛŒÚ© ÙÛŒÙ„Ø¯
  */
 function validateField(field) {
     const value = field.value.trim();
@@ -248,19 +248,19 @@ function validateField(field) {
     // Required
     if (field.hasAttribute('required') && !value) {
         isValid = false;
-        errorMessage = 'این فیلد الزامی است';
+        errorMessage = 'Ø§ÛŒÙ† ÙÛŒÙ„Ø¯ Ø§Ù„Ø²Ø§Ù…ÛŒ Ø§Ø³Øª';
     }
     
     // Minlength
     if (isValid && field.hasAttribute('minlength') && value.length < parseInt(field.getAttribute('minlength'))) {
         isValid = false;
-        errorMessage = `حداقل ${field.getAttribute('minlength')} کاراکتر لازم است`;
+        errorMessage = `Ø­Ø¯Ø§Ù‚Ù„ ${field.getAttribute('minlength')} Ú©Ø§Ø±Ø§Ú©ØªØ± Ù„Ø§Ø²Ù… Ø§Ø³Øª`;
     }
     
     // Maxlength
     if (isValid && field.hasAttribute('maxlength') && value.length > parseInt(field.getAttribute('maxlength'))) {
         isValid = false;
-        errorMessage = `حداکثر ${field.getAttribute('maxlength')} کاراکتر مجاز است`;
+        errorMessage = `Ø­Ø¯Ø§Ú©Ø«Ø± ${field.getAttribute('maxlength')} Ú©Ø§Ø±Ø§Ú©ØªØ± Ù…Ø¬Ø§Ø² Ø§Ø³Øª`;
     }
     
     // Pattern
@@ -268,7 +268,7 @@ function validateField(field) {
         const pattern = new RegExp(field.getAttribute('pattern'));
         if (!pattern.test(value)) {
             isValid = false;
-            errorMessage = 'فرمت وارد شده معتبر نیست';
+            errorMessage = 'ÙØ±Ù…Øª ÙˆØ§Ø±Ø¯ Ø´Ø¯Ù‡ Ù…Ø¹ØªØ¨Ø± Ù†ÛŒØ³Øª';
         }
     }
     
@@ -278,7 +278,7 @@ function validateField(field) {
             case 'email':
                 if (value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
                     isValid = false;
-                    errorMessage = 'ایمیل معتبر نیست';
+                    errorMessage = 'Ø§ÛŒÙ…ÛŒÙ„ Ù…Ø¹ØªØ¨Ø± Ù†ÛŒØ³Øª';
                 }
                 break;
                 
@@ -288,7 +288,7 @@ function validateField(field) {
                         new URL(value);
                     } catch {
                         isValid = false;
-                        errorMessage = 'URL معتبر نیست';
+                        errorMessage = 'URL Ù…Ø¹ØªØ¨Ø± Ù†ÛŒØ³Øª';
                     }
                 }
                 break;
@@ -296,13 +296,13 @@ function validateField(field) {
             case 'number':
                 if (value && isNaN(value)) {
                     isValid = false;
-                    errorMessage = 'باید عدد باشد';
+                    errorMessage = 'Ø¨Ø§ÛŒØ¯ Ø¹Ø¯Ø¯ Ø¨Ø§Ø´Ø¯';
                 }
                 break;
         }
     }
     
-    // نمایش خطا
+    // Ù†Ù…Ø§ÛŒØ´ Ø®Ø·Ø§
     const errorElement = field.parentElement.querySelector('.field-error');
     
     if (isValid) {
@@ -327,7 +327,7 @@ function validateField(field) {
 }
 
 /**
- * اعتبارسنجی کل فرم
+ * Ø§Ø¹ØªØ¨Ø§Ø±Ø³Ù†Ø¬ÛŒ Ú©Ù„ ÙØ±Ù…
  */
 function validateForm(form) {
     const fields = form.querySelectorAll('[required], [pattern], [minlength], [maxlength]');
@@ -342,12 +342,12 @@ function validateForm(form) {
     return isValid;
 }
 
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // 7. Modal Management
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 function initModals() {
-    // بستن Modal با Escape
+    // Ø¨Ø³ØªÙ† Modal Ø¨Ø§ Escape
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             const openModals = document.querySelectorAll('.fixed.inset-0:not(.hidden)');
@@ -358,7 +358,7 @@ function initModals() {
         }
     });
     
-    // بستن Modal با کلیک خارج
+    // Ø¨Ø³ØªÙ† Modal Ø¨Ø§ Ú©Ù„ÛŒÚ© Ø®Ø§Ø±Ø¬
     document.querySelectorAll('.fixed.inset-0').forEach(modal => {
         modal.addEventListener('click', function(e) {
             if (e.target === this) {
@@ -370,7 +370,7 @@ function initModals() {
 }
 
 /**
- * باز کردن Modal
+ * Ø¨Ø§Ø² Ú©Ø±Ø¯Ù† Modal
  */
 function openModal(modalId) {
     const modal = document.getElementById(modalId);
@@ -382,7 +382,7 @@ function openModal(modalId) {
 }
 
 /**
- * بستن Modal
+ * Ø¨Ø³ØªÙ† Modal
  */
 function closeModal(modalId) {
     const modal = document.getElementById(modalId);
@@ -393,12 +393,12 @@ function closeModal(modalId) {
     }
 }
 
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // 8. Sidebar Management
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 function initSidebar() {
-    // تشخیص صفحه فعال
+    // ØªØ´Ø®ÛŒØµ ØµÙØ­Ù‡ ÙØ¹Ø§Ù„
     const currentPath = window.location.pathname;
     const sidebarLinks = document.querySelectorAll('.sidebar-link');
     
@@ -411,7 +411,7 @@ function initSidebar() {
 }
 
 /**
- * Toggle Sidebar (موبایل)
+ * Toggle Sidebar (Ù…ÙˆØ¨Ø§ÛŒÙ„)
  */
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
@@ -426,13 +426,13 @@ function toggleSidebar() {
     }
 }
 
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // 9. Keyboard Shortcuts
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 function initKeyboardShortcuts() {
     document.addEventListener('keydown', function(e) {
-        // Ctrl+Enter: Submit فرم
+        // Ctrl+Enter: Submit ÙØ±Ù…
         if (e.ctrlKey && e.key === 'Enter') {
             const activeForm = document.activeElement.closest('form');
             if (activeForm) {
@@ -441,13 +441,13 @@ function initKeyboardShortcuts() {
             }
         }
         
-        // Ctrl+S: ذخیره (جلوگیری از default)
+        // Ctrl+S: Ø°Ø®ÛŒØ±Ù‡ (Ø¬Ù„ÙˆÚ¯ÛŒØ±ÛŒ Ø§Ø² default)
         if (e.ctrlKey && e.key === 's') {
             e.preventDefault();
             const activeForm = document.activeElement.closest('form');
             if (activeForm) {
                 activeForm.dispatchEvent(new Event('submit'));
-                showToast('در حال ذخیره...', 'info');
+                showToast('Ø¯Ø± Ø­Ø§Ù„ Ø°Ø®ÛŒØ±Ù‡...', 'info');
             }
         }
         
@@ -457,7 +457,7 @@ function initKeyboardShortcuts() {
             location.reload();
         }
         
-        // ?: نمایش Help
+        // ?: Ù†Ù…Ø§ÛŒØ´ Help
         if (e.key === '?' && !isInputFocused()) {
             showKeyboardHelp();
         }
@@ -465,7 +465,7 @@ function initKeyboardShortcuts() {
 }
 
 /**
- * بررسی فوکوس روی Input
+ * Ø¨Ø±Ø±Ø³ÛŒ ÙÙˆÚ©ÙˆØ³ Ø±ÙˆÛŒ Input
  */
 function isInputFocused() {
     const activeElement = document.activeElement;
@@ -475,15 +475,15 @@ function isInputFocused() {
 }
 
 /**
- * نمایش Help Keyboard Shortcuts
+ * Ù†Ù…Ø§ÛŒØ´ Help Keyboard Shortcuts
  */
 function showKeyboardHelp() {
     const shortcuts = [
-        { key: 'Ctrl+Enter', action: 'ارسال فرم' },
-        { key: 'Ctrl+S', action: 'ذخیره' },
-        { key: 'Ctrl+R', action: 'بروزرسانی صفحه' },
-        { key: 'Escape', action: 'بستن Modal' },
-        { key: '?', action: 'نمایش این راهنما' }
+        { key: 'Ctrl+Enter', action: 'Ø§Ø±Ø³Ø§Ù„ ÙØ±Ù…' },
+        { key: 'Ctrl+S', action: 'Ø°Ø®ÛŒØ±Ù‡' },
+        { key: 'Ctrl+R', action: 'Ø¨Ø±ÙˆØ²Ø±Ø³Ø§Ù†ÛŒ ØµÙØ­Ù‡' },
+        { key: 'Escape', action: 'Ø¨Ø³ØªÙ† Modal' },
+        { key: '?', action: 'Ù†Ù…Ø§ÛŒØ´ Ø§ÛŒÙ† Ø±Ø§Ù‡Ù†Ù…Ø§' }
     ];
     
     let html = '<div class="space-y-2">';
@@ -497,12 +497,12 @@ function showKeyboardHelp() {
     });
     html += '</div>';
     
-    showToast('برای مشاهده کلیدهای میانبر، ? را فشار دهید', 'info', 5000);
+    showToast('Ø¨Ø±Ø§ÛŒ Ù…Ø´Ø§Ù‡Ø¯Ù‡ Ú©Ù„ÛŒØ¯Ù‡Ø§ÛŒ Ù…ÛŒØ§Ù†Ø¨Ø±ØŒ ? Ø±Ø§ ÙØ´Ø§Ø± Ø¯Ù‡ÛŒØ¯', 'info', 5000);
 }
 
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // 10. Auto-resize Textarea
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 function initAutoResize() {
     document.querySelectorAll('textarea[auto-resize]').forEach(textarea => {
@@ -510,22 +510,22 @@ function initAutoResize() {
             autoResizeTextarea(this);
         });
         
-        // اجرای اولیه
+        // Ø§Ø¬Ø±Ø§ÛŒ Ø§ÙˆÙ„ÛŒÙ‡
         autoResizeTextarea(textarea);
     });
 }
 
 /**
- * تغییر ارتفاع خودکار Textarea
+ * ØªØºÛŒÛŒØ± Ø§Ø±ØªÙØ§Ø¹ Ø®ÙˆØ¯Ú©Ø§Ø± Textarea
  */
 function autoResizeTextarea(textarea) {
     textarea.style.height = 'auto';
     textarea.style.height = Math.min(textarea.scrollHeight, 300) + 'px';
 }
 
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // 11. Lazy Loading
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 function initLazyLoading() {
     if ('IntersectionObserver' in window) {
@@ -546,9 +546,9 @@ function initLazyLoading() {
     }
 }
 
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // 12. Tooltips
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 function initTooltips() {
     document.querySelectorAll('[data-tooltip]').forEach(element => {
@@ -576,20 +576,20 @@ function initTooltips() {
     });
 }
 
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // 13. Helper Functions
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 /**
- * کپی به Clipboard
+ * Ú©Ù¾ÛŒ Ø¨Ù‡ Clipboard
  */
-async function copyToClipboard(text, message = 'کپی شد!') {
+async function copyToClipboard(text, message = 'Ú©Ù¾ÛŒ Ø´Ø¯!') {
     try {
         await navigator.clipboard.writeText(text);
         showToast(message, 'success');
         return true;
     } catch (err) {
-        // Fallback برای مرورگرهای قدیمی
+        // Fallback Ø¨Ø±Ø§ÛŒ Ù…Ø±ÙˆØ±Ú¯Ø±Ù‡Ø§ÛŒ Ù‚Ø¯ÛŒÙ…ÛŒ
         const textarea = document.createElement('textarea');
         textarea.value = text;
         textarea.style.position = 'fixed';
@@ -602,7 +602,7 @@ async function copyToClipboard(text, message = 'کپی شد!') {
             showToast(message, 'success');
             return true;
         } catch (err) {
-            showToast('خطا در کپی', 'error');
+            showToast('Ø®Ø·Ø§ Ø¯Ø± Ú©Ù¾ÛŒ', 'error');
             return false;
         } finally {
             document.body.removeChild(textarea);
@@ -611,7 +611,7 @@ async function copyToClipboard(text, message = 'کپی شد!') {
 }
 
 /**
- * فرمت اعداد با جداکننده
+ * ÙØ±Ù…Øª Ø§Ø¹Ø¯Ø§Ø¯ Ø¨Ø§ Ø¬Ø¯Ø§Ú©Ù†Ù†Ø¯Ù‡
  */
 function formatNumber(num) {
     if (num === null || num === undefined) return '0';
@@ -619,41 +619,41 @@ function formatNumber(num) {
 }
 
 /**
- * فرمت ارز (تومان)
+ * ÙØ±Ù…Øª Ø§Ø±Ø² (ØªÙˆÙ…Ø§Ù†)
  */
 function formatCurrency(amount) {
-    return formatNumber(amount) + ' تومان';
+    return formatNumber(amount) + ' ØªÙˆÙ…Ø§Ù†';
 }
 
 /**
- * تبدیل زمان به "x دقیقه پیش"
+ * ØªØ¨Ø¯ÛŒÙ„ Ø²Ù…Ø§Ù† Ø¨Ù‡ "x Ø¯Ù‚ÛŒÙ‚Ù‡ Ù¾ÛŒØ´"
  */
 function timeAgo(dateString) {
     const date = new Date(dateString);
     const seconds = Math.floor((new Date() - date) / 1000);
     
     const intervals = [
-        { label: 'سال', seconds: 31536000 },
-        { label: 'ماه', seconds: 2592000 },
-        { label: 'هفته', seconds: 604800 },
-        { label: 'روز', seconds: 86400 },
-        { label: 'ساعت', seconds: 3600 },
-        { label: 'دقیقه', seconds: 60 },
-        { label: 'ثانیه', seconds: 1 }
+        { label: 'Ø³Ø§Ù„', seconds: 31536000 },
+        { label: 'Ù…Ø§Ù‡', seconds: 2592000 },
+        { label: 'Ù‡ÙØªÙ‡', seconds: 604800 },
+        { label: 'Ø±ÙˆØ²', seconds: 86400 },
+        { label: 'Ø³Ø§Ø¹Øª', seconds: 3600 },
+        { label: 'Ø¯Ù‚ÛŒÙ‚Ù‡', seconds: 60 },
+        { label: 'Ø«Ø§Ù†ÛŒÙ‡', seconds: 1 }
     ];
     
     for (const interval of intervals) {
         const count = Math.floor(seconds / interval.seconds);
         if (count >= 1) {
-            return `${count} ${interval.label} پیش`;
+            return `${count} ${interval.label} Ù¾ÛŒØ´`;
         }
     }
     
-    return 'همین الان';
+    return 'Ù‡Ù…ÛŒÙ† Ø§Ù„Ø§Ù†';
 }
 
 /**
- * فرمت تاریخ
+ * ÙØ±Ù…Øª ØªØ§Ø±ÛŒØ®
  */
 function formatDate(dateString, format = 'datetime') {
     const date = new Date(dateString);
@@ -668,7 +668,7 @@ function formatDate(dateString, format = 'datetime') {
 }
 
 /**
- * truncate متن
+ * truncate Ù…ØªÙ†
  */
 function truncateText(text, maxLength = 100) {
     if (!text) return '';
@@ -714,12 +714,12 @@ function throttle(func, limit) {
     };
 }
 
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // 14. Confirm Actions
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 /**
- * تأیید عملیات
+ * ØªØ£ÛŒÛŒØ¯ Ø¹Ù…Ù„ÛŒØ§Øª
  */
 function confirmAction(message, callback) {
     if (confirm(message)) {
@@ -728,20 +728,20 @@ function confirmAction(message, callback) {
 }
 
 /**
- * تأیید حذف
+ * ØªØ£ÛŒÛŒØ¯ Ø­Ø°Ù
  */
 function confirmDelete(callback) {
-    confirmAction('آیا مطمئن هستید که می‌خواهید این مورد را حذف کنید؟\n\nاین عمل غیرقابل بازگشت است!', callback);
+    confirmAction('Ø¢ÛŒØ§ Ù…Ø·Ù…Ø¦Ù† Ù‡Ø³ØªÛŒØ¯ Ú©Ù‡ Ù…ÛŒâ€ŒØ®ÙˆØ§Ù‡ÛŒØ¯ Ø§ÛŒÙ† Ù…ÙˆØ±Ø¯ Ø±Ø§ Ø­Ø°Ù Ú©Ù†ÛŒØ¯ØŸ\n\nØ§ÛŒÙ† Ø¹Ù…Ù„ ØºÛŒØ±Ù‚Ø§Ø¨Ù„ Ø¨Ø§Ø²Ú¯Ø´Øª Ø§Ø³Øª!', callback);
 }
 
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // 15. Loading States
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 /**
- * نمایش Loading روی دکمه
+ * Ù†Ù…Ø§ÛŒØ´ Loading Ø±ÙˆÛŒ Ø¯Ú©Ù…Ù‡
  */
-function showButtonLoading(button, text = 'در حال پردازش...') {
+function showButtonLoading(button, text = 'Ø¯Ø± Ø­Ø§Ù„ Ù¾Ø±Ø¯Ø§Ø²Ø´...') {
     button.classList.add('btn-loading');
     button.disabled = true;
     button.dataset.originalText = button.innerHTML;
@@ -749,7 +749,7 @@ function showButtonLoading(button, text = 'در حال پردازش...') {
 }
 
 /**
- * مخفی کردن Loading دکمه
+ * Ù…Ø®ÙÛŒ Ú©Ø±Ø¯Ù† Loading Ø¯Ú©Ù…Ù‡
  */
 function hideButtonLoading(button) {
     button.classList.remove('btn-loading');
@@ -760,9 +760,9 @@ function hideButtonLoading(button) {
 }
 
 /**
- * نمایش Loading Overlay
+ * Ù†Ù…Ø§ÛŒØ´ Loading Overlay
  */
-function showLoadingOverlay(message = 'در حال بارگذاری...') {
+function showLoadingOverlay(message = 'Ø¯Ø± Ø­Ø§Ù„ Ø¨Ø§Ø±Ú¯Ø°Ø§Ø±ÛŒ...') {
     const overlay = document.createElement('div');
     overlay.id = 'loadingOverlay';
     overlay.className = 'fixed inset-0 bg-black/70 backdrop-blur-sm z-[200] flex items-center justify-center';
@@ -776,7 +776,7 @@ function showLoadingOverlay(message = 'در حال بارگذاری...') {
 }
 
 /**
- * مخفی کردن Loading Overlay
+ * Ù…Ø®ÙÛŒ Ú©Ø±Ø¯Ù† Loading Overlay
  */
 function hideLoadingOverlay() {
     const overlay = document.getElementById('loadingOverlay');
@@ -785,12 +785,12 @@ function hideLoadingOverlay() {
     }
 }
 
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // 16. Search & Filter
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 /**
- * جستجو در جدول
+ * Ø¬Ø³ØªØ¬Ùˆ Ø¯Ø± Ø¬Ø¯ÙˆÙ„
  */
 function searchTable(inputId, tableId) {
     const input = document.getElementById(inputId);
@@ -810,7 +810,7 @@ function searchTable(inputId, tableId) {
 }
 
 /**
- * فیلتر لیست
+ * ÙÛŒÙ„ØªØ± Ù„ÛŒØ³Øª
  */
 function filterList(items, query, searchFields = []) {
     if (!query) return items;
@@ -823,12 +823,12 @@ function filterList(items, query, searchFields = []) {
     });
 }
 
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // 17. Pagination
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 /**
- * بروزرسانی URL با Pagination
+ * Ø¨Ø±ÙˆØ²Ø±Ø³Ø§Ù†ÛŒ URL Ø¨Ø§ Pagination
  */
 function updatePage(page) {
     const url = new URL(window.location);
@@ -836,15 +836,15 @@ function updatePage(page) {
     window.location.href = url.toString();
 }
 
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // 18. Export Functions
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 /**
- * Export به CSV
+ * Export Ø¨Ù‡ CSV
  */
 function exportToCSV(data, filename = 'export.csv') {
-    const BOM = '\uFEFF'; // برای UTF-8
+    const BOM = '\uFEFF'; // Ø¨Ø±Ø§ÛŒ UTF-8
     const csv = BOM + data;
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
@@ -853,11 +853,11 @@ function exportToCSV(data, filename = 'export.csv') {
     link.download = filename;
     link.click();
     
-    showToast('فایل دانلود شد', 'success');
+    showToast('ÙØ§ÛŒÙ„ Ø¯Ø§Ù†Ù„ÙˆØ¯ Ø´Ø¯', 'success');
 }
 
 /**
- * Export به JSON
+ * Export Ø¨Ù‡ JSON
  */
 function exportToJSON(data, filename = 'export.json') {
     const json = JSON.stringify(data, null, 2);
@@ -868,15 +868,15 @@ function exportToJSON(data, filename = 'export.json') {
     link.download = filename;
     link.click();
     
-    showToast('فایل دانلود شد', 'success');
+    showToast('ÙØ§ÛŒÙ„ Ø¯Ø§Ù†Ù„ÙˆØ¯ Ø´Ø¯', 'success');
 }
 
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // 19. Chart Helpers
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 /**
- * تنظیمات پیش‌فرض Chart.js
+ * ØªÙ†Ø¸ÛŒÙ…Ø§Øª Ù¾ÛŒØ´â€ŒÙØ±Ø¶ Chart.js
  */
 const chartDefaults = {
     responsive: true,
@@ -916,12 +916,12 @@ const chartDefaults = {
     }
 };
 
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // 20. Utility Functions
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 /**
- * تولید UUID
+ * ØªÙˆÙ„ÛŒØ¯ UUID
  */
 function generateUUID() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -932,7 +932,7 @@ function generateUUID() {
 }
 
 /**
- * تولید رشته تصادفی
+ * ØªÙˆÙ„ÛŒØ¯ Ø±Ø´ØªÙ‡ ØªØµØ§Ø¯ÙÛŒ
  */
 function randomString(length = 16) {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -944,14 +944,14 @@ function randomString(length = 16) {
 }
 
 /**
- * بررسی Email معتبر
+ * Ø¨Ø±Ø±Ø³ÛŒ Email Ù…Ø¹ØªØ¨Ø±
  */
 function isValidEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
 /**
- * بررسی URL معتبر
+ * Ø¨Ø±Ø±Ø³ÛŒ URL Ù…Ø¹ØªØ¨Ø±
  */
 function isValidUrl(url) {
     try {
@@ -963,14 +963,14 @@ function isValidUrl(url) {
 }
 
 /**
- * اسکرول به بالا
+ * Ø§Ø³Ú©Ø±ÙˆÙ„ Ø¨Ù‡ Ø¨Ø§Ù„Ø§
  */
 function scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 /**
- * اسکرول به عنصر
+ * Ø§Ø³Ú©Ø±ÙˆÙ„ Ø¨Ù‡ Ø¹Ù†ØµØ±
  */
 function scrollToElement(selector) {
     const element = document.querySelector(selector);
@@ -990,22 +990,22 @@ function toggleFullscreen() {
     }
 }
 
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // 21. Console Warning
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 console.log(
-    '%c⚠️ توجه!',
+    '%câš ï¸ ØªÙˆØ¬Ù‡!',
     'font-size: 24px; font-weight: bold; color: #ef4444;'
 );
 console.log(
-    '%cاین کنسول برای توسعه‌دهندگان است. اگر کسی از شما خواست چیزی اینجا کپی کنید، احتمالاً کلاهبرداری است.',
+    '%cØ§ÛŒÙ† Ú©Ù†Ø³ÙˆÙ„ Ø¨Ø±Ø§ÛŒ ØªÙˆØ³Ø¹Ù‡â€ŒØ¯Ù‡Ù†Ø¯Ú¯Ø§Ù† Ø§Ø³Øª. Ø§Ú¯Ø± Ú©Ø³ÛŒ Ø§Ø² Ø´Ù…Ø§ Ø®ÙˆØ§Ø³Øª Ú†ÛŒØ²ÛŒ Ø§ÛŒÙ†Ø¬Ø§ Ú©Ù¾ÛŒ Ú©Ù†ÛŒØ¯ØŒ Ø§Ø­ØªÙ…Ø§Ù„Ø§Ù‹ Ú©Ù„Ø§Ù‡Ø¨Ø±Ø¯Ø§Ø±ÛŒ Ø§Ø³Øª.',
     'font-size: 14px; color: #f59e0b;'
 );
 
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // 22. Export Global Functions
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 window.App = {
     // AJAX
@@ -1070,6 +1070,6 @@ window.App = {
     chartDefaults
 };
 
-// ═══════════════════════════════════════════
-// پایان فایل
-// ═══════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// Ù¾Ø§ÛŒØ§Ù† ÙØ§ÛŒÙ„
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•

@@ -1,35 +1,35 @@
-<?php
+﻿<?php
 /**
  * ============================================
- * Bootstrap File - بارگذاری اولیه پروژه
+ * Bootstrap File - Ø¨Ø§Ø±Ú¯Ø°Ø§Ø±ÛŒ Ø§ÙˆÙ„ÛŒÙ‡ Ù¾Ø±ÙˆÚ˜Ù‡
  * ============================================
- * نسخه: 2.0.0
+ * Ù†Ø³Ø®Ù‡: 2.1.0
  * 
- * این فایل تمام تنظیمات اولیه پروژه رو انجام می‌ده
- * شامل:
- * - تعریف ثابت‌ها
- * - بارگذاری Autoloader
- * - بارگذاری Config
- * - شروع Session
- * - تنظیم Timezone
+ * Ø§ÛŒÙ† ÙØ§ÛŒÙ„ ØªÙ…Ø§Ù… ØªÙ†Ø¸ÛŒÙ…Ø§Øª Ø§ÙˆÙ„ÛŒÙ‡ Ù¾Ø±ÙˆÚ˜Ù‡ Ø±Ùˆ Ø§Ù†Ø¬Ø§Ù… Ù…ÛŒâ€ŒØ¯Ù‡
+ * Ø´Ø§Ù…Ù„:
+ * - ØªØ¹Ø±ÛŒÙ Ø«Ø§Ø¨Øªâ€ŒÙ‡Ø§
+ * - Ø¨Ø§Ø±Ú¯Ø°Ø§Ø±ÛŒ Autoloader
+ * - Ø¨Ø§Ø±Ú¯Ø°Ø§Ø±ÛŒ Config
+ * - Ø´Ø±ÙˆØ¹ Session
+ * - ØªÙ†Ø¸ÛŒÙ… Timezone
  * - Error Handling
  */
 
-// ──────────────────────────────────────
-// 1. جلوگیری از اجرای مستقیم
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// 1. Ø¬Ù„ÙˆÚ¯ÛŒØ±ÛŒ Ø§Ø² Ø§Ø¬Ø±Ø§ÛŒ Ù…Ø³ØªÙ‚ÛŒÙ…
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 if (!defined('BASE_PATH')) {
     define('BASE_PATH', dirname(__DIR__));
 }
 
-// ──────────────────────────────────────
-// 2. تنظیمات PHP
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// 2. ØªÙ†Ø¸ÛŒÙ…Ø§Øª PHP
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-// گزارش خطا
+// Ú¯Ø²Ø§Ø±Ø´ Ø®Ø·Ø§
 error_reporting(E_ALL);
-ini_set('display_errors', 0); // در Production خاموش
+ini_set('display_errors', 0); // Ø¯Ø± Production Ø®Ø§Ù…ÙˆØ´
 ini_set('log_errors', 1);
 ini_set('error_log', BASE_PATH . '/storage/logs/php_errors.log');
 
@@ -57,9 +57,9 @@ ini_set('max_execution_time', 300);
 ini_set('upload_max_filesize', '20M');
 ini_set('post_max_size', '25M');
 
-// ──────────────────────────────────────
-// 3. تعریف ثابت‌های پایه
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// 3. ØªØ¹Ø±ÛŒÙ Ø«Ø§Ø¨Øªâ€ŒÙ‡Ø§ÛŒ Ù¾Ø§ÛŒÙ‡
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 if (!defined('PUBLIC_PATH')) {
     define('PUBLIC_PATH', BASE_PATH . '/public');
@@ -82,7 +82,7 @@ if (!defined('RESOURCES_PATH')) {
 }
 
 if (!defined('APP_VERSION')) {
-    define('APP_VERSION', '2.0.0');
+    define('APP_VERSION', '2.1.0');
 }
 
 if (!defined('START_TIME')) {
@@ -93,12 +93,12 @@ if (!defined('START_MEMORY')) {
     define('START_MEMORY', memory_get_usage());
 }
 
-// ──────────────────────────────────────
-// 4. بررسی نصب بودن پروژه
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// 4. Ø¨Ø±Ø±Ø³ÛŒ Ù†ØµØ¨ Ø¨ÙˆØ¯Ù† Ù¾Ø±ÙˆÚ˜Ù‡
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 if (!file_exists(CONFIG_PATH . '/config.php')) {
-    // پروژه نصب نشده
+    // Ù¾Ø±ÙˆÚ˜Ù‡ Ù†ØµØ¨ Ù†Ø´Ø¯Ù‡
     if (file_exists(BASE_PATH . '/install.php')) {
         if (php_sapi_name() !== 'cli') {
             header('Location: /install.php');
@@ -109,9 +109,9 @@ if (!file_exists(CONFIG_PATH . '/config.php')) {
     die('Error: config.php not found. Please run the installer first.');
 }
 
-// ──────────────────────────────────────
-// 5. بارگذاری Autoloader
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// 5. Ø¨Ø§Ø±Ú¯Ø°Ø§Ø±ÛŒ Autoloader
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 // Composer Autoloader
 if (file_exists(APP_PATH . '/Core/Autoloader.php')) {
@@ -120,7 +120,7 @@ if (file_exists(APP_PATH . '/Core/Autoloader.php')) {
 
 // Custom Autoloader
 spl_autoload_register(function ($class) {
-    // تبدیل namespace به مسیر فایل
+    // ØªØ¨Ø¯ÛŒÙ„ namespace Ø¨Ù‡ Ù…Ø³ÛŒØ± ÙØ§ÛŒÙ„
     // App\Core\Database -> app/Core/Database.php
     $prefix = 'App\\';
     $baseDir = APP_PATH . '/';
@@ -138,9 +138,9 @@ spl_autoload_register(function ($class) {
     }
 });
 
-// ──────────────────────────────────────
-// 6. بارگذاری Config
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// 6. Ø¨Ø§Ø±Ú¯Ø°Ø§Ø±ÛŒ Config
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 try {
     $config = require CONFIG_PATH . '/config.php';
@@ -149,24 +149,24 @@ try {
         throw new Exception('Config file must return an array');
     }
     
-    // ذخیره در global scope
+    // Ø°Ø®ÛŒØ±Ù‡ Ø¯Ø± global scope
     $GLOBALS['config'] = $config;
     
 } catch (Exception $e) {
     die('Error loading config: ' . $e->getMessage());
 }
 
-// ──────────────────────────────────────
-// 7. بارگذاری Helper Functions
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// 7. Ø¨Ø§Ø±Ú¯Ø°Ø§Ø±ÛŒ Helper Functions
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 if (file_exists(APP_PATH . '/helpers.php')) {
     require_once APP_PATH . '/helpers.php';
 }
 
-// ──────────────────────────────────────
-// 8. شروع Session
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// 8. Ø´Ø±ÙˆØ¹ Session
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 if (php_sapi_name() !== 'cli') {
     try {
@@ -177,22 +177,22 @@ if (php_sapi_name() !== 'cli') {
     }
 }
 
-// ──────────────────────────────────────
-// 9. تنظیم Security Headers
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// 9. ØªÙ†Ø¸ÛŒÙ… Security Headers
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 if (php_sapi_name() !== 'cli') {
     try {
         \App\Helpers\Security::setSecurityHeaders();
         \App\Helpers\Security::hidePhpVersion();
     } catch (Exception $e) {
-        // نادیده بگیر
+        // Ù†Ø§Ø¯ÛŒØ¯Ù‡ Ø¨Ú¯ÛŒØ±
     }
 }
 
-// ──────────────────────────────────────
-// 10. بررسی پوشه‌های ضروری
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// 10. Ø¨Ø±Ø±Ø³ÛŒ Ù¾ÙˆØ´Ù‡â€ŒÙ‡Ø§ÛŒ Ø¶Ø±ÙˆØ±ÛŒ
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 $requiredDirs = [
     STORAGE_PATH . '/logs',
@@ -208,12 +208,12 @@ foreach ($requiredDirs as $dir) {
     }
 }
 
-// ──────────────────────────────────────
-// 11. Error Handler سفارشی
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// 11. Error Handler Ø³ÙØ§Ø±Ø´ÛŒ
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 set_error_handler(function($errno, $errstr, $errfile, $errline) {
-    // لاگ خطا
+    // Ù„Ø§Ú¯ Ø®Ø·Ø§
     try {
         $logger = \App\Core\Logger::getInstance();
         $logger->error('PHP Error', [
@@ -226,20 +226,20 @@ set_error_handler(function($errno, $errstr, $errfile, $errline) {
         error_log("Error Handler Failed: {$e->getMessage()}");
     }
     
-    // در Development mode نمایش بده
+    // Ø¯Ø± Development mode Ù†Ù…Ø§ÛŒØ´ Ø¨Ø¯Ù‡
     if (isset($GLOBALS['config']['app']['debug']) && $GLOBALS['config']['app']['debug']) {
-        return false; // بگذار PHP خطا رو نمایش بده
+        return false; // Ø¨Ú¯Ø°Ø§Ø± PHP Ø®Ø·Ø§ Ø±Ùˆ Ù†Ù…Ø§ÛŒØ´ Ø¨Ø¯Ù‡
     }
     
     return true;
 });
 
-// ──────────────────────────────────────
-// 12. Exception Handler سفارشی
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// 12. Exception Handler Ø³ÙØ§Ø±Ø´ÛŒ
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 set_exception_handler(function($exception) {
-    // لاگ خطا
+    // Ù„Ø§Ú¯ Ø®Ø·Ø§
     try {
         $logger = \App\Core\Logger::getInstance();
         $logger->critical('Uncaught Exception', [
@@ -252,34 +252,34 @@ set_exception_handler(function($exception) {
         error_log("Exception Handler Failed: {$e->getMessage()}");
     }
     
-    // نمایش خطا
+    // Ù†Ù…Ø§ÛŒØ´ Ø®Ø·Ø§
     if (php_sapi_name() !== 'cli') {
         http_response_code(500);
         
         if (isset($GLOBALS['config']['app']['debug']) && $GLOBALS['config']['app']['debug']) {
-            // در Development mode نمایش کامل
+            // Ø¯Ø± Development mode Ù†Ù…Ø§ÛŒØ´ Ú©Ø§Ù…Ù„
             echo '<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="UTF-8">';
-            echo '<title>خطا</title><style>body{font-family:Tahoma;background:#1f2937;color:#fff;padding:40px;}';
+            echo '<title>Ø®Ø·Ø§</title><style>body{font-family:Tahoma;background:#1f2937;color:#fff;padding:40px;}';
             echo '.error{background:#ef4444;padding:20px;border-radius:8px;margin:20px 0;}';
             echo 'pre{background:#111827;padding:15px;border-radius:8px;overflow-x:auto;}</style></head>';
-            echo '<body><h1>❌ خطای سیستم</h1>';
-            echo '<div class="error"><strong>پیام:</strong> ' . htmlspecialchars($exception->getMessage()) . '</div>';
-            echo '<h2>جزئیات:</h2>';
+            echo '<body><h1>âŒ Ø®Ø·Ø§ÛŒ Ø³ÛŒØ³ØªÙ…</h1>';
+            echo '<div class="error"><strong>Ù¾ÛŒØ§Ù…:</strong> ' . htmlspecialchars($exception->getMessage()) . '</div>';
+            echo '<h2>Ø¬Ø²Ø¦ÛŒØ§Øª:</h2>';
             echo '<pre>' . htmlspecialchars($exception->getTraceAsString()) . '</pre>';
             echo '</body></html>';
         } else {
-            // در Production mode پیام عمومی
+            // Ø¯Ø± Production mode Ù¾ÛŒØ§Ù… Ø¹Ù…ÙˆÙ…ÛŒ
             echo '<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="UTF-8">';
-            echo '<title>خطا</title><script src="https://cdn.tailwindcss.com"></script></head>';
+            echo '<title>Ø®Ø·Ø§</title><script src="https://cdn.tailwindcss.com"></script></head>';
             echo '<body class="bg-gray-900 min-h-screen flex items-center justify-center">';
             echo '<div class="bg-gray-800 rounded-2xl p-8 max-w-md text-center border border-gray-700">';
-            echo '<div class="text-5xl mb-4">❌</div>';
-            echo '<h1 class="text-2xl font-bold text-white mb-3">خطای سیستم</h1>';
-            echo '<p class="text-gray-400">متأسفانه خطایی رخ داده است. لطفاً بعداً دوباره تلاش کنید.</p>';
+            echo '<div class="text-5xl mb-4">âŒ</div>';
+            echo '<h1 class="text-2xl font-bold text-white mb-3">Ø®Ø·Ø§ÛŒ Ø³ÛŒØ³ØªÙ…</h1>';
+            echo '<p class="text-gray-400">Ù…ØªØ£Ø³ÙØ§Ù†Ù‡ Ø®Ø·Ø§ÛŒÛŒ Ø±Ø® Ø¯Ø§Ø¯Ù‡ Ø§Ø³Øª. Ù„Ø·ÙØ§Ù‹ Ø¨Ø¹Ø¯Ø§Ù‹ Ø¯ÙˆØ¨Ø§Ø±Ù‡ ØªÙ„Ø§Ø´ Ú©Ù†ÛŒØ¯.</p>';
             echo '</div></body></html>';
         }
     } else {
-        // در CLI mode
+        // Ø¯Ø± CLI mode
         echo "Error: " . $exception->getMessage() . "\n";
         echo "File: " . $exception->getFile() . ":" . $exception->getLine() . "\n";
     }
@@ -287,15 +287,15 @@ set_exception_handler(function($exception) {
     exit(1);
 });
 
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // 13. Shutdown Handler
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 register_shutdown_function(function() {
     $error = error_get_last();
     
     if ($error !== null && in_array($error['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR])) {
-        // لاگ خطای fatal
+        // Ù„Ø§Ú¯ Ø®Ø·Ø§ÛŒ fatal
         try {
             $logger = \App\Core\Logger::getInstance();
             $logger->critical('Fatal Error', [
@@ -309,7 +309,7 @@ register_shutdown_function(function() {
         }
     }
     
-    // Performance Stats (فقط در Debug Mode)
+    // Performance Stats (ÙÙ‚Ø· Ø¯Ø± Debug Mode)
     if (isset($GLOBALS['config']['app']['debug']) && $GLOBALS['config']['app']['debug']) {
         $executionTime = round((microtime(true) - START_TIME) * 1000, 2);
         $memoryUsage = round((memory_get_usage() - START_MEMORY) / 1024 / 1024, 2);
@@ -319,17 +319,17 @@ register_shutdown_function(function() {
     }
 });
 
-// ──────────────────────────────────────
-// 14. بررسی نسخه PHP
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// 14. Ø¨Ø±Ø±Ø³ÛŒ Ù†Ø³Ø®Ù‡ PHP
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 if (version_compare(PHP_VERSION, '8.0.0', '<')) {
     die('Error: This application requires PHP 8.0 or higher. Current version: ' . PHP_VERSION);
 }
 
-// ──────────────────────────────────────
-// 15. بررسی Extension های ضروری
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// 15. Ø¨Ø±Ø±Ø³ÛŒ Extension Ù‡Ø§ÛŒ Ø¶Ø±ÙˆØ±ÛŒ
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 $requiredExtensions = [
     'pdo',
@@ -347,36 +347,36 @@ foreach ($requiredExtensions as $ext) {
     }
 }
 
-// ──────────────────────────────────────
-// 16. تنظیمات Database
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// 16. ØªÙ†Ø¸ÛŒÙ…Ø§Øª Database
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 try {
-    // تست اتصال به دیتابیس
+    // ØªØ³Øª Ø§ØªØµØ§Ù„ Ø¨Ù‡ Ø¯ÛŒØªØ§Ø¨ÛŒØ³
     $db = \App\Core\Database::getInstance();
     $db->getPdo();
     
 } catch (Exception $e) {
-    // اگر دیتابیس در دسترس نبود، لاگ کن ولی ادامه بده
+    // Ø§Ú¯Ø± Ø¯ÛŒØªØ§Ø¨ÛŒØ³ Ø¯Ø± Ø¯Ø³ØªØ±Ø³ Ù†Ø¨ÙˆØ¯ØŒ Ù„Ø§Ú¯ Ú©Ù† ÙˆÙ„ÛŒ Ø§Ø¯Ø§Ù…Ù‡ Ø¨Ø¯Ù‡
     error_log('Database Connection Error: ' . $e->getMessage());
     
-    // اگر در CLI mode نیستیم و صفحه نصب نیست، خطا بده
+    // Ø§Ú¯Ø± Ø¯Ø± CLI mode Ù†ÛŒØ³ØªÛŒÙ… Ùˆ ØµÙØ­Ù‡ Ù†ØµØ¨ Ù†ÛŒØ³ØªØŒ Ø®Ø·Ø§ Ø¨Ø¯Ù‡
     if (php_sapi_name() !== 'cli' && !isset($_GET['install'])) {
-        // فقط در صفحاتی که نیاز به دیتابیس دارن خطا بده
+        // ÙÙ‚Ø· Ø¯Ø± ØµÙØ­Ø§ØªÛŒ Ú©Ù‡ Ù†ÛŒØ§Ø² Ø¨Ù‡ Ø¯ÛŒØªØ§Ø¨ÛŒØ³ Ø¯Ø§Ø±Ù† Ø®Ø·Ø§ Ø¨Ø¯Ù‡
         if (!in_array(basename($_SERVER['SCRIPT_NAME']), ['install.php', 'webhook.php'])) {
-            // خطا رو لاگ کن ولی صفحه رو نمایش بده
+            // Ø®Ø·Ø§ Ø±Ùˆ Ù„Ø§Ú¯ Ú©Ù† ÙˆÙ„ÛŒ ØµÙØ­Ù‡ Ø±Ùˆ Ù†Ù…Ø§ÛŒØ´ Ø¨Ø¯Ù‡
         }
     }
 }
 
-// ──────────────────────────────────────
-// 17. تنظیمات Cache
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// 17. ØªÙ†Ø¸ÛŒÙ…Ø§Øª Cache
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 try {
     $cache = \App\Core\Cache::getInstance();
     
-    // پاکسازی خودکار کش‌های منقضی شده (هر 100 درخواست)
+    // Ù¾Ø§Ú©Ø³Ø§Ø²ÛŒ Ø®ÙˆØ¯Ú©Ø§Ø± Ú©Ø´â€ŒÙ‡Ø§ÛŒ Ù…Ù†Ù‚Ø¶ÛŒ Ø´Ø¯Ù‡ (Ù‡Ø± 100 Ø¯Ø±Ø®ÙˆØ§Ø³Øª)
     if (rand(1, 100) === 1) {
         $cache->gc();
     }
@@ -385,14 +385,14 @@ try {
     error_log('Cache Error: ' . $e->getMessage());
 }
 
-// ──────────────────────────────────────
-// 18. تنظیمات Logger
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// 18. ØªÙ†Ø¸ÛŒÙ…Ø§Øª Logger
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 try {
     $logger = \App\Core\Logger::getInstance();
     
-    // لاگ شروع درخواست (فقط در Debug Mode)
+    // Ù„Ø§Ú¯ Ø´Ø±ÙˆØ¹ Ø¯Ø±Ø®ÙˆØ§Ø³Øª (ÙÙ‚Ø· Ø¯Ø± Debug Mode)
     if (isset($GLOBALS['config']['app']['debug']) && $GLOBALS['config']['app']['debug'] && php_sapi_name() !== 'cli') {
         $logger->debug('Request started', [
             'method' => $_SERVER['REQUEST_METHOD'] ?? 'CLI',
@@ -405,25 +405,25 @@ try {
     error_log('Logger Error: ' . $e->getMessage());
 }
 
-// ──────────────────────────────────────
-// 19. تنظیمات Timezone
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// 19. ØªÙ†Ø¸ÛŒÙ…Ø§Øª Timezone
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 $timezone = $GLOBALS['config']['app']['timezone'] ?? 'Asia/Tehran';
 date_default_timezone_set($timezone);
 
-// ──────────────────────────────────────
-// 20. تنظیمات Locale
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// 20. ØªÙ†Ø¸ÛŒÙ…Ø§Øª Locale
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 setlocale(LC_ALL, 'fa_IR.UTF-8', 'fa_IR', 'fa');
 
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // 21. Helper Functions
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 /**
- * دریافت مقدار از Config
+ * Ø¯Ø±ÛŒØ§ÙØª Ù…Ù‚Ø¯Ø§Ø± Ø§Ø² Config
  */
 if (!function_exists('config')) {
     function config($key = null, $default = null) {
@@ -446,7 +446,7 @@ if (!function_exists('config')) {
 }
 
 /**
- * دریافت URL کامل
+ * Ø¯Ø±ÛŒØ§ÙØª URL Ú©Ø§Ù…Ù„
  */
 if (!function_exists('url')) {
     function url($path = '') {
@@ -456,7 +456,7 @@ if (!function_exists('url')) {
 }
 
 /**
- * دریافت مسیر فایل
+ * Ø¯Ø±ÛŒØ§ÙØª Ù…Ø³ÛŒØ± ÙØ§ÛŒÙ„
  */
 if (!function_exists('base_path')) {
     function base_path($path = '') {
@@ -465,7 +465,7 @@ if (!function_exists('base_path')) {
 }
 
 /**
- * دریافت مسیر پوشه storage
+ * Ø¯Ø±ÛŒØ§ÙØª Ù…Ø³ÛŒØ± Ù¾ÙˆØ´Ù‡ storage
  */
 if (!function_exists('storage_path')) {
     function storage_path($path = '') {
@@ -474,7 +474,7 @@ if (!function_exists('storage_path')) {
 }
 
 /**
- * دریافت مسیر پوشه resources
+ * Ø¯Ø±ÛŒØ§ÙØª Ù…Ø³ÛŒØ± Ù¾ÙˆØ´Ù‡ resources
  */
 if (!function_exists('resource_path')) {
     function resource_path($path = '') {
@@ -492,7 +492,7 @@ if (!function_exists('e')) {
 }
 
 /**
- * Dump و Die
+ * Dump Ùˆ Die
  */
 if (!function_exists('dd')) {
     function dd(...$vars) {
@@ -521,7 +521,7 @@ if (!function_exists('dump')) {
 }
 
 /**
- * بررسی AJAX Request
+ * Ø¨Ø±Ø±Ø³ÛŒ AJAX Request
  */
 if (!function_exists('is_ajax')) {
     function is_ajax() {
@@ -531,7 +531,7 @@ if (!function_exists('is_ajax')) {
 }
 
 /**
- * بررسی CLI Mode
+ * Ø¨Ø±Ø±Ø³ÛŒ CLI Mode
  */
 if (!function_exists('is_cli')) {
     function is_cli() {
@@ -540,7 +540,7 @@ if (!function_exists('is_cli')) {
 }
 
 /**
- * دریافت IP کاربر
+ * Ø¯Ø±ÛŒØ§ÙØª IP Ú©Ø§Ø±Ø¨Ø±
  */
 if (!function_exists('client_ip')) {
     function client_ip() {
@@ -560,7 +560,7 @@ if (!function_exists('redirect')) {
 }
 
 /**
- * Back به صفحه قبلی
+ * Back Ø¨Ù‡ ØµÙØ­Ù‡ Ù‚Ø¨Ù„ÛŒ
  */
 if (!function_exists('back')) {
     function back($fallback = '/') {
@@ -570,7 +570,7 @@ if (!function_exists('back')) {
 }
 
 /**
- * دریافت Flash Message
+ * Ø¯Ø±ÛŒØ§ÙØª Flash Message
  */
 if (!function_exists('flash')) {
     function flash($key = null, $default = null) {
@@ -585,7 +585,7 @@ if (!function_exists('flash')) {
 }
 
 /**
- * تنظیم Flash Message
+ * ØªÙ†Ø¸ÛŒÙ… Flash Message
  */
 if (!function_exists('set_flash')) {
     function set_flash($key, $value) {
@@ -595,7 +595,7 @@ if (!function_exists('set_flash')) {
 }
 
 /**
- * نمایش Flash Messages
+ * Ù†Ù…Ø§ÛŒØ´ Flash Messages
  */
 if (!function_exists('display_flash_messages')) {
     function display_flash_messages() {
@@ -607,10 +607,10 @@ if (!function_exists('display_flash_messages')) {
         
         $html = '';
         $icons = [
-            'success' => '✅',
-            'error' => '❌',
-            'warning' => '⚠️',
-            'info' => 'ℹ️'
+            'success' => 'âœ…',
+            'error' => 'âŒ',
+            'warning' => 'âš ï¸',
+            'info' => 'â„¹ï¸'
         ];
         $colors = [
             'success' => 'bg-green-500/20 border-green-500/50 text-green-300',
@@ -635,11 +635,11 @@ if (!function_exists('display_flash_messages')) {
     }
 }
 
-// ──────────────────────────────────────
-// 22. پایان Bootstrap
-// ──────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// 22. Ù¾Ø§ÛŒØ§Ù† Bootstrap
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-// لاگ موفقیت بارگذاری
+// Ù„Ø§Ú¯ Ù…ÙˆÙÙ‚ÛŒØª Ø¨Ø§Ø±Ú¯Ø°Ø§Ø±ÛŒ
 if (isset($GLOBALS['config']['app']['debug']) && $GLOBALS['config']['app']['debug'] && php_sapi_name() !== 'cli') {
     try {
         $logger = \App\Core\Logger::getInstance();
@@ -648,6 +648,6 @@ if (isset($GLOBALS['config']['app']['debug']) && $GLOBALS['config']['app']['debu
             'memory_usage' => round((memory_get_usage() - START_MEMORY) / 1024 / 1024, 2) . 'MB'
         ]);
     } catch (Exception $e) {
-        // نادیده بگیر
+        // Ù†Ø§Ø¯ÛŒØ¯Ù‡ Ø¨Ú¯ÛŒØ±
     }
 }

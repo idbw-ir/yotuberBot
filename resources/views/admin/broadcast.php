@@ -1,18 +1,18 @@
-<?php
+﻿<?php
 /**
  * ============================================
- * Broadcast Management - مدیریت ارسال دسته‌جمعی
+ * Broadcast Management - Ù…Ø¯ÛŒØ±ÛŒØª Ø§Ø±Ø³Ø§Ù„ Ø¯Ø³ØªÙ‡â€ŒØ¬Ù…Ø¹ÛŒ
  * ============================================
- * نسخه: 2.0.0
+ * Ù†Ø³Ø®Ù‡: 2.1.0
  * 
- * ایجاد، کنترل و نظارت بر ارسال پیام‌های دسته‌جمعی
- * پشتیبانی از انواع محتوا و گروه‌های هدف
+ * Ø§ÛŒØ¬Ø§Ø¯ØŒ Ú©Ù†ØªØ±Ù„ Ùˆ Ù†Ø¸Ø§Ø±Øª Ø¨Ø± Ø§Ø±Ø³Ø§Ù„ Ù¾ÛŒØ§Ù…â€ŒÙ‡Ø§ÛŒ Ø¯Ø³ØªÙ‡â€ŒØ¬Ù…Ø¹ÛŒ
+ * Ù¾Ø´ØªÛŒØ¨Ø§Ù†ÛŒ Ø§Ø² Ø§Ù†ÙˆØ§Ø¹ Ù…Ø­ØªÙˆØ§ Ùˆ Ú¯Ø±ÙˆÙ‡â€ŒÙ‡Ø§ÛŒ Ù‡Ø¯Ù
  */
 
-// متغیرهای مورد نیاز از Controller:
-// - $broadcasts (لیست Broadcast ها)
-// - $pagination (اطلاعات صفحه‌بندی)
-// - $stats (آمار کلی)
+// Ù…ØªØºÛŒØ±Ù‡Ø§ÛŒ Ù…ÙˆØ±Ø¯ Ù†ÛŒØ§Ø² Ø§Ø² Controller:
+// - $broadcasts (Ù„ÛŒØ³Øª Broadcast Ù‡Ø§)
+// - $pagination (Ø§Ø·Ù„Ø§Ø¹Ø§Øª ØµÙØ­Ù‡â€ŒØ¨Ù†Ø¯ÛŒ)
+// - $stats (Ø¢Ù…Ø§Ø± Ú©Ù„ÛŒ)
 
 $broadcasts = $broadcasts ?? [];
 $pagination = $pagination ?? ['total' => 0, 'current_page' => 1, 'total_pages' => 1];
@@ -22,55 +22,55 @@ $stats = $stats ?? ['total_broadcasts' => 0, 'total_sent' => 0, 'total_failed' =
 $csrfToken = $_SESSION['_csrf_token'] ?? '';
 ?>
 
-<!-- ═══ آمار سریع ═══ -->
+<!-- â•â•â• Ø¢Ù…Ø§Ø± Ø³Ø±ÛŒØ¹ â•â•â• -->
 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
     <div class="glass rounded-xl p-4 text-center">
-        <div class="text-3xl mb-2">📢</div>
-        <div class="text-white/60 text-xs mb-1">کل Broadcast ها</div>
+        <div class="text-3xl mb-2">ðŸ“¢</div>
+        <div class="text-white/60 text-xs mb-1">Ú©Ù„ Broadcast Ù‡Ø§</div>
         <div class="text-white text-2xl font-bold"><?= number_format($stats['total_broadcasts'] ?? 0) ?></div>
     </div>
     <div class="glass rounded-xl p-4 text-center">
-        <div class="text-3xl mb-2">✅</div>
-        <div class="text-white/60 text-xs mb-1">پیام‌های موفق</div>
+        <div class="text-3xl mb-2">âœ…</div>
+        <div class="text-white/60 text-xs mb-1">Ù¾ÛŒØ§Ù…â€ŒÙ‡Ø§ÛŒ Ù…ÙˆÙÙ‚</div>
         <div class="text-green-400 text-2xl font-bold"><?= number_format($stats['total_sent'] ?? 0) ?></div>
     </div>
     <div class="glass rounded-xl p-4 text-center">
-        <div class="text-3xl mb-2">❌</div>
-        <div class="text-white/60 text-xs mb-1">پیام‌های ناموفق</div>
+        <div class="text-3xl mb-2">âŒ</div>
+        <div class="text-white/60 text-xs mb-1">Ù¾ÛŒØ§Ù…â€ŒÙ‡Ø§ÛŒ Ù†Ø§Ù…ÙˆÙÙ‚</div>
         <div class="text-red-400 text-2xl font-bold"><?= number_format($stats['total_failed'] ?? 0) ?></div>
     </div>
     <div class="glass rounded-xl p-4 text-center">
-        <div class="text-3xl mb-2">📊</div>
-        <div class="text-white/60 text-xs mb-1">نرخ موفقیت</div>
+        <div class="text-3xl mb-2">ðŸ“Š</div>
+        <div class="text-white/60 text-xs mb-1">Ù†Ø±Ø® Ù…ÙˆÙÙ‚ÛŒØª</div>
         <div class="text-purple-400 text-2xl font-bold"><?= number_format($stats['success_rate'] ?? 0, 1) ?>%</div>
     </div>
 </div>
 
-<!-- ═══ دکمه ایجاد Broadcast ═══ -->
+<!-- â•â•â• Ø¯Ú©Ù…Ù‡ Ø§ÛŒØ¬Ø§Ø¯ Broadcast â•â•â• -->
 <div class="mb-6">
     <button 
         onclick="openCreateModal()"
         class="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-6 py-3 rounded-lg hover:opacity-90 transition flex items-center gap-2 shadow-lg"
     >
         <i class="fas fa-plus-circle text-lg"></i>
-        <span class="font-bold">ایجاد Broadcast جدید</span>
+        <span class="font-bold">Ø§ÛŒØ¬Ø§Ø¯ Broadcast Ø¬Ø¯ÛŒØ¯</span>
     </button>
 </div>
 
-<!-- ═══ لیست Broadcast ها ═══ -->
+<!-- â•â•â• Ù„ÛŒØ³Øª Broadcast Ù‡Ø§ â•â•â• -->
 <div class="glass rounded-2xl overflow-hidden">
     
     <?php if (empty($broadcasts)): ?>
     <!-- Empty State -->
     <div class="text-center py-16">
-        <div class="text-6xl mb-4">📢</div>
-        <h3 class="text-white text-xl font-bold mb-2">هنوز Broadcast ای ایجاد نشده</h3>
-        <p class="text-white/50 text-sm mb-6">اولین Broadcast خود را ایجاد کنید و پیام را به کاربران ارسال کنید</p>
+        <div class="text-6xl mb-4">ðŸ“¢</div>
+        <h3 class="text-white text-xl font-bold mb-2">Ù‡Ù†ÙˆØ² Broadcast Ø§ÛŒ Ø§ÛŒØ¬Ø§Ø¯ Ù†Ø´Ø¯Ù‡</h3>
+        <p class="text-white/50 text-sm mb-6">Ø§ÙˆÙ„ÛŒÙ† Broadcast Ø®ÙˆØ¯ Ø±Ø§ Ø§ÛŒØ¬Ø§Ø¯ Ú©Ù†ÛŒØ¯ Ùˆ Ù¾ÛŒØ§Ù… Ø±Ø§ Ø¨Ù‡ Ú©Ø§Ø±Ø¨Ø±Ø§Ù† Ø§Ø±Ø³Ø§Ù„ Ú©Ù†ÛŒØ¯</p>
         <button 
             onclick="openCreateModal()"
             class="inline-block bg-purple-500/20 border border-purple-500/50 text-purple-300 px-6 py-2.5 rounded-lg hover:bg-purple-500/30 transition"
         >
-            ایجاد اولین Broadcast
+            Ø§ÛŒØ¬Ø§Ø¯ Ø§ÙˆÙ„ÛŒÙ† Broadcast
         </button>
     </div>
     <?php else: ?>
@@ -80,16 +80,16 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
         <table class="w-full text-sm">
             <thead>
                 <tr class="bg-white/5 border-b border-white/10">
-                    <th class="text-right py-3 px-4 text-white/70 font-medium">آیدی</th>
-                    <th class="text-right py-3 px-4 text-white/70 font-medium">عنوان</th>
-                    <th class="text-right py-3 px-4 text-white/70 font-medium hidden md:table-cell">گروه هدف</th>
-                    <th class="text-right py-3 px-4 text-white/70 font-medium hidden lg:table-cell">تعداد هدف</th>
-                    <th class="text-right py-3 px-4 text-white/70 font-medium">وضعیت</th>
-                    <th class="text-right py-3 px-4 text-white/70 font-medium hidden lg:table-cell">پیشرفت</th>
+                    <th class="text-right py-3 px-4 text-white/70 font-medium">Ø¢ÛŒØ¯ÛŒ</th>
+                    <th class="text-right py-3 px-4 text-white/70 font-medium">Ø¹Ù†ÙˆØ§Ù†</th>
+                    <th class="text-right py-3 px-4 text-white/70 font-medium hidden md:table-cell">Ú¯Ø±ÙˆÙ‡ Ù‡Ø¯Ù</th>
+                    <th class="text-right py-3 px-4 text-white/70 font-medium hidden lg:table-cell">ØªØ¹Ø¯Ø§Ø¯ Ù‡Ø¯Ù</th>
+                    <th class="text-right py-3 px-4 text-white/70 font-medium">ÙˆØ¶Ø¹ÛŒØª</th>
+                    <th class="text-right py-3 px-4 text-white/70 font-medium hidden lg:table-cell">Ù¾ÛŒØ´Ø±ÙØª</th>
                     <th class="text-right py-3 px-4 text-white/70 font-medium hidden md:table-cell">
-                        <span>تاریخ</span>
+                        <span>ØªØ§Ø±ÛŒØ®</span>
                     </th>
-                    <th class="text-right py-3 px-4 text-white/70 font-medium">عملیات</th>
+                    <th class="text-right py-3 px-4 text-white/70 font-medium">Ø¹Ù…Ù„ÛŒØ§Øª</th>
                 </tr>
             </thead>
             <tbody>
@@ -106,10 +106,10 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                     <!-- Title -->
                     <td class="py-3 px-4">
                         <div class="flex items-center gap-2">
-                            <span class="text-lg"><?= $b['type_icon'] ?? '💬' ?></span>
+                            <span class="text-lg"><?= $b['type_icon'] ?? 'ðŸ’¬' ?></span>
                             <div>
                                 <div class="text-white font-medium">
-                                    <?= htmlspecialchars($b['title'] ?? 'بدون عنوان') ?>
+                                    <?= htmlspecialchars($b['title'] ?? 'Ø¨Ø¯ÙˆÙ† Ø¹Ù†ÙˆØ§Ù†') ?>
                                 </div>
                                 <div class="text-white/50 text-xs truncate max-w-xs">
                                     <?= htmlspecialchars($b['content_preview'] ?? '') ?>
@@ -121,7 +121,7 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                     <!-- Target -->
                     <td class="py-3 px-4 hidden md:table-cell">
                         <span class="text-white/70 text-sm">
-                            <?= htmlspecialchars($b['target_text'] ?? 'نامشخص') ?>
+                            <?= htmlspecialchars($b['target_text'] ?? 'Ù†Ø§Ù…Ø´Ø®Øµ') ?>
                         </span>
                     </td>
                     
@@ -130,7 +130,7 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                         <div class="text-white font-bold">
                             <?= number_format($b['target_count'] ?? 0) ?>
                         </div>
-                        <div class="text-white/40 text-xs">کاربر</div>
+                        <div class="text-white/40 text-xs">Ú©Ø§Ø±Ø¨Ø±</div>
                     </td>
                     
                     <!-- Status -->
@@ -141,8 +141,8 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                                ($b['status'] === 'paused' ? 'bg-yellow-500/20 text-yellow-300' : 
                                ($b['status'] === 'cancelled' ? 'bg-red-500/20 text-red-300' : 
                                'bg-gray-500/20 text-gray-300'))) ?>">
-                            <span><?= htmlspecialchars($b['status_icon'] ?? '❓') ?></span>
-                            <span><?= htmlspecialchars($b['status_text'] ?? 'نامشخص') ?></span>
+                            <span><?= htmlspecialchars($b['status_icon'] ?? 'â“') ?></span>
+                            <span><?= htmlspecialchars($b['status_text'] ?? 'Ù†Ø§Ù…Ø´Ø®Øµ') ?></span>
                         </span>
                     </td>
                     
@@ -177,7 +177,7 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                             <button 
                                 onclick="viewBroadcast(<?= $b['id'] ?>)"
                                 class="bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 p-2 rounded-lg transition"
-                                title="مشاهده جزئیات"
+                                title="Ù…Ø´Ø§Ù‡Ø¯Ù‡ Ø¬Ø²Ø¦ÛŒØ§Øª"
                             >
                                 <i class="fas fa-eye text-sm"></i>
                             </button>
@@ -186,7 +186,7 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                             <button 
                                 onclick="startBroadcast(<?= $b['id'] ?>)"
                                 class="bg-green-500/20 hover:bg-green-500/30 text-green-300 p-2 rounded-lg transition"
-                                title="شروع"
+                                title="Ø´Ø±ÙˆØ¹"
                             >
                                 <i class="fas fa-play text-sm"></i>
                             </button>
@@ -194,7 +194,7 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                             <button 
                                 onclick="pauseBroadcast(<?= $b['id'] ?>)"
                                 class="bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-300 p-2 rounded-lg transition"
-                                title="توقف"
+                                title="ØªÙˆÙ‚Ù"
                             >
                                 <i class="fas fa-pause text-sm"></i>
                             </button>
@@ -202,7 +202,7 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                             <button 
                                 onclick="resumeBroadcast(<?= $b['id'] ?>)"
                                 class="bg-green-500/20 hover:bg-green-500/30 text-green-300 p-2 rounded-lg transition"
-                                title="ادامه"
+                                title="Ø§Ø¯Ø§Ù…Ù‡"
                             >
                                 <i class="fas fa-play text-sm"></i>
                             </button>
@@ -212,7 +212,7 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                             <button 
                                 onclick="cancelBroadcast(<?= $b['id'] ?>)"
                                 class="bg-red-500/20 hover:bg-red-500/30 text-red-300 p-2 rounded-lg transition"
-                                title="لغو"
+                                title="Ù„ØºÙˆ"
                             >
                                 <i class="fas fa-stop text-sm"></i>
                             </button>
@@ -222,7 +222,7 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                             <button 
                                 onclick="duplicateBroadcast(<?= $b['id'] ?>)"
                                 class="bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 p-2 rounded-lg transition"
-                                title="تکرار"
+                                title="ØªÚ©Ø±Ø§Ø±"
                             >
                                 <i class="fas fa-copy text-sm"></i>
                             </button>
@@ -230,7 +230,7 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                             <button 
                                 onclick="deleteBroadcast(<?= $b['id'] ?>)"
                                 class="bg-red-500/20 hover:bg-red-500/30 text-red-300 p-2 rounded-lg transition"
-                                title="حذف"
+                                title="Ø­Ø°Ù"
                             >
                                 <i class="fas fa-trash text-sm"></i>
                             </button>
@@ -244,13 +244,13 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
         </table>
     </div>
     
-    <!-- ═══ Pagination ═══ -->
+    <!-- â•â•â• Pagination â•â•â• -->
     <?php if ($pagination['total_pages'] > 1): ?>
     <div class="border-t border-white/10 p-4">
         <div class="flex items-center justify-between flex-wrap gap-4">
             
             <div class="text-white/60 text-sm">
-                نمایش <?= number_format($pagination['from'] ?? 0) ?> تا <?= number_format($pagination['to'] ?? 0) ?> از <?= number_format($pagination['total']) ?> Broadcast
+                Ù†Ù…Ø§ÛŒØ´ <?= number_format($pagination['from'] ?? 0) ?> ØªØ§ <?= number_format($pagination['to'] ?? 0) ?> Ø§Ø² <?= number_format($pagination['total']) ?> Broadcast
             </div>
             
             <div class="flex items-center gap-2">
@@ -261,7 +261,7 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                     class="bg-white/10 hover:bg-white/20 text-white px-3 py-2 rounded-lg transition flex items-center gap-1"
                 >
                     <i class="fas fa-chevron-right text-xs"></i>
-                    <span class="hidden sm:inline">قبلی</span>
+                    <span class="hidden sm:inline">Ù‚Ø¨Ù„ÛŒ</span>
                 </a>
                 <?php endif; ?>
                 
@@ -283,7 +283,7 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                     href="?page=<?= $pagination['current_page'] + 1 ?>"
                     class="bg-white/10 hover:bg-white/20 text-white px-3 py-2 rounded-lg transition flex items-center gap-1"
                 >
-                    <span class="hidden sm:inline">بعدی</span>
+                    <span class="hidden sm:inline">Ø¨Ø¹Ø¯ÛŒ</span>
                     <i class="fas fa-chevron-left text-xs"></i>
                 </a>
                 <?php endif; ?>
@@ -298,14 +298,14 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
     
 </div>
 
-<!-- ═══ Modal for Create Broadcast ═══ -->
+<!-- â•â•â• Modal for Create Broadcast â•â•â• -->
 <div id="createModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
     <div class="glass rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
         
         <div class="p-5 border-b border-white/10 flex items-center justify-between">
             <h3 class="text-white font-bold text-lg flex items-center gap-2">
                 <i class="fas fa-bullhorn"></i>
-                <span>ایجاد Broadcast جدید</span>
+                <span>Ø§ÛŒØ¬Ø§Ø¯ Broadcast Ø¬Ø¯ÛŒØ¯</span>
             </h3>
             <button 
                 onclick="closeCreateModal()"
@@ -320,48 +320,48 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                 
                 <!-- Title -->
                 <div class="mb-4">
-                    <label class="block text-white/70 text-sm mb-2">عنوان <span class="text-red-400">*</span></label>
+                    <label class="block text-white/70 text-sm mb-2">Ø¹Ù†ÙˆØ§Ù† <span class="text-red-400">*</span></label>
                     <input 
                         type="text" 
                         id="broadcastTitle"
                         name="title"
                         required
-                        placeholder="مثلاً: ویدئوی جدید، تخفیف ویژه"
+                        placeholder="Ù…Ø«Ù„Ø§Ù‹: ÙˆÛŒØ¯Ø¦ÙˆÛŒ Ø¬Ø¯ÛŒØ¯ØŒ ØªØ®ÙÛŒÙ ÙˆÛŒÚ˜Ù‡"
                         class="w-full bg-white/10 border border-white/20 rounded-lg py-2.5 px-4 text-white placeholder-white/40 focus:border-purple-500 transition"
                     >
                 </div>
                 
                 <!-- Content Type -->
                 <div class="mb-4">
-                    <label class="block text-white/70 text-sm mb-2">نوع محتوا</label>
+                    <label class="block text-white/70 text-sm mb-2">Ù†ÙˆØ¹ Ù…Ø­ØªÙˆØ§</label>
                     <select 
                         id="contentType"
                         name="content_type"
                         onchange="toggleFileIdField()"
                         class="w-full bg-white/10 border border-white/20 rounded-lg py-2.5 px-4 text-white focus:border-purple-500 transition"
                     >
-                        <option value="text">💬 متنی</option>
-                        <option value="photo">🖼️ عکس</option>
-                        <option value="video">🎥 ویدئو</option>
-                        <option value="document">📄 فایل</option>
-                        <option value="audio">🎵 صدا</option>
-                        <option value="voice">🎤 ویس</option>
-                        <option value="sticker">🎭 استیکر</option>
+                        <option value="text">ðŸ’¬ Ù…ØªÙ†ÛŒ</option>
+                        <option value="photo">ðŸ–¼ï¸ Ø¹Ú©Ø³</option>
+                        <option value="video">ðŸŽ¥ ÙˆÛŒØ¯Ø¦Ùˆ</option>
+                        <option value="document">ðŸ“„ ÙØ§ÛŒÙ„</option>
+                        <option value="audio">ðŸŽµ ØµØ¯Ø§</option>
+                        <option value="voice">ðŸŽ¤ ÙˆÛŒØ³</option>
+                        <option value="sticker">ðŸŽ­ Ø§Ø³ØªÛŒÚ©Ø±</option>
                     </select>
                 </div>
                 
                 <!-- Content -->
                 <div class="mb-4">
-                    <label class="block text-white/70 text-sm mb-2">محتوای پیام <span class="text-red-400">*</span></label>
+                    <label class="block text-white/70 text-sm mb-2">Ù…Ø­ØªÙˆØ§ÛŒ Ù¾ÛŒØ§Ù… <span class="text-red-400">*</span></label>
                     <textarea 
                         id="broadcastContent"
                         name="content"
                         rows="6"
                         required
-                        placeholder="متن پیام خود را بنویسید...&#10;&#10;می‌توانید از متغیرهای زیر استفاده کنید:&#10;{first_name} - نام کاربر&#10;{username} - یوزرنیم&#10;{user_id} - آیدی کاربر"
+                        placeholder="Ù…ØªÙ† Ù¾ÛŒØ§Ù… Ø®ÙˆØ¯ Ø±Ø§ Ø¨Ù†ÙˆÛŒØ³ÛŒØ¯...&#10;&#10;Ù…ÛŒâ€ŒØªÙˆØ§Ù†ÛŒØ¯ Ø§Ø² Ù…ØªØºÛŒØ±Ù‡Ø§ÛŒ Ø²ÛŒØ± Ø§Ø³ØªÙØ§Ø¯Ù‡ Ú©Ù†ÛŒØ¯:&#10;{first_name} - Ù†Ø§Ù… Ú©Ø§Ø±Ø¨Ø±&#10;{username} - ÛŒÙˆØ²Ø±Ù†ÛŒÙ…&#10;{user_id} - Ø¢ÛŒØ¯ÛŒ Ú©Ø§Ø±Ø¨Ø±"
                         class="w-full bg-white/10 border border-white/20 rounded-lg py-2.5 px-4 text-white placeholder-white/40 focus:border-purple-500 transition resize-none font-mono text-sm"
                     ></textarea>
-                    <p class="text-white/40 text-xs mt-1">می‌توانید از HTML و متغیرهای قالب استفاده کنید</p>
+                    <p class="text-white/40 text-xs mt-1">Ù…ÛŒâ€ŒØªÙˆØ§Ù†ÛŒØ¯ Ø§Ø² HTML Ùˆ Ù…ØªØºÛŒØ±Ù‡Ø§ÛŒ Ù‚Ø§Ù„Ø¨ Ø§Ø³ØªÙØ§Ø¯Ù‡ Ú©Ù†ÛŒØ¯</p>
                 </div>
                 
                 <!-- File ID -->
@@ -371,7 +371,7 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                         type="text" 
                         id="fileIdInput"
                         name="file_id"
-                        placeholder="File ID از تلگرام..."
+                        placeholder="File ID Ø§Ø² ØªÙ„Ú¯Ø±Ø§Ù…..."
                         class="w-full bg-white/10 border border-white/20 rounded-lg py-2.5 px-4 text-white placeholder-white/40 focus:border-purple-500 transition font-mono text-sm"
                         dir="ltr"
                     >
@@ -379,22 +379,22 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                 
                 <!-- Target -->
                 <div class="mb-4">
-                    <label class="block text-white/70 text-sm mb-2">گروه هدف <span class="text-red-400">*</span></label>
+                    <label class="block text-white/70 text-sm mb-2">Ú¯Ø±ÙˆÙ‡ Ù‡Ø¯Ù <span class="text-red-400">*</span></label>
                     <select 
                         id="targetGroup"
                         name="target"
                         onchange="toggleTargetOptions()"
                         class="w-full bg-white/10 border border-white/20 rounded-lg py-2.5 px-4 text-white focus:border-purple-500 transition"
                     >
-                        <option value="all">👥 همه کاربران</option>
-                        <option value="vip">👑 کاربران VIP</option>
-                        <option value="non_vip">👤 کاربران عادی</option>
-                        <option value="active">🟢 کاربران فعال</option>
-                        <option value="inactive">⚪ کاربران غیرفعال</option>
-                        <option value="new">🆕 کاربران جدید</option>
-                        <option value="donors">💰 حامیان مالی</option>
-                        <option value="non_donors">❌ غیر حامی</option>
-                        <option value="custom">🎯 کاربران خاص</option>
+                        <option value="all">ðŸ‘¥ Ù‡Ù…Ù‡ Ú©Ø§Ø±Ø¨Ø±Ø§Ù†</option>
+                        <option value="vip">ðŸ‘‘ Ú©Ø§Ø±Ø¨Ø±Ø§Ù† VIP</option>
+                        <option value="non_vip">ðŸ‘¤ Ú©Ø§Ø±Ø¨Ø±Ø§Ù† Ø¹Ø§Ø¯ÛŒ</option>
+                        <option value="active">ðŸŸ¢ Ú©Ø§Ø±Ø¨Ø±Ø§Ù† ÙØ¹Ø§Ù„</option>
+                        <option value="inactive">âšª Ú©Ø§Ø±Ø¨Ø±Ø§Ù† ØºÛŒØ±ÙØ¹Ø§Ù„</option>
+                        <option value="new">ðŸ†• Ú©Ø§Ø±Ø¨Ø±Ø§Ù† Ø¬Ø¯ÛŒØ¯</option>
+                        <option value="donors">ðŸ’° Ø­Ø§Ù…ÛŒØ§Ù† Ù…Ø§Ù„ÛŒ</option>
+                        <option value="non_donors">âŒ ØºÛŒØ± Ø­Ø§Ù…ÛŒ</option>
+                        <option value="custom">ðŸŽ¯ Ú©Ø§Ø±Ø¨Ø±Ø§Ù† Ø®Ø§Øµ</option>
                     </select>
                 </div>
                 
@@ -406,7 +406,7 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                 <!-- Target Count Preview -->
                 <div class="mb-4 bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
                     <div class="flex items-center justify-between">
-                        <span class="text-white/70 text-sm">تعداد کاربران هدف:</span>
+                        <span class="text-white/70 text-sm">ØªØ¹Ø¯Ø§Ø¯ Ú©Ø§Ø±Ø¨Ø±Ø§Ù† Ù‡Ø¯Ù:</span>
                         <span id="targetCount" class="text-purple-400 font-bold text-lg">-</span>
                     </div>
                     <button 
@@ -415,13 +415,13 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                         class="mt-2 text-xs text-purple-300 hover:text-purple-200 transition"
                     >
                         <i class="fas fa-sync-alt"></i>
-                        <span>بروزرسانی</span>
+                        <span>Ø¨Ø±ÙˆØ²Ø±Ø³Ø§Ù†ÛŒ</span>
                     </button>
                 </div>
                 
                 <!-- Delay -->
                 <div class="mb-4">
-                    <label class="block text-white/70 text-sm mb-2">تأخیر بین پیام‌ها (میلی‌ثانیه)</label>
+                    <label class="block text-white/70 text-sm mb-2">ØªØ£Ø®ÛŒØ± Ø¨ÛŒÙ† Ù¾ÛŒØ§Ù…â€ŒÙ‡Ø§ (Ù…ÛŒÙ„ÛŒâ€ŒØ«Ø§Ù†ÛŒÙ‡)</label>
                     <input 
                         type="number" 
                         id="delayInput"
@@ -431,7 +431,7 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                         max="1000"
                         class="w-full bg-white/10 border border-white/20 rounded-lg py-2.5 px-4 text-white focus:border-purple-500 transition"
                     >
-                    <p class="text-white/40 text-xs mt-1">پیشنهاد: 50-100 میلی‌ثانیه</p>
+                    <p class="text-white/40 text-xs mt-1">Ù¾ÛŒØ´Ù†Ù‡Ø§Ø¯: 50-100 Ù…ÛŒÙ„ÛŒâ€ŒØ«Ø§Ù†ÛŒÙ‡</p>
                 </div>
                 
                 <!-- Preview Button -->
@@ -441,7 +441,7 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                     class="w-full bg-blue-500/20 border border-blue-500/50 text-blue-300 px-4 py-2.5 rounded-lg hover:bg-blue-500/30 transition mb-4"
                 >
                     <i class="fas fa-eye"></i>
-                    <span>پیش‌نمایش پیام</span>
+                    <span>Ù¾ÛŒØ´â€ŒÙ†Ù…Ø§ÛŒØ´ Ù¾ÛŒØ§Ù…</span>
                 </button>
                 
                 <!-- Preview Area -->
@@ -456,14 +456,14 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
                         onclick="closeCreateModal()"
                         class="flex-1 bg-white/10 text-white px-4 py-2.5 rounded-lg hover:bg-white/20 transition"
                     >
-                        انصراف
+                        Ø§Ù†ØµØ±Ø§Ù
                     </button>
                     <button 
                         type="submit"
                         class="flex-1 bg-gradient-to-r from-purple-500 to-blue-500 text-white px-4 py-2.5 rounded-lg hover:opacity-90 transition"
                     >
                         <i class="fas fa-save"></i>
-                        <span>ذخیره و ایجاد</span>
+                        <span>Ø°Ø®ÛŒØ±Ù‡ Ùˆ Ø§ÛŒØ¬Ø§Ø¯</span>
                     </button>
                 </div>
                 
@@ -473,14 +473,14 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
     </div>
 </div>
 
-<!-- ═══ Modal for Broadcast Details ═══ -->
+<!-- â•â•â• Modal for Broadcast Details â•â•â• -->
 <div id="detailsModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
     <div class="glass rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
         
         <div class="p-5 border-b border-white/10 flex items-center justify-between">
             <h3 class="text-white font-bold text-lg flex items-center gap-2">
                 <i class="fas fa-info-circle"></i>
-                <span>جزئیات Broadcast</span>
+                <span>Ø¬Ø²Ø¦ÛŒØ§Øª Broadcast</span>
             </h3>
             <button 
                 onclick="closeDetailsModal()"
@@ -497,9 +497,9 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
     </div>
 </div>
 
-<!-- ═══ JavaScript ═══ -->
+<!-- â•â•â• JavaScript â•â•â• -->
 <script>
-// ═══ Toggle File ID Field ═══
+// â•â•â• Toggle File ID Field â•â•â•
 function toggleFileIdField() {
     const type = document.getElementById('contentType').value;
     const fileIdGroup = document.getElementById('fileIdGroup');
@@ -511,7 +511,7 @@ function toggleFileIdField() {
     }
 }
 
-// ═══ Toggle Target Options ═══
+// â•â•â• Toggle Target Options â•â•â•
 function toggleTargetOptions() {
     const target = document.getElementById('targetGroup').value;
     const optionsDiv = document.getElementById('targetOptions');
@@ -521,7 +521,7 @@ function toggleTargetOptions() {
     switch (target) {
         case 'active':
             html = `
-                <label class="block text-white/70 text-sm mb-2">فعال در چند روز اخیر</label>
+                <label class="block text-white/70 text-sm mb-2">ÙØ¹Ø§Ù„ Ø¯Ø± Ú†Ù†Ø¯ Ø±ÙˆØ² Ø§Ø®ÛŒØ±</label>
                 <input 
                     type="number" 
                     name="active_days"
@@ -535,7 +535,7 @@ function toggleTargetOptions() {
             
         case 'inactive':
             html = `
-                <label class="block text-white/70 text-sm mb-2">غیرفعال بیش از چند روز</label>
+                <label class="block text-white/70 text-sm mb-2">ØºÛŒØ±ÙØ¹Ø§Ù„ Ø¨ÛŒØ´ Ø§Ø² Ú†Ù†Ø¯ Ø±ÙˆØ²</label>
                 <input 
                     type="number" 
                     name="inactive_days"
@@ -549,7 +549,7 @@ function toggleTargetOptions() {
             
         case 'new':
             html = `
-                <label class="block text-white/70 text-sm mb-2">جدید در چند روز اخیر</label>
+                <label class="block text-white/70 text-sm mb-2">Ø¬Ø¯ÛŒØ¯ Ø¯Ø± Ú†Ù†Ø¯ Ø±ÙˆØ² Ø§Ø®ÛŒØ±</label>
                 <input 
                     type="number" 
                     name="new_days"
@@ -563,7 +563,7 @@ function toggleTargetOptions() {
             
         case 'donors':
             html = `
-                <label class="block text-white/70 text-sm mb-2">حداقل مبلغ دونیت (تومان)</label>
+                <label class="block text-white/70 text-sm mb-2">Ø­Ø¯Ø§Ù‚Ù„ Ù…Ø¨Ù„Øº Ø¯ÙˆÙ†ÛŒØª (ØªÙˆÙ…Ø§Ù†)</label>
                 <input 
                     type="number" 
                     name="min_donation"
@@ -576,7 +576,7 @@ function toggleTargetOptions() {
             
         case 'custom':
             html = `
-                <label class="block text-white/70 text-sm mb-2">آیدی کاربران (با کاما جدا کنید)</label>
+                <label class="block text-white/70 text-sm mb-2">Ø¢ÛŒØ¯ÛŒ Ú©Ø§Ø±Ø¨Ø±Ø§Ù† (Ø¨Ø§ Ú©Ø§Ù…Ø§ Ø¬Ø¯Ø§ Ú©Ù†ÛŒØ¯)</label>
                 <textarea 
                     name="user_ids"
                     rows="3"
@@ -599,12 +599,12 @@ function toggleTargetOptions() {
     updateTargetCount();
 }
 
-// ═══ Update Target Count ═══
+// â•â•â• Update Target Count â•â•â•
 async function updateTargetCount() {
     const target = document.getElementById('targetGroup').value;
     const options = {};
     
-    // جمع‌آوری options
+    // Ø¬Ù…Ø¹â€ŒØ¢ÙˆØ±ÛŒ options
     const activeDays = document.querySelector('[name="active_days"]');
     const inactiveDays = document.querySelector('[name="inactive_days"]');
     const newDays = document.querySelector('[name="new_days"]');
@@ -641,13 +641,13 @@ async function updateTargetCount() {
     }
 }
 
-// ═══ Preview Broadcast ═══
+// â•â•â• Preview Broadcast â•â•â•
 async function previewBroadcast() {
     const content = document.getElementById('broadcastContent').value;
     const target = document.getElementById('targetGroup').value;
     
     if (!content) {
-        showToast('لطفاً محتوای پیام را وارد کنید', 'warning');
+        showToast('Ù„Ø·ÙØ§Ù‹ Ù…Ø­ØªÙˆØ§ÛŒ Ù¾ÛŒØ§Ù… Ø±Ø§ ÙˆØ§Ø±Ø¯ Ú©Ù†ÛŒØ¯', 'warning');
         return;
     }
     
@@ -665,12 +665,12 @@ async function previewBroadcast() {
         
         if (data.success) {
             let html = '<div class="space-y-3">';
-            html += '<div class="text-white/60 text-sm mb-2">پیش‌نمایش برای 3 کاربر نمونه:</div>';
+            html += '<div class="text-white/60 text-sm mb-2">Ù¾ÛŒØ´â€ŒÙ†Ù…Ø§ÛŒØ´ Ø¨Ø±Ø§ÛŒ 3 Ú©Ø§Ø±Ø¨Ø± Ù†Ù…ÙˆÙ†Ù‡:</div>';
             
             data.previews.forEach(preview => {
                 html += `
                     <div class="bg-white/5 rounded-lg p-3">
-                        <div class="text-white/60 text-xs mb-1">کاربر: ${preview.user.first_name || preview.user.username || 'کاربر'}</div>
+                        <div class="text-white/60 text-xs mb-1">Ú©Ø§Ø±Ø¨Ø±: ${preview.user.first_name || preview.user.username || 'Ú©Ø§Ø±Ø¨Ø±'}</div>
                         <div class="text-white text-sm whitespace-pre-wrap">${preview.content}</div>
                     </div>
                 `;
@@ -681,14 +681,14 @@ async function previewBroadcast() {
             document.getElementById('previewArea').innerHTML = html;
             document.getElementById('previewArea').classList.remove('hidden');
         } else {
-            showToast(data.error || 'خطا', 'error');
+            showToast(data.error || 'Ø®Ø·Ø§', 'error');
         }
     } catch (error) {
-        showToast('خطا در ارتباط با سرور', 'error');
+        showToast('Ø®Ø·Ø§ Ø¯Ø± Ø§Ø±ØªØ¨Ø§Ø· Ø¨Ø§ Ø³Ø±ÙˆØ±', 'error');
     }
 }
 
-// ═══ Open Create Modal ═══
+// â•â•â• Open Create Modal â•â•â•
 function openCreateModal() {
     document.getElementById('createForm').reset();
     document.getElementById('fileIdGroup').classList.add('hidden');
@@ -702,13 +702,13 @@ function openCreateModal() {
     updateTargetCount();
 }
 
-// ═══ Close Create Modal ═══
+// â•â•â• Close Create Modal â•â•â•
 function closeCreateModal() {
     document.getElementById('createModal').classList.add('hidden');
     document.getElementById('createModal').classList.remove('flex');
 }
 
-// ═══ Create Broadcast ═══
+// â•â•â• Create Broadcast â•â•â•
 document.getElementById('createForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     
@@ -723,7 +723,7 @@ document.getElementById('createForm').addEventListener('submit', async function(
         target_options: {}
     };
     
-    // جمع‌آوری target options
+    // Ø¬Ù…Ø¹â€ŒØ¢ÙˆØ±ÛŒ target options
     const activeDays = formData.get('active_days');
     const inactiveDays = formData.get('inactive_days');
     const newDays = formData.get('new_days');
@@ -751,18 +751,18 @@ document.getElementById('createForm').addEventListener('submit', async function(
         const result = await response.json();
         
         if (result.success) {
-            showToast('Broadcast ایجاد شد', 'success');
+            showToast('Broadcast Ø§ÛŒØ¬Ø§Ø¯ Ø´Ø¯', 'success');
             closeCreateModal();
             setTimeout(() => location.reload(), 1000);
         } else {
-            showToast(result.error || 'خطا', 'error');
+            showToast(result.error || 'Ø®Ø·Ø§', 'error');
         }
     } catch (error) {
-        showToast('خطا در ارتباط با سرور', 'error');
+        showToast('Ø®Ø·Ø§ Ø¯Ø± Ø§Ø±ØªØ¨Ø§Ø· Ø¨Ø§ Ø³Ø±ÙˆØ±', 'error');
     }
 });
 
-// ═══ View Broadcast Details ═══
+// â•â•â• View Broadcast Details â•â•â•
 async function viewBroadcast(broadcastId) {
     try {
         const response = await fetch(`/admin/api/broadcast/${broadcastId}`);
@@ -775,71 +775,71 @@ async function viewBroadcast(broadcastId) {
                 <div class="space-y-4">
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="text-white/60 text-xs">آیدی</label>
+                            <label class="text-white/60 text-xs">Ø¢ÛŒØ¯ÛŒ</label>
                             <div class="text-white font-mono">#${b.id}</div>
                         </div>
                         <div>
-                            <label class="text-white/60 text-xs">وضعیت</label>
+                            <label class="text-white/60 text-xs">ÙˆØ¶Ø¹ÛŒØª</label>
                             <div class="text-white">${b.status_icon} ${b.status_text}</div>
                         </div>
                     </div>
                     
                     <div>
-                        <label class="text-white/60 text-xs">عنوان</label>
+                        <label class="text-white/60 text-xs">Ø¹Ù†ÙˆØ§Ù†</label>
                         <div class="text-white font-bold text-lg">${b.title}</div>
                     </div>
                     
                     <div>
-                        <label class="text-white/60 text-xs mb-2 block">محتوای پیام</label>
+                        <label class="text-white/60 text-xs mb-2 block">Ù…Ø­ØªÙˆØ§ÛŒ Ù¾ÛŒØ§Ù…</label>
                         <div class="bg-white/5 rounded-lg p-4 text-white whitespace-pre-wrap">${b.content}</div>
                     </div>
                     
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="text-white/60 text-xs">گروه هدف</label>
+                            <label class="text-white/60 text-xs">Ú¯Ø±ÙˆÙ‡ Ù‡Ø¯Ù</label>
                             <div class="text-white">${b.target_text}</div>
                         </div>
                         <div>
-                            <label class="text-white/60 text-xs">تعداد هدف</label>
+                            <label class="text-white/60 text-xs">ØªØ¹Ø¯Ø§Ø¯ Ù‡Ø¯Ù</label>
                             <div class="text-white font-bold">${new Intl.NumberFormat('fa-IR').format(b.target_count)}</div>
                         </div>
                     </div>
                     
                     <div class="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
-                        <div class="text-white/60 text-xs mb-2">پیشرفت</div>
+                        <div class="text-white/60 text-xs mb-2">Ù¾ÛŒØ´Ø±ÙØª</div>
                         <div class="w-full bg-white/10 rounded-full h-3 mb-2">
                             <div class="bg-gradient-to-r from-purple-500 to-blue-500 h-3 rounded-full" style="width: ${b.progress_percent}%"></div>
                         </div>
                         <div class="grid grid-cols-3 gap-2 text-center">
                             <div>
                                 <div class="text-green-400 font-bold">${new Intl.NumberFormat('fa-IR').format(b.sent_count || 0)}</div>
-                                <div class="text-white/50 text-xs">موفق</div>
+                                <div class="text-white/50 text-xs">Ù…ÙˆÙÙ‚</div>
                             </div>
                             <div>
                                 <div class="text-red-400 font-bold">${new Intl.NumberFormat('fa-IR').format(b.failed_count || 0)}</div>
-                                <div class="text-white/50 text-xs">ناموفق</div>
+                                <div class="text-white/50 text-xs">Ù†Ø§Ù…ÙˆÙÙ‚</div>
                             </div>
                             <div>
                                 <div class="text-yellow-400 font-bold">${new Intl.NumberFormat('fa-IR').format(b.blocked_count || 0)}</div>
-                                <div class="text-white/50 text-xs">بلاک</div>
+                                <div class="text-white/50 text-xs">Ø¨Ù„Ø§Ú©</div>
                             </div>
                         </div>
                     </div>
                     
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="text-white/60 text-xs">تاریخ ایجاد</label>
+                            <label class="text-white/60 text-xs">ØªØ§Ø±ÛŒØ® Ø§ÛŒØ¬Ø§Ø¯</label>
                             <div class="text-white text-sm">${b.created_at}</div>
                         </div>
                         ${b.started_at ? `
                         <div>
-                            <label class="text-white/60 text-xs">تاریخ شروع</label>
+                            <label class="text-white/60 text-xs">ØªØ§Ø±ÛŒØ® Ø´Ø±ÙˆØ¹</label>
                             <div class="text-white text-sm">${b.started_at}</div>
                         </div>
                         ` : ''}
                         ${b.completed_at ? `
                         <div>
-                            <label class="text-white/60 text-xs">تاریخ تکمیل</label>
+                            <label class="text-white/60 text-xs">ØªØ§Ø±ÛŒØ® ØªÚ©Ù…ÛŒÙ„</label>
                             <div class="text-white text-sm">${b.completed_at}</div>
                         </div>
                         ` : ''}
@@ -851,10 +851,10 @@ async function viewBroadcast(broadcastId) {
             document.getElementById('detailsModal').classList.remove('hidden');
             document.getElementById('detailsModal').classList.add('flex');
         } else {
-            showToast(data.error || 'خطا', 'error');
+            showToast(data.error || 'Ø®Ø·Ø§', 'error');
         }
     } catch (error) {
-        showToast('خطا در ارتباط با سرور', 'error');
+        showToast('Ø®Ø·Ø§ Ø¯Ø± Ø§Ø±ØªØ¨Ø§Ø· Ø¨Ø§ Ø³Ø±ÙˆØ±', 'error');
     }
 }
 
@@ -863,9 +863,9 @@ function closeDetailsModal() {
     document.getElementById('detailsModal').classList.remove('flex');
 }
 
-// ═══ Start Broadcast ═══
+// â•â•â• Start Broadcast â•â•â•
 async function startBroadcast(broadcastId) {
-    if (!confirm('آیا مطمئن هستید که می‌خواهید این Broadcast را شروع کنید؟')) {
+    if (!confirm('Ø¢ÛŒØ§ Ù…Ø·Ù…Ø¦Ù† Ù‡Ø³ØªÛŒØ¯ Ú©Ù‡ Ù…ÛŒâ€ŒØ®ÙˆØ§Ù‡ÛŒØ¯ Ø§ÛŒÙ† Broadcast Ø±Ø§ Ø´Ø±ÙˆØ¹ Ú©Ù†ÛŒØ¯ØŸ')) {
         return;
     }
     
@@ -882,19 +882,19 @@ async function startBroadcast(broadcastId) {
         const data = await response.json();
         
         if (data.success) {
-            showToast('Broadcast شروع شد', 'success');
+            showToast('Broadcast Ø´Ø±ÙˆØ¹ Ø´Ø¯', 'success');
             setTimeout(() => location.reload(), 1000);
         } else {
-            showToast(data.error || 'خطا', 'error');
+            showToast(data.error || 'Ø®Ø·Ø§', 'error');
         }
     } catch (error) {
-        showToast('خطا در ارتباط با سرور', 'error');
+        showToast('Ø®Ø·Ø§ Ø¯Ø± Ø§Ø±ØªØ¨Ø§Ø· Ø¨Ø§ Ø³Ø±ÙˆØ±', 'error');
     }
 }
 
-// ═══ Pause Broadcast ═══
+// â•â•â• Pause Broadcast â•â•â•
 async function pauseBroadcast(broadcastId) {
-    if (!confirm('آیا مطمئن هستید که می‌خواهید این Broadcast را متوقف کنید؟')) {
+    if (!confirm('Ø¢ÛŒØ§ Ù…Ø·Ù…Ø¦Ù† Ù‡Ø³ØªÛŒØ¯ Ú©Ù‡ Ù…ÛŒâ€ŒØ®ÙˆØ§Ù‡ÛŒØ¯ Ø§ÛŒÙ† Broadcast Ø±Ø§ Ù…ØªÙˆÙ‚Ù Ú©Ù†ÛŒØ¯ØŸ')) {
         return;
     }
     
@@ -911,19 +911,19 @@ async function pauseBroadcast(broadcastId) {
         const data = await response.json();
         
         if (data.success) {
-            showToast('Broadcast متوقف شد', 'success');
+            showToast('Broadcast Ù…ØªÙˆÙ‚Ù Ø´Ø¯', 'success');
             setTimeout(() => location.reload(), 1000);
         } else {
-            showToast(data.error || 'خطا', 'error');
+            showToast(data.error || 'Ø®Ø·Ø§', 'error');
         }
     } catch (error) {
-        showToast('خطا در ارتباط با سرور', 'error');
+        showToast('Ø®Ø·Ø§ Ø¯Ø± Ø§Ø±ØªØ¨Ø§Ø· Ø¨Ø§ Ø³Ø±ÙˆØ±', 'error');
     }
 }
 
-// ═══ Resume Broadcast ═══
+// â•â•â• Resume Broadcast â•â•â•
 async function resumeBroadcast(broadcastId) {
-    if (!confirm('آیا مطمئن هستید که می‌خواهید این Broadcast را ادامه دهید؟')) {
+    if (!confirm('Ø¢ÛŒØ§ Ù…Ø·Ù…Ø¦Ù† Ù‡Ø³ØªÛŒØ¯ Ú©Ù‡ Ù…ÛŒâ€ŒØ®ÙˆØ§Ù‡ÛŒØ¯ Ø§ÛŒÙ† Broadcast Ø±Ø§ Ø§Ø¯Ø§Ù…Ù‡ Ø¯Ù‡ÛŒØ¯ØŸ')) {
         return;
     }
     
@@ -940,19 +940,19 @@ async function resumeBroadcast(broadcastId) {
         const data = await response.json();
         
         if (data.success) {
-            showToast('Broadcast ادامه یافت', 'success');
+            showToast('Broadcast Ø§Ø¯Ø§Ù…Ù‡ ÛŒØ§ÙØª', 'success');
             setTimeout(() => location.reload(), 1000);
         } else {
-            showToast(data.error || 'خطا', 'error');
+            showToast(data.error || 'Ø®Ø·Ø§', 'error');
         }
     } catch (error) {
-        showToast('خطا در ارتباط با سرور', 'error');
+        showToast('Ø®Ø·Ø§ Ø¯Ø± Ø§Ø±ØªØ¨Ø§Ø· Ø¨Ø§ Ø³Ø±ÙˆØ±', 'error');
     }
 }
 
-// ═══ Cancel Broadcast ═══
+// â•â•â• Cancel Broadcast â•â•â•
 async function cancelBroadcast(broadcastId) {
-    if (!confirm('آیا مطمئن هستید که می‌خواهید این Broadcast را لغو کنید؟\n\nاین عمل غیرقابل بازگشت است!')) {
+    if (!confirm('Ø¢ÛŒØ§ Ù…Ø·Ù…Ø¦Ù† Ù‡Ø³ØªÛŒØ¯ Ú©Ù‡ Ù…ÛŒâ€ŒØ®ÙˆØ§Ù‡ÛŒØ¯ Ø§ÛŒÙ† Broadcast Ø±Ø§ Ù„ØºÙˆ Ú©Ù†ÛŒØ¯ØŸ\n\nØ§ÛŒÙ† Ø¹Ù…Ù„ ØºÛŒØ±Ù‚Ø§Ø¨Ù„ Ø¨Ø§Ø²Ú¯Ø´Øª Ø§Ø³Øª!')) {
         return;
     }
     
@@ -969,19 +969,19 @@ async function cancelBroadcast(broadcastId) {
         const data = await response.json();
         
         if (data.success) {
-            showToast('Broadcast لغو شد', 'success');
+            showToast('Broadcast Ù„ØºÙˆ Ø´Ø¯', 'success');
             setTimeout(() => location.reload(), 1000);
         } else {
-            showToast(data.error || 'خطا', 'error');
+            showToast(data.error || 'Ø®Ø·Ø§', 'error');
         }
     } catch (error) {
-        showToast('خطا در ارتباط با سرور', 'error');
+        showToast('Ø®Ø·Ø§ Ø¯Ø± Ø§Ø±ØªØ¨Ø§Ø· Ø¨Ø§ Ø³Ø±ÙˆØ±', 'error');
     }
 }
 
-// ═══ Duplicate Broadcast ═══
+// â•â•â• Duplicate Broadcast â•â•â•
 async function duplicateBroadcast(broadcastId) {
-    const newTitle = prompt('عنوان جدید (اختیاری):');
+    const newTitle = prompt('Ø¹Ù†ÙˆØ§Ù† Ø¬Ø¯ÛŒØ¯ (Ø§Ø®ØªÛŒØ§Ø±ÛŒ):');
     
     try {
         const response = await fetch('/admin/api/broadcast/duplicate', {
@@ -996,19 +996,19 @@ async function duplicateBroadcast(broadcastId) {
         const data = await response.json();
         
         if (data.success) {
-            showToast('Broadcast تکراری ایجاد شد', 'success');
+            showToast('Broadcast ØªÚ©Ø±Ø§Ø±ÛŒ Ø§ÛŒØ¬Ø§Ø¯ Ø´Ø¯', 'success');
             setTimeout(() => location.reload(), 1000);
         } else {
-            showToast(data.error || 'خطا', 'error');
+            showToast(data.error || 'Ø®Ø·Ø§', 'error');
         }
     } catch (error) {
-        showToast('خطا در ارتباط با سرور', 'error');
+        showToast('Ø®Ø·Ø§ Ø¯Ø± Ø§Ø±ØªØ¨Ø§Ø· Ø¨Ø§ Ø³Ø±ÙˆØ±', 'error');
     }
 }
 
-// ═══ Delete Broadcast ═══
+// â•â•â• Delete Broadcast â•â•â•
 async function deleteBroadcast(broadcastId) {
-    if (!confirm('آیا مطمئن هستید که می‌خواهید این Broadcast را حذف کنید؟\n\nاین عمل غیرقابل بازگشت است!')) {
+    if (!confirm('Ø¢ÛŒØ§ Ù…Ø·Ù…Ø¦Ù† Ù‡Ø³ØªÛŒØ¯ Ú©Ù‡ Ù…ÛŒâ€ŒØ®ÙˆØ§Ù‡ÛŒØ¯ Ø§ÛŒÙ† Broadcast Ø±Ø§ Ø­Ø°Ù Ú©Ù†ÛŒØ¯ØŸ\n\nØ§ÛŒÙ† Ø¹Ù…Ù„ ØºÛŒØ±Ù‚Ø§Ø¨Ù„ Ø¨Ø§Ø²Ú¯Ø´Øª Ø§Ø³Øª!')) {
         return;
     }
     
@@ -1025,17 +1025,17 @@ async function deleteBroadcast(broadcastId) {
         const data = await response.json();
         
         if (data.success) {
-            showToast('Broadcast حذف شد', 'success');
+            showToast('Broadcast Ø­Ø°Ù Ø´Ø¯', 'success');
             setTimeout(() => location.reload(), 1000);
         } else {
-            showToast(data.error || 'خطا', 'error');
+            showToast(data.error || 'Ø®Ø·Ø§', 'error');
         }
     } catch (error) {
-        showToast('خطا در ارتباط با سرور', 'error');
+        showToast('Ø®Ø·Ø§ Ø¯Ø± Ø§Ø±ØªØ¨Ø§Ø· Ø¨Ø§ Ø³Ø±ÙˆØ±', 'error');
     }
 }
 
-// ═══ Close Modals on Escape ═══
+// â•â•â• Close Modals on Escape â•â•â•
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         closeCreateModal();
@@ -1043,7 +1043,7 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
-// ═══ Close Modals on Outside Click ═══
+// â•â•â• Close Modals on Outside Click â•â•â•
 ['createModal', 'detailsModal'].forEach(id => {
     document.getElementById(id)?.addEventListener('click', function(e) {
         if (e.target === this) {
