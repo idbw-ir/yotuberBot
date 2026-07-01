@@ -2,10 +2,11 @@
 
 <div align="center">
 
-![Version](https://img.shields.io/badge/version-2.1.0-purple)
+![Version](https://img.shields.io/badge/version-2.1.2-purple)
 ![PHP](https://img.shields.io/badge/PHP-8.0+-blue)
 ![MySQL](https://img.shields.io/badge/MySQL-5.7+-orange)
 ![SQLite](https://img.shields.io/badge/SQLite-BunnyDB-blue)
+![Proxy](https://img.shields.io/badge/proxy-HTTP%2FSOCKS-orange)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Status](https://img.shields.io/badge/status-stable-brightgreen)
 
@@ -41,6 +42,18 @@
 - [x] اسکیماهای مجزا برای MySQL, MySQL Lite, SQLite
 - [x] سوییچ خودکار بین درایورها
 - [x] نصب کاملاً خودکار بدون نیاز به SQL دستی
+
+### 🌐 سیستم پروکسی هوشمند (جدید در v2.1.2)
+- [x] دور زدن تحریم‌های تلگرام با پروکسی
+- [x] پشتیبانی از HTTP/HTTPS/SOCKS4/SOCKS5
+- [x] تنظیم پروکسی در نصب‌کننده (مرحله ۳)
+- [x] پنل مدیریت پروکسی در تنظیمات
+- [x] تست پروکسی در نصب‌کننده
+- [x] DNS دلخواه (Shecan, Radar, 403.online)
+- [x] احراز هویت پروکسی (Username/Password)
+- [x] اعمال خودکار روی تمام درخواست‌های cURL
+- [x] کلاس Proxy با Singleton Pattern
+- [x] تست اتصال در پنل مدیریت
 
 ### 🎛️ نصب‌کننده تحت وب (جدید در v2.1)
 - [x] نصب در ۶ مرحله با راهنمای کامل
@@ -283,7 +296,7 @@ return [
         'url' => 'https://yourdomain.com',
         'timezone' => 'Asia/Tehran',
         'debug' => false,
-        'version' => '2.1.0',
+        'version' => '2.1.2',
     ],
     
     // تنظیمات دیتابیس
@@ -297,6 +310,17 @@ return [
         // اگر driver = bunny:
         // 'bunny_url' => 'https://your-db.turso.io',
         // 'bunny_token' => 'your-bunny-database-token',
+    ],
+    
+    // تنظیمات پروکسی (برای دور زدن تحریم‌ها)
+    'proxy' => [
+        'enabled' => false,
+        'type' => 'http', // http, https, socks4, socks5
+        'host' => '',
+        'port' => 0,
+        'username' => '',
+        'password' => '',
+        'dns' => '', // مثل 178.22.122.100 برای Shecan
     ],
     
     // تنظیمات تلگرام
@@ -589,6 +613,36 @@ date.timezone = Asia/Tehran
 3. **تنظیم ادمین:**
    - آیدی عددی خود را در تنظیمات وارد کنید
 
+### تنظیم پروکسی (v2.1.2)
+
+اگر سرور شما در ایران است و تلگرام تحریم شده، از پروکسی استفاده کنید:
+
+1. **در نصب‌کننده:**
+   - در مرحله ۳ (ربات و پروکسی) بخش پروکسی را باز کنید
+   - پروکسی را فعال کرده و اطلاعات را وارد کنید
+   - روی **تست پروکسی** کلیک کنید
+   - پس از تأیید، به مرحله بعد بروید
+
+2. **در پنل مدیریت:**
+   - به **تنظیمات > پروکسی** بروید
+   - پروکسی را فعال کنید
+   - نوع (HTTP/HTTPS/SOCKS4/SOCKS5) را انتخاب کنید
+   - آدرس و پورت را وارد کنید
+   - DNS دلخواه (مثل Shecan, Radar) را وارد کنید
+   - ذخیره کنید
+
+3. **تست اتصال:**
+   - وضعیت اتصال در پنل مدیریت نمایش داده می‌شود
+   - در صورت سبز بودن، پروکسی به درستی کار می‌کند
+
+4. **DNS های پیشنهادی:**
+   | سرویس | DNS |
+   |-------|-----|
+   | Shecan | `178.22.122.100,185.51.200.2` |
+   | Radar | `10.202.10.202,10.202.10.102` |
+   | 403.online | `10.202.10.10,10.202.10.11` |
+   | Electro | `78.157.42.101,78.157.42.100` |
+
 ### دستورات ربات
 
 | دستور | توضیح |
@@ -786,6 +840,7 @@ tail -f storage/logs/security-*.log
 
 - [x] **v2.1** پشتیبانی از Bunny Database (Turso/libSQL)
 - [x] **v2.1** نصب‌کننده تحت وب (Web Installer)
+- [x] **v2.1.2** سیستم پروکسی برای دور زدن تحریم‌ها
 - [ ] پشتیبانی از Telegram Payments
 - [ ] سیستم چند زبانه
 - [ ] اپلیکیشن موبایل
@@ -867,12 +922,14 @@ SOFTWARE.
 ## 📊 آمار پروژه
 
 ```
-📁 تعداد فایل‌ها:       64 فایل
-📝 مجموع خطوط کد:       ~25,000 خط
-🎨 تعداد صفحات ادمین:   10 صفحه
+📁 تعداد فایل‌ها:       65 فایل
+📝 مجموع خطوط کد:       ~26,500 خط
+🎨 تعداد صفحات ادمین:   11 صفحه
 🔌 تعداد API endpoints: 50+ endpoint
 📊 تعداد جداول:         17 جدول
-🎯 تعداد ویژگی‌ها:      100+ ویژگی
+🎯 تعداد ویژگی‌ها:      110+ ویژگی
+🎭 کلاس‌های جدید:       Proxy.php (Singleton) + Admin Settings UI
+🌐 پروکسی:             HTTP/HTTPS/SOCKS4/SOCKS5 + DNS سفارشی
 ```
 
 ---
@@ -881,7 +938,7 @@ SOFTWARE.
 
 **ساخته شده با ❤️ برای یوتیوبرهای فارسی‌زبان**
 
-🎬 **Youtuber Bot v2.1.0** | 2026
+🎬 **Youtuber Bot v2.1.2** | 2026
 
 [⬆ برگشت به بالا](#-youtuber-bot---ربات-تلگرام-یوتیوبر)
 

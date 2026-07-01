@@ -3,7 +3,7 @@
  * ============================================
  * Front Controller - نقطه ورود اصلی
  * ============================================
- * نسخه: 2.1.0
+ * نسخه: 2.1.2
  * 
  * این فایل تمام درخواست‌های HTTP رو مدیریت می‌کنه
  * و به Controller های مناسب هدایت می‌کنه
@@ -34,7 +34,7 @@ define('BASE_PATH', dirname(__DIR__));
 define('PUBLIC_PATH', __DIR__);
 define('CONFIG_PATH', BASE_PATH . '/config');
 define('STORAGE_PATH', BASE_PATH . '/storage');
-define('APP_VERSION', '2.1.0');
+define('APP_VERSION', '2.1.2');
 define('START_TIME', microtime(true));
 define('START_MEMORY', memory_get_usage());
 

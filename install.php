@@ -1,7 +1,7 @@
 <?php
 /**
  * ============================================
- * 🎬 Youtuber Bot Installer - نسخه 2.1.0
+ * 🎬 Youtuber Bot Installer - نسخه 2.1.2
  * ============================================
  * فایل اصلی نصب‌کننده (Setup Wizard)
  */
@@ -106,7 +106,7 @@ $stepIcons = ['📋', '🗄️', '🤖', '👤', '⚙️', '✅'];
     <!-- ═══ هدر ═══ -->
     <div class="text-center mb-6">
         <h1 class="text-3xl md:text-4xl font-bold text-white mb-1">🎬 نصب ربات تلگرام یوتیوبر</h1>
-        <p class="text-white/60 text-sm">نسخه 2.1.0 | نصب آسان در ۶ مرحله</p>
+        <p class="text-white/60 text-sm">نسخه 2.1.2 | نصب آسان در ۶ مرحله</p>
     </div>
 
     <!-- ═══ نوار مراحل ═══ -->
@@ -143,7 +143,7 @@ $stepIcons = ['📋', '🗄️', '🤖', '👤', '⚙️', '✅'];
 
     <!-- ═══ فوتر ═══ -->
     <div class="text-center mt-6 text-white/40 text-xs">
-        <p>Youtuber Bot v2.1.0 | ساخته شده با ❤️</p>
+        <p>Youtuber Bot v2.1.2 | ساخته شده با ❤️</p>
     </div>
 
 </div>

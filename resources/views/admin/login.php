@@ -256,7 +256,7 @@ unset($_SESSION['old_username']);
         
         <!-- ═══ Footer ═══ -->
         <div class="text-center mt-6 text-white/40 text-xs">
-            <p>Youtuber Bot v2.1.0 | ساخته شده با ❤️</p>
+            <p>Youtuber Bot v2.1.2 | ساخته شده با ❤️</p>
         </div>
         
     </div>

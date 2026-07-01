@@ -729,7 +729,7 @@ class Settings {
         $settings = $this->db->fetchAll("SELECT * FROM settings ORDER BY category, key_name");
         
         $backup = [
-            'version' => '2.1.0',
+            'version' => '2.1.2',
             'created_at' => date('Y-m-d H:i:s'),
             'total_settings' => count($settings),
             'settings' => $settings

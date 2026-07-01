@@ -192,7 +192,7 @@ $customData = $db->fetchAll("SELECT * FROM ...");
     <!-- ═══ Footer ═══ -->
     <footer class="py-8 px-4 mt-12">
         <div class="max-w-6xl mx-auto text-center text-white/30 text-sm">
-            <p>Youtuber Bot v2.1.0 | ساخته شده با ❤️</p>
+            <p>Youtuber Bot v2.1.2 | ساخته شده با ❤️</p>
         </div>
     </footer>
 

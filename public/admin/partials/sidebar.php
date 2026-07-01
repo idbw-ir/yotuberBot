@@ -1,7 +1,7 @@
 <aside class="w-64 bg-gray-900/50 min-h-screen p-4 border-l border-white/10">
     <div class="text-center mb-6">
         <h2 class="text-xl font-bold text-white">🎬 پنل مدیریت</h2>
-        <p class="text-white/50 text-xs mt-1">v2.1.0</p>
+        <p class="text-white/50 text-xs mt-1">v2.1.2</p>
     </div>
     
     <nav class="space-y-1">

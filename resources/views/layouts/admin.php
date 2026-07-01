@@ -294,7 +294,7 @@ $csrfToken = $_SESSION['_csrf_token'] ?? '';
         <!-- ═══ Footer ═══ -->
         <footer class="border-t border-white/10 px-6 py-4 text-center">
             <p class="text-white/40 text-xs">
-                🎬 Youtuber Bot v2.1.0 | ساخته شده با ❤️ | 
+                🎬 Youtuber Bot v2.1.2 | ساخته شده با ❤️ | 
                 <span class="hidden md:inline">PHP <?= PHP_VERSION ?> | <?= date('Y-m-d') ?></span>
             </p>
         </footer>
