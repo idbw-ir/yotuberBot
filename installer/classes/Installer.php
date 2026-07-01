@@ -311,7 +311,7 @@ class Installer {
     public function writeConfig($data) {
         $template = file_get_contents($this->basePath . '/config/config.example.php');
         
-        $driver = $data['db_driver'] ?? 'mysql';
+        $driver = $data['db_driver'] ?? $data['db_type'] ?? 'mysql';
         $proxyEnabled = !empty($data['proxy_enabled']) && ($data['proxy_enabled'] === '1' || $data['proxy_enabled'] === 'on');
         
         // تعیین پلتفرم‌های فعال

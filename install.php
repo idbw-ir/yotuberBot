@@ -66,6 +66,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     );
 }
 
+// هماهنگ‌سازی نام فیلد دیتابیس
+if (isset($_SESSION['installer_data']['db_type']) && !isset($_SESSION['installer_data']['db_driver'])) {
+    $_SESSION['installer_data']['db_driver'] = $_SESSION['installer_data']['db_type'];
+}
+
 $installer = new Installer(__DIR__);
 $currentStep = $installer->getStep($step);
 
