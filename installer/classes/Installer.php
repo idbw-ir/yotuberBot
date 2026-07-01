@@ -285,12 +285,25 @@ class Installer {
             $hash = password_hash($password, PASSWORD_BCRYPT);
             
             if ($driver === 'bunny') {
+                $existing = $pdoOrBunny->fetch(
+                    "SELECT COUNT(*) as count FROM admins WHERE username = ?",
+                    [$username]
+                );
+                if ($existing && $existing['count'] > 0) {
+                    return ['success' => true];
+                }
                 $pdoOrBunny->execute(
                     "INSERT INTO admins (username, password_hash, created_at) VALUES (?, ?, datetime('now'))",
                     [$username, $hash]
                 );
             } else {
                 $pdoOrBunny->exec("USE `{$dbName}`");
+                $stmt = $pdoOrBunny->prepare("SELECT COUNT(*) as count FROM admins WHERE username = ?");
+                $stmt->execute([$username]);
+                $existing = $stmt->fetch(PDO::FETCH_ASSOC);
+                if ($existing && $existing['count'] > 0) {
+                    return ['success' => true];
+                }
                 $stmt = $pdoOrBunny->prepare("INSERT INTO admins (username, password_hash, created_at) VALUES (?, ?, NOW())");
                 $stmt->execute([$username, $hash]);
             }
