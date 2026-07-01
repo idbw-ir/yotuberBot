@@ -563,7 +563,7 @@ BEGIN
             `donation_count` = GREATEST(0, `donation_count` - 1)
         WHERE `id` = NEW.user_id;
     END IF;
-END
+END;
 
 -- Trigger: ثبت لاگ تغییرات تنظیمات
 DROP TRIGGER IF EXISTS `trg_settings_before_update`;
@@ -576,7 +576,7 @@ BEGIN
         INSERT INTO `settings_log` (`key_name`, `old_value`, `new_value`, `changed_at`)
         VALUES (OLD.`key_name`, OLD.value, NEW.value, NOW());
     END IF;
-END
+END;
 
 -- Trigger: افزایش match_count بعد از ثبت تطابق
 DROP TRIGGER IF EXISTS `trg_keyword_matches_after_insert`;
@@ -590,7 +590,7 @@ BEGIN
         `match_count` = `match_count` + 1,
         `last_matched_at` = NEW.matched_at
     WHERE `id` = NEW.keyword_id;
-END
+END;
 
 -- ═══════════════════════════════════════════
 -- 19. Views
@@ -684,7 +684,7 @@ BEGIN
     
     DELETE FROM `failed_jobs` 
     WHERE `failed_at` < DATE_SUB(NOW(), INTERVAL days_to_keep DAY);
-END
+END;
 
 -- Procedure: بروزرسانی آمار کاربران
 DROP PROCEDURE IF EXISTS `sp_update_user_stats`;
@@ -710,7 +710,7 @@ BEGIN
             FROM `donations` d 
             WHERE d.user_id = u.id AND d.status = 'success'
         );
-END
+END;
 
 -- Procedure: بررسی و ارتقای خودکار VIP
 DROP PROCEDURE IF EXISTS `sp_check_auto_vip`;
@@ -722,7 +722,7 @@ BEGIN
     WHERE u.is_vip = 0
     AND u.blocked = 0
     AND u.total_donations >= vip_threshold;
-END
+END;
 
 -- ═══════════════════════════════════════════
 -- 21. داده‌های پیش‌فرض
@@ -810,7 +810,7 @@ ENABLE
 DO
 BEGIN
     CALL `sp_cleanup_old_logs`(90);
-END
+END;
 
 -- Event: بروزرسانی آمار کاربران (هر ساعت)
 DROP EVENT IF EXISTS `evt_hourly_stats_update`;
@@ -822,7 +822,7 @@ ENABLE
 DO
 BEGIN
     CALL `sp_update_user_stats`();
-END
+END;
 
 -- Event: بررسی VIP خودکار (هر 6 ساعت)
 DROP EVENT IF EXISTS `evt_check_auto_vip`;
@@ -838,7 +838,7 @@ BEGIN
     IF @threshold IS NOT NULL THEN
         CALL `sp_check_auto_vip`(@threshold);
     END IF;
-END
+END;
 
 -- ═══════════════════════════════════════════
 -- 23. پایان

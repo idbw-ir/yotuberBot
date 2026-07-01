@@ -103,8 +103,8 @@ class Installer {
             // حذف کامنت‌ها
             $sql = preg_replace('/--.*$/m', '', $sql);
             
-            // تفکیک دستورات بر اساس ;
-            $statements = explode(';', $sql);
+            // تفکیک هوشمند دستورات (با درنظرگرفتن BEGIN...END)
+            $statements = $this->splitSqlStatements($sql);
             
             foreach ($statements as $statement) {
                 $statement = trim($statement);
@@ -117,6 +117,67 @@ class Installer {
         } catch (PDOException $e) {
             return ['success' => false, 'error' => $e->getMessage()];
         }
+    }
+    
+    private function splitSqlStatements($sql) {
+        $statements = [];
+        $current = '';
+        $depth = 0;
+        $len = strlen($sql);
+        $i = 0;
+        
+        while ($i < $len) {
+            $char = $sql[$i];
+            
+            // رد کردن string literalهای ' و "
+            if ($char === "'" || $char === '"') {
+                $quote = $char;
+                $current .= $char;
+                $i++;
+                while ($i < $len && $sql[$i] !== $quote) {
+                    if ($sql[$i] === '\\' && $i + 1 < $len) {
+                        $current .= $sql[$i];
+                        $i++;
+                    }
+                    $current .= $sql[$i];
+                    $i++;
+                }
+                if ($i < $len) {
+                    $current .= $sql[$i];
+                }
+                $i++;
+                continue;
+            }
+            
+            // افزایش عمق در BEGIN
+            if (strtoupper(substr($sql, $i, 5)) === 'BEGIN' && !preg_match('/[a-z_]/i', $sql[$i + 5] ?? '')) {
+                $depth++;
+            }
+            
+            // کاهش عمق در END
+            if (strtoupper(substr($sql, $i, 3)) === 'END' && !preg_match('/[a-z_]/i', $sql[$i + 3] ?? '')) {
+                $depth--;
+            }
+            
+            // فقط در عمق صفر روی ; split کن
+            if ($char === ';' && $depth <= 0) {
+                $st = trim($current);
+                if (!empty($st)) {
+                    $statements[] = $st;
+                }
+                $current = '';
+            } else {
+                $current .= $char;
+            }
+            $i++;
+        }
+        
+        $st = trim($current);
+        if (!empty($st)) {
+            $statements[] = $st;
+        }
+        
+        return $statements;
     }
     
     // ──────────────────────────────────────
