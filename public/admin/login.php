@@ -48,7 +48,20 @@ spl_autoload_register(function ($class) {
 });
 
 // ──────────────────────────────────────
-// 3. بررسی لاگین بودن
+// 3. شروع Session
+// ──────────────────────────────────────
+
+try {
+    $session = \App\Core\Session::getInstance();
+    $session->start();
+    $csrfToken = $session->getCsrfToken();
+    $_SESSION['_csrf_token'] = $csrfToken;
+} catch (Exception $e) {
+    $csrfToken = '';
+}
+
+// ──────────────────────────────────────
+// 4. بررسی لاگین بودن
 // ──────────────────────────────────────
 
 $auth = null;
@@ -67,7 +80,7 @@ try {
 }
 
 // ──────────────────────────────────────
-// 4. پردازش فرم ورود
+// 5. پردازش فرم ورود
 // ──────────────────────────────────────
 
 $error = '';
@@ -117,19 +130,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
     }
-}
-
-// ──────────────────────────────────────
-// 5. تولید CSRF Token
-// ──────────────────────────────────────
-
-try {
-    $session = \App\Core\Session::getInstance();
-    $session->start();
-    $csrfToken = \App\Helpers\Security::generateCsrfToken();
-    $_SESSION['_csrf_token'] = $csrfToken;
-} catch (Exception $e) {
-    $csrfToken = '';
 }
 
 // ──────────────────────────────────────
