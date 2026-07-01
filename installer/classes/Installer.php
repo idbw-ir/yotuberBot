@@ -188,12 +188,15 @@ class Installer {
             $sql = file_get_contents($schemaFile);
             $sql = preg_replace('/--.*$/m', '', $sql);
             
-            // برای SQLite با ; ساده split کن (بدون BEGIN...END)
             $statements = explode(';', $sql);
             
             foreach ($statements as $statement) {
                 $statement = trim($statement);
                 if (empty($statement)) continue;
+                
+                // رد کردن دستورات PRAGMA (بعضی پلتفرم‌ها مثل Turso پشتیبانی نمی‌کنند)
+                if (stripos($statement, 'PRAGMA') === 0) continue;
+                
                 $bunny->execute($statement);
             }
             

@@ -1,7 +1,6 @@
 -- Youtuber Bot - Database Schema (SQLite/Bunny)
 -- نسخه: 2.0.0 - سازگار با SQLite و Bunny Database (Turso)
 
-PRAGMA journal_mode = WAL;
 PRAGMA foreign_keys = ON;
 
 -- 1. Users
